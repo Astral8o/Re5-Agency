@@ -1,0 +1,38 @@
+:root {
+  --accent: #ff5a1f;
+  --ink: #0a0908;
+  --bone: #f4efe8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-sora), "Helvetica Neue", Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--bone);
+  text-decoration: none;
+}
+
+a:hover {
+  color: #ff7a33;
+}
+
+img {
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+}

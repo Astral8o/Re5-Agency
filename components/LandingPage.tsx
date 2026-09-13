@@ -1,0 +1,603 @@
+"use client";
+
+import { useEffect, useState, type FormEvent } from "react";
+import { LogoMark, Wordmark } from "./Logo";
+import "../app/landing.css";
+
+const MOBILE_BREAKPOINT = 860;
+
+type FormStatus = "idle" | "sending" | "sent" | "error";
+
+function ImageTile({
+  src,
+  alt,
+  className,
+  objectPosition,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  objectPosition?: string;
+}) {
+  return (
+    <div className={className ?? "image-tile"}>
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        style={objectPosition ? { objectPosition } : undefined}
+      />
+    </div>
+  );
+}
+
+export default function LandingPage() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [status, setStatus] = useState<FormStatus>("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    const sync = () => setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
+    sync();
+    window.addEventListener("resize", sync);
+    return () => window.removeEventListener("resize", sync);
+  }, []);
+
+  useEffect(() => {
+    if (!menuOpen && !modalOpen) return;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen, modalOpen]);
+
+  const openModal = () => {
+    setMenuOpen(false);
+    setStatus("idle");
+    setErrorMessage("");
+    setModalOpen(true);
+  };
+  const closeModal = () => setModalOpen(false);
+  const toggleMenu = () => setMenuOpen((v) => !v);
+  const closeMenu = () => setMenuOpen(false);
+
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    setStatus("sending");
+    setErrorMessage("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.get("name"),
+          business: data.get("business"),
+          email: data.get("email"),
+          whatsapp: data.get("whatsapp"),
+          message: data.get("message"),
+        }),
+      });
+      if (!res.ok) throw new Error("request failed");
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+      setErrorMessage(
+        "Something went wrong sending that. Please try again, or email us directly at hello@re5agency.com."
+      );
+    }
+  };
+
+  return (
+    <div className="page treat-warm">
+      <nav className="nav">
+        <a href="#top" className="nav-logo">
+          <LogoMark size={26} />
+          <Wordmark className="mono nav-wordmark" />
+        </a>
+
+        {!isMobile && (
+          <div className="nav-links mono">
+            <a href="#framework">Framework</a>
+            <a href="#eventory">Eventory</a>
+            <a href="#about">Who we are</a>
+            <a
+              href="#contact"
+              className="nav-contact-btn mono"
+              onClick={(e) => {
+                e.preventDefault();
+                openModal();
+              }}
+            >
+              Contact
+            </a>
+          </div>
+        )}
+
+        {isMobile && (
+          <button
+            type="button"
+            className="nav-burger"
+            aria-label="Menu"
+            onClick={toggleMenu}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        )}
+      </nav>
+
+      {menuOpen && (
+        <div className="mobile-menu">
+          <div className="mobile-menu-header">
+            <div className="nav-logo">
+              <LogoMark size={26} />
+              <Wordmark className="mono nav-wordmark" />
+            </div>
+            <button
+              type="button"
+              className="mobile-menu-close mono"
+              aria-label="Close menu"
+              onClick={toggleMenu}
+            >
+              &#215;
+            </button>
+          </div>
+          <div className="mobile-menu-links">
+            <a href="#framework" onClick={closeMenu}>
+              Framework
+            </a>
+            <a href="#eventory" onClick={closeMenu}>
+              Eventory
+            </a>
+            <a href="#about" onClick={closeMenu}>
+              Who we are
+            </a>
+          </div>
+          <a
+            href="#contact"
+            className="mobile-menu-cta mono"
+            onClick={(e) => {
+              e.preventDefault();
+              openModal();
+            }}
+          >
+            Get in the spotlight <span className="arrow">&#8594;</span>
+          </a>
+        </div>
+      )}
+
+      {/* HERO */}
+      <header id="top" className="hero">
+        <div className="hero-glow-main" />
+        <div className="hero-glow-secondary" />
+        <div className="hero-scrim" />
+
+        <div className="hero-inner">
+          <div className="hero-content">
+            <div className="hero-eyebrow mono">
+              RE5<span className="dot">.</span> Agency
+            </div>
+            <h1 className="hero-title">
+              <span className="hero-title-line1">Your work deserves the</span>
+              <span className="hero-title-line2">Spotlight.</span>
+            </h1>
+            <div className="hero-sub-row">
+              <p className="hero-copy">
+                We put your business where people can{" "}
+                <span className="accent-text">see it</span>,{" "}
+                <span className="accent-text">find it</span>, and{" "}
+                <span className="accent-text">book it</span>.
+              </p>
+              <a
+                href="#contact"
+                className="btn-pill btn-primary mono"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openModal();
+                }}
+              >
+                Get in the spotlight <span className="arrow">&#8594;</span>
+              </a>
+            </div>
+          </div>
+
+          <div className="hero-strip mono">
+            <span>Get seen.</span>
+            <span>Get found.</span>
+            <span>Get booked.</span>
+          </div>
+        </div>
+      </header>
+
+      {/* WORTH SEEING */}
+      <section className="section">
+        <div className="section-inner worth-seeing-grid">
+          <div className="worth-seeing-copy">
+            <h2 className="worth-seeing-heading">
+              Event businesses have something{" "}
+              <span className="accent-strong">worth seeing.</span>
+            </h2>
+            <p className="worth-seeing-lede">The work is already there.</p>
+            <div className="chip-row">
+              <div className="chip">The venue.</div>
+              <div className="chip">The setup.</div>
+              <div className="chip">The food.</div>
+              <div className="chip">The photos.</div>
+              <div className="chip">The experience.</div>
+              <div className="chip">The details people remember.</div>
+            </div>
+            <p className="worth-seeing-closer">
+              <span className="accent-text">RE5</span> puts that work in
+              front of the people looking for it.
+            </p>
+          </div>
+
+          <div className="image-grid-2x2">
+            <ImageTile
+              src="/images/venue-draped.jpg"
+              alt="Draped venue with chandeliers"
+            />
+            <ImageTile
+              src="/images/catering-spread.jpg"
+              alt="Catering spread"
+            />
+            <ImageTile
+              src="/images/event-load-in.jpg"
+              alt="Event crew loading in truss"
+              objectPosition="center top"
+            />
+            <ImageTile
+              src="/images/photo-booth.jpg"
+              alt="Guests on a 360 photo booth"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* FRAMEWORK */}
+      <section id="framework" className="section framework-section">
+        <div className="framework-glow" />
+        <div className="framework-inner">
+          <h2 className="framework-title">
+            The Spotlight
+            <br />
+            Framework
+          </h2>
+          <div className="framework-grid">
+            <div className="framework-card">
+              <div className="framework-number mono">01</div>
+              <h3>Seen</h3>
+              <p className="framework-card-lede">
+                Put your work in front of more people.
+              </p>
+              <p className="framework-card-body">
+                Social content, photography, videography, email and
+                promotional opportunities built around what your business
+                actually does.
+              </p>
+            </div>
+            <div className="framework-card">
+              <div className="framework-number mono">02</div>
+              <h3>Found</h3>
+              <p className="framework-card-lede">
+                Make your business easier to discover.
+              </p>
+              <p className="framework-card-body">
+                <a href="#eventory">Eventory</a>, websites, Google, SEO, AI
+                and other places people go when they&apos;re looking for
+                event businesses.
+              </p>
+            </div>
+            <div className="framework-card">
+              <div className="framework-number mono">03</div>
+              <h3>Booked</h3>
+              <p className="framework-card-lede">Turn attention into action.</p>
+              <p className="framework-card-body">
+                Create clearer paths from discovery to inquiry, WhatsApp
+                conversations and bookings.
+              </p>
+            </div>
+          </div>
+          <div className="image-grid-4">
+            <ImageTile
+              src="/images/videographers.jpg"
+              alt="Videography team at a wedding"
+            />
+            <ImageTile
+              src="/images/photographer.jpg"
+              alt="Videographer filming a couple"
+            />
+            <ImageTile src="/images/conference-stage.jpg" alt="Conference stage set" />
+            <ImageTile
+              src="/images/event-signage.jpg"
+              alt="Branded event signage with florals"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* EVENTORY */}
+      <section id="eventory" className="section eventory-section">
+        <div className="eventory-glow" />
+        <div className="eventory-inner">
+          <div className="eventory-copy">
+            <div className="eventory-eyebrow mono">Eventory</div>
+            <h2 className="eventory-title">Discover what&apos;s next.</h2>
+            <p className="eventory-lede">
+              Eventory is RE5&apos;s discovery platform for event businesses.
+            </p>
+            <p className="eventory-body">
+              It brings event vendors and suppliers into one place, giving
+              people a simpler way to discover businesses, explore what they
+              offer and connect with them.
+            </p>
+            <p className="eventory-body">
+              For businesses, it&apos;s another place to be seen, found and
+              discovered by people looking for event services.
+            </p>
+            <a
+              href="https://www.eventorytt.com"
+              target="_blank"
+              rel="noopener"
+              className="btn-pill btn-outline-light mono"
+            >
+              Explore Eventory <span className="arrow">&#8594;</span>
+            </a>
+          </div>
+
+          <div className="eventory-card-col">
+            <div className="eventory-card-label mono">
+              <span className="rule" />A profile on Eventory
+            </div>
+            <div className="profile-card">
+              <div className="profile-card-cover">
+                <img
+                  src="/images/videographers.jpg"
+                  alt="Videography team"
+                  style={{ objectPosition: "center 22%" }}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="profile-card-tag mono">Photo &amp; Video</div>
+              </div>
+              <div className="profile-card-body">
+                <div className="profile-card-head">
+                  <div className="profile-card-name-col">
+                    <div className="profile-card-name">Amberline Studio</div>
+                    <div className="profile-card-location mono">
+                      Port of Spain &#183; Nationwide
+                    </div>
+                  </div>
+                  <div className="profile-card-status">
+                    <span className="profile-card-status-dot" />
+                    <span className="label mono">Taking bookings</span>
+                  </div>
+                </div>
+                <p className="profile-card-desc">
+                  Wedding and corporate coverage &#8212; two shooters,
+                  same-week highlight edits, full gallery delivery.
+                </p>
+                <div className="profile-card-tags">
+                  <span className="profile-card-tag-chip">Weddings</span>
+                  <span className="profile-card-tag-chip">Corporate</span>
+                  <span className="profile-card-tag-chip">Content days</span>
+                </div>
+                <div className="profile-card-thumbs">
+                  <div className="profile-card-thumb">
+                    <img
+                      src="/images/photographer.jpg"
+                      alt="Portrait shoot"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div className="profile-card-thumb">
+                    <img
+                      src="/images/getting-ready.jpg"
+                      alt="Getting ready"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div className="profile-card-thumb">
+                    <img
+                      src="/images/stage-production.jpg"
+                      alt="Stage production"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                </div>
+                <div className="profile-card-actions">
+                  <span className="profile-card-message mono">Message</span>
+                  <span className="profile-card-save mono">Save</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* WHO ARE WE */}
+      <section id="about" className="section">
+        <div className="section-inner about-grid">
+          <div className="about-photo">
+            <img
+              src="/images/guests-event.jpg"
+              alt="Guests at an event"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <div className="about-copy">
+            <h2 className="about-title">Who are we?</h2>
+            <p>
+              RE5 is a team of marketers, videographers, photographers, event
+              professionals and creative minds who bring different skills
+              together to put event businesses{" "}
+              <span className="accent-text">in the spotlight</span>.
+            </p>
+            <p>
+              We&apos;re here to bring your work to more people, create new
+              opportunities for your business, and help you grow.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* CLOSING CTA */}
+      <section id="contact" className="cta-section">
+        <div className="cta-glow" />
+        <div className="cta-inner">
+          <h2 className="cta-title">
+            Your work deserves to be <span className="accent-strong">seen.</span>
+          </h2>
+          <p className="cta-sub">Let&apos;s put it in the right places.</p>
+          <a
+            href="#contact"
+            className="btn-pill btn-primary mono"
+            onClick={(e) => {
+              e.preventDefault();
+              openModal();
+            }}
+          >
+            Get in the spotlight <span className="arrow">&#8594;</span>
+          </a>
+        </div>
+      </section>
+
+      <footer className="footer">
+        <div className="footer-brand">
+          <div className="footer-logo-row">
+            <LogoMark size={40} />
+            <span className="footer-wordmark">
+              RE5<span className="dot">.</span>
+            </span>
+          </div>
+          <div className="footer-tagline">Your work deserves the spotlight.</div>
+        </div>
+        <div className="footer-links mono">
+          <a href="https://www.eventorytt.com" target="_blank" rel="noopener">
+            Eventory
+          </a>
+          <a
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              openModal();
+            }}
+          >
+            Work with RE5
+          </a>
+          <a
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              openModal();
+            }}
+          >
+            Contact
+          </a>
+          <a
+            href="https://www.eventorytt.com"
+            target="_blank"
+            rel="noopener"
+            className="muted"
+          >
+            www.eventorytt.com
+          </a>
+        </div>
+      </footer>
+
+      {modalOpen && (
+        <div className="modal-overlay">
+          <button
+            type="button"
+            className="modal-backdrop-click"
+            aria-label="Close"
+            onClick={closeModal}
+          />
+          <div className="modal-panel">
+            <button type="button" className="modal-close mono" onClick={closeModal}>
+              CLOSE
+            </button>
+
+            {status !== "sent" ? (
+              <div className="modal-body">
+                <div className="modal-head">
+                  <div className="modal-eyebrow mono">Get in the spotlight</div>
+                  <h3 className="modal-heading">Tell us about your business.</h3>
+                </div>
+                <form className="form" onSubmit={submit}>
+                  <label className="form-label mono">
+                    Name
+                    <input type="text" name="name" required placeholder="Your name" />
+                  </label>
+                  <label className="form-label mono">
+                    Business
+                    <input type="text" name="business" placeholder="Business name" />
+                  </label>
+                  <div className="form-row">
+                    <label className="form-label mono">
+                      Email
+                      <input
+                        type="email"
+                        name="email"
+                        required
+                        placeholder="you@business.com"
+                      />
+                    </label>
+                    <label className="form-label mono">
+                      WhatsApp
+                      <input type="tel" name="whatsapp" placeholder="+1 868 000 0000" />
+                    </label>
+                  </div>
+                  <label className="form-label mono">
+                    What do you need?
+                    <textarea
+                      name="message"
+                      rows={3}
+                      placeholder="Social content, photography, website, discovery on Eventory..."
+                    />
+                  </label>
+                  {status === "error" && (
+                    <p className="form-error">{errorMessage}</p>
+                  )}
+                  <button
+                    type="submit"
+                    className="btn-pill btn-submit mono"
+                    disabled={status === "sending"}
+                  >
+                    {status === "sending" ? "Sending..." : "Send it over"}
+                  </button>
+                </form>
+              </div>
+            ) : (
+              <div className="modal-sent">
+                <div className="modal-eyebrow mono">Received</div>
+                <h3 className="modal-heading">Thanks. We&apos;ll be in touch.</h3>
+                <p>
+                  One of the team will reach out shortly to talk through
+                  getting your work seen, found and booked.
+                </p>
+                <button
+                  type="button"
+                  className="btn-pill btn-outline mono"
+                  onClick={closeModal}
+                >
+                  Back to site
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
