@@ -268,7 +268,6 @@ export default function LandingPage() {
               Event businesses have something{" "}
               <span className="accent-strong">worth seeing.</span>
             </h2>
-            <p className="worth-seeing-lede">The work is already there.</p>
             <div className="chip-row">
               <div className="chip">The venue.</div>
               <div className="chip">The setup.</div>
@@ -277,9 +276,11 @@ export default function LandingPage() {
               <div className="chip">The experience.</div>
               <div className="chip">The details people remember.</div>
             </div>
+            <p className="worth-seeing-lede">The work is already there.</p>
             <p className="worth-seeing-closer">
-              <span className="accent-text">RE5</span> puts that work in
-              front of the people looking for it.
+              <span className="accent-text">RE5</span> puts your business in
+              the right places, in front of the people looking for what you
+              do.
             </p>
           </div>
 
@@ -316,9 +317,13 @@ export default function LandingPage() {
           </h2>
           <p className="framework-intro">
             Every business gets a different mix, built around what actually
-            moves the needle for you. Tap what stands out, and we&apos;ll
-            shape the rest together.
+            moves the needle for you.
           </p>
+          <p className="framework-intro">
+            We look at how people discover your business, where they find
+            you, and what happens when they&apos;re ready to enquire.
+          </p>
+          <p className="framework-intro">Then we build from there.</p>
           <div className="framework-grid">
             <div className="framework-card">
               <div className="framework-number mono">01</div>
@@ -327,9 +332,8 @@ export default function LandingPage() {
                 Put your work in front of more people.
               </p>
               <p className="framework-card-body">
-                Social content, photography, videography, email and
-                promotional opportunities built around what your business
-                actually does.
+                Build visibility around what makes your business worth
+                noticing.
               </p>
               <div className="service-chip-row">
                 {FRAMEWORK_SERVICES[0].items.map((label) => (
@@ -350,6 +354,9 @@ export default function LandingPage() {
               <h3>Found</h3>
               <p className="framework-card-lede">
                 Make your business easier to discover.
+              </p>
+              <p className="framework-card-body">
+                People are searching in more places than ever.
               </p>
               <p className="framework-card-body">
                 <a href="#eventory">Eventory</a>, websites, Google, SEO, AI
@@ -373,10 +380,10 @@ export default function LandingPage() {
             <div className="framework-card">
               <div className="framework-number mono">03</div>
               <h3>Booked</h3>
-              <p className="framework-card-lede">Turn attention into action.</p>
+              <p className="framework-card-lede">Turn interest into action.</p>
               <p className="framework-card-body">
-                Create clearer paths from discovery to inquiry, WhatsApp
-                conversations and bookings.
+                Make it easier for people who find you to take the next
+                step.
               </p>
               <div className="service-chip-row">
                 {FRAMEWORK_SERVICES[2].items.map((label) => (
@@ -444,8 +451,8 @@ export default function LandingPage() {
               offer and connect with them.
             </p>
             <p className="eventory-body">
-              For businesses, it&apos;s another place to be seen, found and
-              discovered by people looking for event services.
+              For businesses, it&apos;s another place to be seen and found by
+              people actively looking for event services.
             </p>
             <a
               href="https://www.eventorytt.com"
@@ -544,14 +551,18 @@ export default function LandingPage() {
           <div className="about-copy">
             <h2 className="about-title">Who are we?</h2>
             <p>
-              RE5 is a team of marketers, videographers, photographers, event
-              professionals and creative minds who bring different skills
-              together to put event businesses{" "}
+              RE5 brings together marketers, videographers, photographers,
+              event professionals and creative minds with different skills
+              and one shared focus:
+            </p>
+            <p>
+              Putting event businesses{" "}
               <span className="accent-text">in the spotlight</span>.
             </p>
             <p>
-              We&apos;re here to bring your work to more people, create new
-              opportunities for your business, and help you grow.
+              We bring those skills together to create visibility, improve
+              discoverability and create clearer paths from being found to
+              being booked.
             </p>
           </div>
         </div>
