@@ -437,6 +437,16 @@
   letter-spacing: -0.035em;
 }
 
+.framework-intro {
+  margin: 0;
+  max-width: 620px;
+  font-weight: 300;
+  font-size: clamp(17px, 1.5vw, 21px);
+  line-height: 1.5;
+  color: rgba(244, 239, 232, 0.78);
+  text-wrap: pretty;
+}
+
 .framework-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -488,6 +498,51 @@
 
 .framework-card-body a {
   border-bottom: 1px solid rgba(255, 122, 51, 0.5);
+}
+
+.service-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.service-chip {
+  padding: 9px 15px;
+  border: 1px solid rgba(244, 239, 232, 0.18);
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(244, 239, 232, 0.75);
+  font-family: var(--font-sora), sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.service-chip:hover {
+  border-color: rgba(255, 122, 51, 0.5);
+  color: #f4efe8;
+}
+
+.service-chip.selected {
+  border-color: var(--accent, #ff5a1f);
+  background: rgba(255, 90, 31, 0.14);
+  color: #f4efe8;
+}
+
+.framework-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(14px, 2vw, 24px);
+}
+
+.framework-cta-count {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: rgba(244, 239, 232, 0.55);
 }
 
 .image-grid-4 {

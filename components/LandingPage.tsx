@@ -8,6 +8,32 @@ const MOBILE_BREAKPOINT = 860;
 
 type FormStatus = "idle" | "sending" | "sent" | "error";
 
+const FRAMEWORK_SERVICES: { pillar: string; items: string[] }[] = [
+  {
+    pillar: "Seen",
+    items: [
+      "Social content",
+      "Photography",
+      "Videography",
+      "Email",
+      "Promotional partnerships",
+    ],
+  },
+  {
+    pillar: "Found",
+    items: ["Eventory listing", "Website", "Google & SEO", "AI visibility"],
+  },
+  {
+    pillar: "Booked",
+    items: [
+      "Inquiry funnel setup",
+      "WhatsApp booking setup",
+      "Follow-up systems",
+      "Clear CTAs & booking pages",
+    ],
+  },
+];
+
 function ImageTile({
   src,
   alt,
@@ -38,6 +64,10 @@ export default function LandingPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectedServices, setSelectedServices] = useState<Set<string>>(
+    () => new Set()
+  );
+  const [prefillMessage, setPrefillMessage] = useState("");
 
   useEffect(() => {
     const sync = () => setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
@@ -54,15 +84,30 @@ export default function LandingPage() {
     };
   }, [menuOpen, modalOpen]);
 
-  const openModal = () => {
+  const openModal = (prefill?: string) => {
     setMenuOpen(false);
     setStatus("idle");
     setErrorMessage("");
+    setPrefillMessage(prefill ?? "");
     setModalOpen(true);
   };
   const closeModal = () => setModalOpen(false);
   const toggleMenu = () => setMenuOpen((v) => !v);
   const closeMenu = () => setMenuOpen(false);
+
+  const toggleService = (label: string) => {
+    setSelectedServices((prev) => {
+      const next = new Set(prev);
+      if (next.has(label)) next.delete(label);
+      else next.add(label);
+      return next;
+    });
+  };
+
+  const openModalWithSelection = () => {
+    const items = Array.from(selectedServices);
+    openModal(items.length ? `Interested in: ${items.join(", ")}` : "");
+  };
 
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -269,6 +314,11 @@ export default function LandingPage() {
             <br />
             Framework
           </h2>
+          <p className="framework-intro">
+            Every business gets a different mix, built around what actually
+            moves the needle for you. Tap what stands out, and we&apos;ll
+            shape the rest together.
+          </p>
           <div className="framework-grid">
             <div className="framework-card">
               <div className="framework-number mono">01</div>
@@ -281,6 +331,19 @@ export default function LandingPage() {
                 promotional opportunities built around what your business
                 actually does.
               </p>
+              <div className="service-chip-row">
+                {FRAMEWORK_SERVICES[0].items.map((label) => (
+                  <button
+                    key={label}
+                    type="button"
+                    className={`service-chip${selectedServices.has(label) ? " selected" : ""}`}
+                    aria-pressed={selectedServices.has(label)}
+                    onClick={() => toggleService(label)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
             </div>
             <div className="framework-card">
               <div className="framework-number mono">02</div>
@@ -293,6 +356,19 @@ export default function LandingPage() {
                 and other places people go when they&apos;re looking for
                 event businesses.
               </p>
+              <div className="service-chip-row">
+                {FRAMEWORK_SERVICES[1].items.map((label) => (
+                  <button
+                    key={label}
+                    type="button"
+                    className={`service-chip${selectedServices.has(label) ? " selected" : ""}`}
+                    aria-pressed={selectedServices.has(label)}
+                    onClick={() => toggleService(label)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
             </div>
             <div className="framework-card">
               <div className="framework-number mono">03</div>
@@ -302,7 +378,37 @@ export default function LandingPage() {
                 Create clearer paths from discovery to inquiry, WhatsApp
                 conversations and bookings.
               </p>
+              <div className="service-chip-row">
+                {FRAMEWORK_SERVICES[2].items.map((label) => (
+                  <button
+                    key={label}
+                    type="button"
+                    className={`service-chip${selectedServices.has(label) ? " selected" : ""}`}
+                    aria-pressed={selectedServices.has(label)}
+                    onClick={() => toggleService(label)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
             </div>
+          </div>
+          <div className="framework-cta">
+            <a
+              href="#contact"
+              className="btn-pill btn-primary mono"
+              onClick={(e) => {
+                e.preventDefault();
+                openModalWithSelection();
+              }}
+            >
+              Build this with us <span className="arrow">&#8594;</span>
+            </a>
+            {selectedServices.size > 0 && (
+              <span className="framework-cta-count mono">
+                {selectedServices.size} selected
+              </span>
+            )}
           </div>
           <div className="image-grid-4">
             <ImageTile
@@ -561,9 +667,11 @@ export default function LandingPage() {
                   <label className="form-label mono">
                     What do you need?
                     <textarea
+                      key={prefillMessage}
                       name="message"
                       rows={3}
                       placeholder="Social content, photography, website, discovery on Eventory..."
+                      defaultValue={prefillMessage}
                     />
                   </label>
                   {status === "error" && (
