@@ -83,7 +83,7 @@ const PACKAGES: PackageGroup[] = [
         name: "Starter",
         price: "TTD 1,400/mo",
         value:
-          "You're running your business, not posting about it. RE5 handles 8 to 12 posts a month on one platform, so your feed stays active while you're busy doing the work.",
+          "Running your business already takes everything you have. RE5 handles 8 to 12 posts a month on one platform, keeping your feed active while you focus on the work.",
         features: [
           "8-12 posts per month",
           "One platform (Instagram or Facebook)",
@@ -316,16 +316,21 @@ export default function LandingPage() {
                 <span className="accent-text">find it</span>, and{" "}
                 <span className="accent-text">book it</span>.
               </p>
-              <a
-                href="#contact"
-                className="btn-pill btn-primary mono"
-                onClick={(e) => {
-                  e.preventDefault();
-                  openModal();
-                }}
-              >
-                Get in the spotlight <span className="arrow">&#8594;</span>
-              </a>
+              <div className="hero-cta-row">
+                <a
+                  href="#contact"
+                  className="btn-pill btn-primary mono"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openModal();
+                  }}
+                >
+                  Get in the spotlight <span className="arrow">&#8594;</span>
+                </a>
+                <a href="#packages" className="hero-secondary-cta mono">
+                  See packages <span className="arrow">&#8594;</span>
+                </a>
+              </div>
             </div>
           </div>
 
@@ -518,7 +523,7 @@ export default function LandingPage() {
           <div className="packages-eyebrow mono">Packages</div>
           <h2 className="packages-title">Real work, real prices.</h2>
           <p className="packages-intro">
-            No guessing games. Here&apos;s exactly what you get.
+            Straightforward pricing on real deliverables.
           </p>
           {PACKAGES.map((group) => (
             <div className="package-group" key={group.group}>
@@ -548,7 +553,7 @@ export default function LandingPage() {
                         );
                       }}
                     >
-                      Get this package
+                      Ask about this package
                     </a>
                   </div>
                 ))}

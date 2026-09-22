@@ -295,6 +295,28 @@
   color: #ff8a3d;
 }
 
+.hero-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 28px);
+}
+
+.hero-secondary-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(244, 239, 232, 0.6);
+  transition: color 0.15s;
+}
+
+.hero-secondary-cta:hover {
+  color: #ff7a33;
+}
+
 .hero-strip {
   margin-top: clamp(48px, 7vh, 88px);
   padding-top: 24px;
