@@ -8,32 +8,6 @@ const MOBILE_BREAKPOINT = 860;
 
 type FormStatus = "idle" | "sending" | "sent" | "error";
 
-const FRAMEWORK_SERVICES: { pillar: string; items: string[] }[] = [
-  {
-    pillar: "Seen",
-    items: [
-      "Social content",
-      "Photography",
-      "Videography",
-      "Email",
-      "Promotional partnerships",
-    ],
-  },
-  {
-    pillar: "Found",
-    items: ["Eventory listing", "Website", "Google & SEO", "AI visibility"],
-  },
-  {
-    pillar: "Booked",
-    items: [
-      "Inquiry funnel setup",
-      "WhatsApp booking setup",
-      "Follow-up systems",
-      "Clear CTAs & booking pages",
-    ],
-  },
-];
-
 type PackageTier = {
   name: string;
   price: string;
@@ -137,9 +111,6 @@ export default function LandingPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
-  const [selectedServices, setSelectedServices] = useState<Set<string>>(
-    () => new Set()
-  );
   const [prefillMessage, setPrefillMessage] = useState("");
 
   useEffect(() => {
@@ -167,20 +138,6 @@ export default function LandingPage() {
   const closeModal = () => setModalOpen(false);
   const toggleMenu = () => setMenuOpen((v) => !v);
   const closeMenu = () => setMenuOpen(false);
-
-  const toggleService = (label: string) => {
-    setSelectedServices((prev) => {
-      const next = new Set(prev);
-      if (next.has(label)) next.delete(label);
-      else next.add(label);
-      return next;
-    });
-  };
-
-  const openModalWithSelection = () => {
-    const items = Array.from(selectedServices);
-    openModal(items.length ? `Interested in: ${items.join(", ")}` : "");
-  };
 
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -417,19 +374,6 @@ export default function LandingPage() {
                 Build visibility around what makes your business worth
                 noticing.
               </p>
-              <div className="service-chip-row">
-                {FRAMEWORK_SERVICES[0].items.map((label) => (
-                  <button
-                    key={label}
-                    type="button"
-                    className={`service-chip${selectedServices.has(label) ? " selected" : ""}`}
-                    aria-pressed={selectedServices.has(label)}
-                    onClick={() => toggleService(label)}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
             </div>
             <div className="framework-card">
               <div className="framework-number mono">02</div>
@@ -445,19 +389,6 @@ export default function LandingPage() {
                 and other places people go when they&apos;re looking for
                 event businesses.
               </p>
-              <div className="service-chip-row">
-                {FRAMEWORK_SERVICES[1].items.map((label) => (
-                  <button
-                    key={label}
-                    type="button"
-                    className={`service-chip${selectedServices.has(label) ? " selected" : ""}`}
-                    aria-pressed={selectedServices.has(label)}
-                    onClick={() => toggleService(label)}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
             </div>
             <div className="framework-card">
               <div className="framework-number mono">03</div>
@@ -467,19 +398,6 @@ export default function LandingPage() {
                 Make it easier for people who find you to take the next
                 step.
               </p>
-              <div className="service-chip-row">
-                {FRAMEWORK_SERVICES[2].items.map((label) => (
-                  <button
-                    key={label}
-                    type="button"
-                    className={`service-chip${selectedServices.has(label) ? " selected" : ""}`}
-                    aria-pressed={selectedServices.has(label)}
-                    onClick={() => toggleService(label)}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
             </div>
           </div>
           <div className="framework-cta">
@@ -488,16 +406,11 @@ export default function LandingPage() {
               className="btn-pill btn-primary mono"
               onClick={(e) => {
                 e.preventDefault();
-                openModalWithSelection();
+                openModal();
               }}
             >
               Build this with us <span className="arrow">&#8594;</span>
             </a>
-            {selectedServices.size > 0 && (
-              <span className="framework-cta-count mono">
-                {selectedServices.size} selected
-              </span>
-            )}
           </div>
           <div className="image-grid-4">
             <ImageTile
@@ -526,8 +439,11 @@ export default function LandingPage() {
             Photography, video, and consistent social content, handled for
             you.
           </p>
-          {PACKAGES.map((group) => (
+          {PACKAGES.map((group, index) => (
             <div className="package-group" key={group.group}>
+              <div className="package-group-number mono">
+                {String(index + 1).padStart(2, "0")}
+              </div>
               <h3 className="package-group-title">{group.group}</h3>
               <div className="package-grid">
                 {group.tiers.map((tier) => (
