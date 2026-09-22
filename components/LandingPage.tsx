@@ -34,6 +34,79 @@ const FRAMEWORK_SERVICES: { pillar: string; items: string[] }[] = [
   },
 ];
 
+type PackageTier = {
+  name: string;
+  price: string;
+  value: string;
+  features: string[];
+};
+
+type PackageGroup = {
+  group: string;
+  tiers: PackageTier[];
+};
+
+const PACKAGES: PackageGroup[] = [
+  {
+    group: "Content Day",
+    tiers: [
+      {
+        name: "Half day",
+        price: "TTD 3,500",
+        value:
+          "You've been posting the same three photos for months. One afternoon of shooting gets you 15 to 20 new photos and a short video, enough content to post for weeks without picking up a camera again.",
+        features: [
+          "Up to 4 hours of on-site shooting",
+          "15-20 edited photos",
+          "One short video (reel-length)",
+          "Delivered in 3-5 business days",
+        ],
+      },
+      {
+        name: "Full day",
+        price: "TTD 8,000",
+        value:
+          "A full season's worth of content in one day: 30+ photos and a longer video, shot once and used for months.",
+        features: [
+          "Up to 8 hours of on-site shooting",
+          "30+ edited photos",
+          "One longer video (highlight-length)",
+          "Delivered in 3-5 business days",
+        ],
+      },
+    ],
+  },
+  {
+    group: "Social Content Management",
+    tiers: [
+      {
+        name: "Starter",
+        price: "TTD 1,400/mo",
+        value:
+          "You're running your business, not posting about it. RE5 handles 8 to 12 posts a month on one platform, so your feed stays active while you're busy doing the work.",
+        features: [
+          "8-12 posts per month",
+          "One platform (Instagram or Facebook)",
+          "Content planned and scheduled by RE5",
+          "Captions written for every post",
+        ],
+      },
+      {
+        name: "Full",
+        price: "TTD 2,800/mo",
+        value:
+          "For vendors who need to show up everywhere their customers are looking: 16+ posts a month across multiple platforms.",
+        features: [
+          "16+ posts per month",
+          "Multiple platforms (Instagram + Facebook, or add TikTok)",
+          "Content planned and scheduled by RE5",
+          "Captions written for every post",
+        ],
+      },
+    ],
+  },
+];
+
 function ImageTile({
   src,
   alt,
@@ -148,6 +221,7 @@ export default function LandingPage() {
         {!isMobile && (
           <div className="nav-links mono">
             <a href="#framework">Framework</a>
+            <a href="#packages">Packages</a>
             <a href="#eventory">Eventory</a>
             <a href="#about">Who we are</a>
             <a
@@ -196,6 +270,9 @@ export default function LandingPage() {
           <div className="mobile-menu-links">
             <a href="#framework" onClick={closeMenu}>
               Framework
+            </a>
+            <a href="#packages" onClick={closeMenu}>
+              Packages
             </a>
             <a href="#eventory" onClick={closeMenu}>
               Eventory
@@ -432,6 +509,52 @@ export default function LandingPage() {
               alt="Branded event signage with florals"
             />
           </div>
+        </div>
+      </section>
+
+      {/* PACKAGES */}
+      <section id="packages" className="section packages-section">
+        <div className="section-inner packages-inner">
+          <div className="packages-eyebrow mono">Packages</div>
+          <h2 className="packages-title">Real work, real prices.</h2>
+          <p className="packages-intro">
+            No guessing games. Here&apos;s exactly what you get.
+          </p>
+          {PACKAGES.map((group) => (
+            <div className="package-group" key={group.group}>
+              <h3 className="package-group-title">{group.group}</h3>
+              <div className="package-grid">
+                {group.tiers.map((tier) => (
+                  <div className="package-card" key={tier.name}>
+                    <div className="package-card-head">
+                      <h4 className="package-card-name">{tier.name}</h4>
+                      <div className="package-card-price mono">
+                        {tier.price}
+                      </div>
+                    </div>
+                    <p className="package-card-value">{tier.value}</p>
+                    <ul className="package-card-features">
+                      {tier.features.map((feature) => (
+                        <li key={feature}>{feature}</li>
+                      ))}
+                    </ul>
+                    <a
+                      href="#contact"
+                      className="btn-pill btn-outline mono"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        openModal(
+                          `Interested in: ${group.group} (${tier.name})`
+                        );
+                      }}
+                    >
+                      Get this package
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
