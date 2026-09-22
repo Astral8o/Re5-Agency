@@ -521,9 +521,10 @@ export default function LandingPage() {
       <section id="packages" className="section packages-section">
         <div className="section-inner packages-inner">
           <div className="packages-eyebrow mono">Packages</div>
-          <h2 className="packages-title">Real work, real prices.</h2>
+          <h2 className="packages-title">Everything you need to get seen.</h2>
           <p className="packages-intro">
-            Straightforward pricing on real deliverables.
+            Photography, video, and consistent social content, handled for
+            you.
           </p>
           {PACKAGES.map((group) => (
             <div className="package-group" key={group.group}>
