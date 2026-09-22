@@ -28,7 +28,7 @@ const PACKAGES: PackageGroup[] = [
         name: "Half day",
         price: "TTD 3,500",
         value:
-          "You've been posting the same three photos for months. One afternoon of shooting gets you 15 to 20 new photos and a short video, enough content to post for weeks without picking up a camera again.",
+          "One afternoon of shooting gets you 15 to 20 new photos and a short video, enough content to post for weeks without picking up a camera again.",
         features: [
           "Up to 4 hours of on-site shooting",
           "15-20 edited photos",
