@@ -593,6 +593,7 @@
   font-size: clamp(24px, 2.4vw, 32px);
   letter-spacing: -0.01em;
   padding-bottom: 16px;
+  color: var(--accent, #ff5a1f);
   border-bottom: 1px solid rgba(244, 239, 232, 0.12);
 }
 

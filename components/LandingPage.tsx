@@ -28,9 +28,9 @@ const PACKAGES: PackageGroup[] = [
         name: "Essentials",
         price: "TTD 3,500",
         value:
-          "One afternoon of shooting gets you 15 to 20 new photos and a short video, enough content to post for weeks without picking up a camera again.",
+          "One shoot gets you 15 to 20 new photos and a short video, enough content to post for weeks without picking up a camera again.",
         features: [
-          "2-4 hours of on-site shooting",
+          "On-site content shoot",
           "15-20 edited photos",
           "One short video (reel-length)",
           "Delivered in 3-5 business days",
@@ -42,7 +42,7 @@ const PACKAGES: PackageGroup[] = [
         value:
           "A full season's worth of content in one day: 30+ photos and a longer video, shot once and used for months.",
         features: [
-          "5-8 hours of on-site shooting",
+          "On-site content shoot",
           "30+ edited photos",
           "One longer video (highlight-length)",
           "Delivered in 3-5 business days",
