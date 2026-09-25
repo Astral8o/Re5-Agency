@@ -541,7 +541,10 @@ export default function LandingPage() {
               <ul className="momentum-feature-list">
                 {MOMENTUM_FEATURES.map((item) => (
                   <li key={item.label}>
-                    <strong>{item.label}:</strong> {item.body}
+                    <details className="momentum-feature-item">
+                      <summary>{item.label}</summary>
+                      <p>{item.body}</p>
+                    </details>
                   </li>
                 ))}
               </ul>

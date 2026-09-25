@@ -790,15 +790,49 @@
 .momentum-feature-list li {
   padding-left: 14px;
   border-left: 2px solid rgba(255, 122, 51, 0.4);
+}
+
+.momentum-feature-item {
+  padding: 2px 0;
+}
+
+.momentum-feature-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #f4efe8;
+  cursor: pointer;
+  list-style: none;
+}
+
+.momentum-feature-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.momentum-feature-item summary::after {
+  content: "+";
+  flex-shrink: 0;
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--accent, #ff5a1f);
+  transition: transform 0.15s;
+}
+
+.momentum-feature-item[open] summary::after {
+  content: "\2212";
+}
+
+.momentum-feature-item p {
+  margin: 6px 0 4px;
   font-weight: 300;
   font-size: 14px;
   line-height: 1.6;
-  color: rgba(244, 239, 232, 0.85);
-}
-
-.momentum-feature-list li strong {
-  font-weight: 600;
-  color: #f4efe8;
+  color: rgba(244, 239, 232, 0.7);
 }
 
 .momentum-feature-footer {
