@@ -520,6 +520,10 @@ export default function LandingPage() {
               <h3 className="momentum-feature-title">RE5 Momentum</h3>
               <div className="momentum-feature-price mono">TTD 3,500/mo</div>
             </div>
+            <p className="momentum-feature-role">
+              Your customer relationship manager, sales support and
+              marketing assistant, all in one.
+            </p>
             <p className="momentum-feature-tagline">
               Keep up with the people who matter to your business.
             </p>
