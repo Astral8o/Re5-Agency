@@ -17,103 +17,117 @@ type PackageTier = {
 
 type PackageGroup = {
   group: string;
+  intro: string[];
   tiers: PackageTier[];
 };
 
 const PACKAGES: PackageGroup[] = [
   {
     group: "Content Day",
+    intro: [
+      "Create a library of photography and video around the work you are already doing.",
+    ],
     tiers: [
       {
         name: "Essentials",
         price: "TTD 3,500",
         value:
-          "One shoot gets you 15 to 20 new photos and a short video, enough content to post for weeks without picking up a camera again.",
+          "One shoot gives you fresh content to use across your social media, website, Eventory profile and marketing.",
         features: [
           "On-site content shoot",
-          "15-20 edited photos",
-          "One short video (reel-length)",
-          "Delivered in 3-5 business days",
+          "15 to 20 edited photos",
+          "One short-form video",
+          "Delivered in 3 to 5 business days",
         ],
       },
       {
         name: "Signature",
         price: "TTD 8,000",
         value:
-          "A full season's worth of content in one day: 30+ photos and a longer video, shot once and used for months.",
+          "A larger content library built around your work, your style and the experience you create.",
         features: [
           "On-site content shoot",
           "30+ edited photos",
-          "One longer video (highlight-length)",
-          "Delivered in 3-5 business days",
+          "One longer highlight video",
+          "Delivered in 3 to 5 business days",
         ],
       },
     ],
   },
   {
     group: "Social Content Management",
+    intro: [
+      "Keep telling your story after the shoot is over.",
+      "RE5 plans, writes and schedules your content so your business keeps showing up and giving people more chances to remember you.",
+    ],
     tiers: [
       {
         name: "Starter",
-        price: "TTD 1,400/mo",
-        value:
-          "Running your business already takes everything you have. RE5 handles 8 to 12 posts a month on one platform, keeping your feed active while you focus on the work.",
+        price: "TTD 1,400/month",
+        value: "A consistent presence on one platform.",
         features: [
-          "8-12 posts per month",
-          "One platform (Instagram or Facebook)",
-          "Content planned and scheduled by RE5",
+          "8 to 12 posts per month",
+          "Instagram or Facebook",
+          "Content planned by RE5",
           "Captions written for every post",
+          "Posts scheduled by RE5",
         ],
       },
       {
         name: "Full",
-        price: "TTD 2,800/mo",
+        price: "TTD 2,800/month",
         value:
-          "For vendors who need to show up everywhere their customers are looking: 16+ posts a month across multiple platforms.",
+          "More content across more of the places your audience spends their time.",
         features: [
           "16+ posts per month",
-          "Multiple platforms (Instagram + Facebook, or add TikTok)",
-          "Content planned and scheduled by RE5",
+          "Multiple platforms",
+          "Instagram and Facebook, with TikTok available",
+          "Content planned by RE5",
           "Captions written for every post",
+          "Posts scheduled by RE5",
         ],
       },
     ],
   },
 ];
 
-const MOMENTUM_FEATURES: { label: string; body: string }[] = [
+const MOMENTUM_BLOCKS: { title: string; body: string }[] = [
   {
-    label: "Customer information & history",
-    body: "Keep important customer details and past interactions in one place.",
+    title: "Keep your customer information together.",
+    body: "See customer details, conversations and history in one place.",
   },
   {
-    label: "Follow-ups & reminders",
-    body: "Know who you need to get back to and when.",
+    title: "Know who needs your attention.",
+    body: "Keep track of enquiries, follow-ups and opportunities as they move.",
   },
   {
-    label: "Customer organization",
-    body: "Easily organize and understand the people you do business with.",
+    title: "Stay connected.",
+    body: "Use reminders and workflows to keep important conversations going.",
   },
   {
-    label: "AI-powered customer insights",
-    body: "Surface useful information and opportunities from your customer data.",
+    title: "Reconnect with past customers.",
+    body: "Bring previous customers and older enquiries back into view when there is an opportunity to reach out again.",
   },
   {
-    label: "Re-engagement",
-    body: "Identify opportunities to reconnect with people you've done business with before.",
+    title: "Understand what is happening in your business.",
+    body: "Use AI-assisted customer insights to get more context around your customers, conversations and opportunities.",
   },
   {
-    label: "Automated workflows",
-    body: "Let routine customer tasks happen automatically.",
+    title: "Keep the system running.",
+    body: "RE5 helps manage the workflows, communication and structure behind Momentum.",
   },
-  {
-    label: "Marketing & communication tools",
-    body: "Stay connected with customers through organized, targeted communication.",
-  },
-  {
-    label: "Ongoing system management",
-    body: "RE5 keeps the system configured, maintained and working for your business.",
-  },
+];
+
+const MOMENTUM_INCLUDED: string[] = [
+  "Customer information and history",
+  "Enquiry and lead organization",
+  "Follow-ups and reminders",
+  "Customer organization",
+  "AI-powered customer insights",
+  "Customer re-engagement",
+  "Automated workflows",
+  "Marketing and communication tools",
+  "Ongoing system management",
 ];
 
 function ImageTile({
@@ -212,10 +226,10 @@ export default function LandingPage() {
 
         {!isMobile && (
           <div className="nav-links mono">
-            <a href="#framework">Framework</a>
-            <a href="#packages">Packages</a>
+            <a href="#how-it-works">How RE5 Works</a>
             <a href="#eventory">Eventory</a>
-            <a href="#about">Who we are</a>
+            <a href="#momentum">Momentum</a>
+            <a href="#about">Who We Are</a>
             <a
               href="#contact"
               className="nav-contact-btn mono"
@@ -260,17 +274,17 @@ export default function LandingPage() {
             </button>
           </div>
           <div className="mobile-menu-links">
-            <a href="#framework" onClick={closeMenu}>
-              Framework
-            </a>
-            <a href="#packages" onClick={closeMenu}>
-              Packages
+            <a href="#how-it-works" onClick={closeMenu}>
+              How RE5 Works
             </a>
             <a href="#eventory" onClick={closeMenu}>
               Eventory
             </a>
+            <a href="#momentum" onClick={closeMenu}>
+              Momentum
+            </a>
             <a href="#about" onClick={closeMenu}>
-              Who we are
+              Who We Are
             </a>
           </div>
           <a
@@ -281,7 +295,7 @@ export default function LandingPage() {
               openModal();
             }}
           >
-            Get in the spotlight <span className="arrow">&#8594;</span>
+            Get in the Spotlight <span className="arrow">&#8594;</span>
           </a>
         </div>
       )}
@@ -303,10 +317,11 @@ export default function LandingPage() {
             </h1>
             <div className="hero-sub-row">
               <p className="hero-copy">
-                We put your business where people can{" "}
-                <span className="accent-text">see it</span>,{" "}
-                <span className="accent-text">find it</span>, and{" "}
-                <span className="accent-text">book it</span>.
+                RE5 is built for event businesses in{" "}
+                <span className="accent-text">Trinidad &amp; Tobago</span>.
+                We help you tell your unique story through content, get
+                discovered by people actively planning events, and turn
+                enquiries into real opportunities.
               </p>
               <div className="hero-cta-row">
                 <a
@@ -317,10 +332,10 @@ export default function LandingPage() {
                     openModal();
                   }}
                 >
-                  Get in the spotlight <span className="arrow">&#8594;</span>
+                  Get in the Spotlight <span className="arrow">&#8594;</span>
                 </a>
-                <a href="#packages" className="hero-secondary-cta mono">
-                  See packages <span className="arrow">&#8594;</span>
+                <a href="#how-it-works" className="hero-secondary-cta mono">
+                  See How RE5 Works <span className="arrow">&#8594;</span>
                 </a>
               </div>
             </div>
@@ -352,9 +367,9 @@ export default function LandingPage() {
             </div>
             <p className="worth-seeing-lede">The work is already there.</p>
             <p className="worth-seeing-closer">
-              <span className="accent-text">RE5</span> puts your business in
-              the right places, in front of the people looking for what you
-              do.
+              <span className="accent-text">RE5</span> helps you show people
+              what makes your business yours and puts that story in front of
+              the people looking for what you do.
             </p>
           </div>
 
@@ -380,106 +395,61 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* FRAMEWORK */}
-      <section id="framework" className="section framework-section">
-        <div className="framework-glow" />
-        <div className="framework-inner">
-          <h2 className="framework-title">
-            The Spotlight
-            <br />
-            Framework
-          </h2>
-          <p className="framework-intro">
-            Every business gets a different mix, built around what actually
-            moves the needle for you.
+      {/* HOW RE5 WORKS */}
+      <section id="how-it-works" className="section how-it-works-section">
+        <div className="how-it-works-glow" />
+        <div className="section-inner how-it-works-inner">
+          <div className="section-eyebrow mono">How RE5 Works</div>
+          <h2 className="section-headline">Seen. Found. Booked.</h2>
+          <p className="how-it-works-body">
+            We created the Spotlight Framework around the three moments that
+            matter most in marketing an event business.
           </p>
-          <p className="framework-intro">
-            We look at how people discover your business, where they find
-            you, and what happens when they&apos;re ready to enquire.
+          <p className="how-it-works-body">
+            People need to see your work, find you when they start planning,
+            and understand enough about your business to know when you are
+            exactly what they need.
           </p>
-          <p className="framework-intro">Then we build from there.</p>
-          <div className="framework-grid">
-            <div className="framework-card">
-              <div className="framework-number mono">01</div>
-              <h3>Seen</h3>
-              <p className="framework-card-lede">
-                Put your work in front of more people.
-              </p>
-              <p className="framework-card-body">
-                Build visibility around what makes your business worth
-                noticing.
-              </p>
-            </div>
-            <div className="framework-card">
-              <div className="framework-number mono">02</div>
-              <h3>Found</h3>
-              <p className="framework-card-lede">
-                Make your business easier to discover.
-              </p>
-              <p className="framework-card-body">
-                People are searching in more places than ever.
-              </p>
-              <p className="framework-card-body">
-                <a href="#eventory">Eventory</a>, websites, Google, SEO, AI
-                and other places people go when they&apos;re looking for
-                event businesses.
-              </p>
-            </div>
-            <div className="framework-card">
-              <div className="framework-number mono">03</div>
-              <h3>Booked</h3>
-              <p className="framework-card-lede">Turn interest into action.</p>
-              <p className="framework-card-body">
-                Make it easier for people who find you to take the next
-                step.
-              </p>
-            </div>
-          </div>
-          <div className="framework-cta">
-            <a
-              href="#contact"
-              className="btn-pill btn-primary mono"
-              onClick={(e) => {
-                e.preventDefault();
-                openModal();
-              }}
-            >
-              Build this with us <span className="arrow">&#8594;</span>
-            </a>
-          </div>
-          <div className="image-grid-4">
-            <ImageTile
-              src="/images/videographers.jpg"
-              alt="Videography team at a wedding"
-            />
-            <ImageTile
-              src="/images/photographer.jpg"
-              alt="Videographer filming a couple"
-            />
-            <ImageTile src="/images/conference-stage.jpg" alt="Conference stage set" />
-            <ImageTile
-              src="/images/event-signage.jpg"
-              alt="Branded event signage with florals"
-            />
-          </div>
+          <p className="how-it-works-body">
+            Everything RE5 offers connects back to one of those moments.
+          </p>
         </div>
       </section>
 
-      {/* PACKAGES */}
-      <section id="packages" className="section packages-section">
-        <div className="section-inner packages-inner">
-          <div className="packages-eyebrow mono">Packages</div>
-          <h2 className="packages-title">Everything you need to get seen.</h2>
-          <p className="packages-intro">
-            Photography, video, and consistent social content, handled for
-            you.
+      {/* PILLAR 01: SEEN */}
+      <section id="seen" className="section pillar-section">
+        <div className="pillar-glow" />
+        <div className="section-inner pillar-inner">
+          <div className="pillar-eyebrow mono">01 &#183; Seen</div>
+          <h2 className="pillar-headline">
+            Your work is great. Now it is time for more people to see it.
+          </h2>
+          <p className="pillar-body">
+            RE5 helps you tell your unique story through photography, video
+            and consistent social content that shows people what makes your
+            business yours.
           </p>
+          <p className="pillar-stat">
+            Short-form video continues to rank among the
+            strongest-performing content formats for marketers, which makes
+            visual storytelling even more valuable for businesses built
+            around experiences.
+          </p>
+          <p className="pillar-source mono">
+            Source: HubSpot, State of Marketing
+          </p>
+
           {PACKAGES.map((group, index) => (
             <div className="package-group" key={group.group}>
               <div className="package-group-number mono">
                 {String(index + 1).padStart(2, "0")}
               </div>
               <h3 className="package-group-title">{group.group}</h3>
+              {group.intro.map((paragraph) => (
+                <p className="package-group-intro" key={paragraph}>
+                  {paragraph}
+                </p>
+              ))}
               <div className="package-grid">
                 {group.tiers.map((tier) => (
                   <div className="package-card" key={tier.name}>
@@ -505,62 +475,244 @@ export default function LandingPage() {
                         );
                       }}
                     >
-                      Ask about this package
+                      Ask About This Package{" "}
+                      <span className="arrow">&#8594;</span>
                     </a>
                   </div>
                 ))}
               </div>
             </div>
           ))}
+        </div>
+      </section>
 
-          <div className="momentum-feature">
+      {/* PILLAR 02: FOUND */}
+      <section id="found" className="section pillar-section">
+        <div className="pillar-glow" />
+        <div className="section-inner pillar-inner">
+          <div className="pillar-eyebrow mono">02 &#183; Found</div>
+          <h2 className="pillar-headline">
+            Being found in all the noise online is getting harder.
+          </h2>
+          <p className="pillar-body">
+            People are searching across Google, social media, websites,
+            directories and AI. That gives your business more places to be
+            discovered, but also more places to get lost.
+          </p>
+          <p className="pillar-stat">
+            Google says businesses with complete and accurate information are
+            more likely to appear in relevant local search results.
+          </p>
+          <p className="pillar-transition">
+            We built Eventory around that shift.
+          </p>
+          <p className="pillar-source mono">Source: Google Business Profile</p>
+
+          <div className="eventory-card-wrap">
+            <div id="eventory" className="eventory-inner">
+              <div className="eventory-copy">
+                <div className="eventory-eyebrow mono">Meet Eventory.</div>
+                <h3 className="eventory-title">
+                  Built for people planning events.
+                </h3>
+                <div className="eventory-search-list">
+                  <p>Someone is looking for a venue.</p>
+                  <p>A photographer.</p>
+                  <p>A caterer.</p>
+                  <p>Lighting.</p>
+                  <p>D&#233;cor.</p>
+                  <p>Entertainment.</p>
+                  <p>Rentals.</p>
+                  <p className="eventory-search-list-close">
+                    The people who can bring their event together.
+                  </p>
+                </div>
+                <p className="eventory-body">
+                  Eventory gives them one place to discover event
+                  businesses, explore what they offer and enquire directly.
+                </p>
+                <p className="eventory-body">
+                  Built by RE5 for the event industry in Trinidad &amp;
+                  Tobago, Eventory gives your business another place to be
+                  found while someone is actively looking for what you do.
+                </p>
+                <a
+                  href="https://www.eventorytt.com"
+                  target="_blank"
+                  rel="noopener"
+                  className="btn-pill btn-outline-light mono"
+                >
+                  Explore Eventory <span className="arrow">&#8594;</span>
+                </a>
+              </div>
+
+              <div className="eventory-card-col">
+                <div className="eventory-card-label mono">
+                  <span className="rule" />A profile on Eventory
+                </div>
+                <div className="profile-card">
+                  <div className="profile-card-cover">
+                    <img
+                      src="/images/videographers.jpg"
+                      alt="Videography team"
+                      style={{ objectPosition: "center 22%" }}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <div className="profile-card-tag mono">
+                      Photo &amp; Video
+                    </div>
+                  </div>
+                  <div className="profile-card-body">
+                    <div className="profile-card-head">
+                      <div className="profile-card-name-col">
+                        <div className="profile-card-name">
+                          Amberline Studio
+                        </div>
+                        <div className="profile-card-location mono">
+                          Port of Spain &#183; Nationwide
+                        </div>
+                      </div>
+                      <div className="profile-card-status">
+                        <span className="profile-card-status-dot" />
+                        <span className="label mono">Taking bookings</span>
+                      </div>
+                    </div>
+                    <p className="profile-card-desc">
+                      Wedding and corporate coverage. Two shooters,
+                      same-week highlight edits and full gallery delivery.
+                    </p>
+                    <div className="profile-card-tags">
+                      <span className="profile-card-tag-chip">Weddings</span>
+                      <span className="profile-card-tag-chip">
+                        Corporate
+                      </span>
+                      <span className="profile-card-tag-chip">
+                        Content Days
+                      </span>
+                    </div>
+                    <div className="profile-card-thumbs">
+                      <div className="profile-card-thumb">
+                        <img
+                          src="/images/photographer.jpg"
+                          alt="Portrait shoot"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </div>
+                      <div className="profile-card-thumb">
+                        <img
+                          src="/images/getting-ready.jpg"
+                          alt="Getting ready"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </div>
+                      <div className="profile-card-thumb">
+                        <img
+                          src="/images/stage-production.jpg"
+                          alt="Stage production"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </div>
+                    </div>
+                    <div className="profile-card-actions">
+                      <span className="profile-card-message mono">
+                        Message
+                      </span>
+                      <span className="profile-card-save mono">Save</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PILLAR 03: BOOKED */}
+      <section id="booked" className="section pillar-section">
+        <div className="pillar-glow" />
+        <div className="section-inner pillar-inner">
+          <div className="pillar-eyebrow mono">03 &#183; Booked</div>
+          <h2 className="pillar-headline">
+            Being booked starts with someone thinking, &#8220;Yes. This is
+            exactly what I need.&#8221;
+          </h2>
+          <p className="pillar-body">
+            People choose businesses when they understand the story behind
+            the work, connect with what they see and recognize that the
+            experience you create is right for them.
+          </p>
+          <p className="pillar-transition">Then the enquiry comes in.</p>
+          <p className="pillar-transition">
+            That conversation becomes part of the experience too.
+          </p>
+          <p className="pillar-stat">
+            Salesforce research found that 80% of customers consider the
+            experience a company provides as important as its products and
+            services.
+          </p>
+          <p className="pillar-transition">
+            RE5 helps you keep that conversation moving.
+          </p>
+          <p className="pillar-source mono">Source: Salesforce</p>
+
+          <div id="momentum" className="momentum-feature">
             <div className="momentum-feature-glow" />
             <div className="momentum-feature-eyebrow mono">Featured</div>
             <div className="momentum-feature-head">
               <h3 className="momentum-feature-title">RE5 Momentum</h3>
-              <div className="momentum-feature-price mono">TTD 3,500/mo</div>
+              <div className="momentum-feature-price mono">
+                TTD 3,500/month
+              </div>
             </div>
             <p className="momentum-feature-role">
-              Your customer relationship manager, sales support and
-              marketing assistant, all in one.
+              Your customer relationship team, sales support and marketing
+              assistant, all in one.
             </p>
-            <p className="momentum-feature-tagline">
-              Keep up with the people who matter to your business.
-            </p>
-            <div className="momentum-feature-copy">
-              <p>
-                Running a business means juggling customers, conversations
-                and everything else that needs your attention.
-              </p>
-              <p>
-                RE5 Momentum brings it all together, helping you stay
-                organized, keep up with customers, follow up and uncover
-                opportunities to grow your business.
-              </p>
+
+            <div className="momentum-scenario-list">
+              <p>Someone enquires.</p>
+              <p>Another person asks about a date.</p>
+              <p>A customer says they will get back to you.</p>
+              <p>Someone needs a follow-up next week.</p>
+              <p>A past customer could be ready to book again.</p>
             </div>
+            <p className="momentum-feature-lede">
+              Momentum brings those conversations, customers and
+              opportunities together so you can keep up with the people
+              already showing interest in your business.
+            </p>
+
+            <div className="momentum-blocks">
+              {MOMENTUM_BLOCKS.map((block) => (
+                <div className="momentum-block" key={block.title}>
+                  <h4>{block.title}</h4>
+                  <p>{block.body}</p>
+                </div>
+              ))}
+            </div>
+
             <div className="momentum-feature-included">
               <h4 className="momentum-feature-included-title mono">
                 What&apos;s included
               </h4>
-              <ul className="momentum-feature-list">
-                {MOMENTUM_FEATURES.map((item) => (
-                  <li key={item.label}>
-                    <details className="momentum-feature-item">
-                      <summary>{item.label}</summary>
-                      <p>{item.body}</p>
-                    </details>
-                  </li>
+              <ul className="momentum-checklist">
+                {MOMENTUM_INCLUDED.map((item) => (
+                  <li key={item}>{item}</li>
                 ))}
               </ul>
             </div>
+
             <div className="momentum-feature-footer">
               <div className="momentum-feature-footer-copy">
                 <p className="momentum-feature-question">
-                  Ready to see what Momentum could do for your business?
+                  A lot happens between an enquiry and a booking.
                 </p>
                 <p className="momentum-feature-subline">
-                  Book a consultation with RE5 and let&apos;s talk about how
-                  we can set it up for you.
+                  Momentum helps you keep up with it.
                 </p>
               </div>
               <a
@@ -571,112 +723,46 @@ export default function LandingPage() {
                   openModal("Interested in: RE5 Momentum");
                 }}
               >
-                Book a Consultation
+                Book a Momentum Consultation{" "}
+                <span className="arrow">&#8594;</span>
               </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* EVENTORY */}
-      <section id="eventory" className="section eventory-section">
-        <div className="eventory-glow" />
-        <div className="eventory-inner">
-          <div className="eventory-copy">
-            <div className="eventory-eyebrow mono">Eventory</div>
-            <h2 className="eventory-title">Discover what&apos;s next.</h2>
-            <p className="eventory-lede">
-              Eventory is RE5&apos;s discovery platform for event businesses.
-            </p>
-            <p className="eventory-body">
-              It brings event vendors and suppliers into one place, giving
-              people a simpler way to discover businesses, explore what they
-              offer and connect with them.
-            </p>
-            <p className="eventory-body">
-              For businesses, it&apos;s another place to be seen and found by
-              people actively looking for event services.
-            </p>
-            <a
-              href="https://www.eventorytt.com"
-              target="_blank"
-              rel="noopener"
-              className="btn-pill btn-outline-light mono"
-            >
-              Explore Eventory <span className="arrow">&#8594;</span>
-            </a>
-          </div>
-
-          <div className="eventory-card-col">
-            <div className="eventory-card-label mono">
-              <span className="rule" />A profile on Eventory
-            </div>
-            <div className="profile-card">
-              <div className="profile-card-cover">
-                <img
-                  src="/images/videographers.jpg"
-                  alt="Videography team"
-                  style={{ objectPosition: "center 22%" }}
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="profile-card-tag mono">Photo &amp; Video</div>
-              </div>
-              <div className="profile-card-body">
-                <div className="profile-card-head">
-                  <div className="profile-card-name-col">
-                    <div className="profile-card-name">Amberline Studio</div>
-                    <div className="profile-card-location mono">
-                      Port of Spain &#183; Nationwide
-                    </div>
-                  </div>
-                  <div className="profile-card-status">
-                    <span className="profile-card-status-dot" />
-                    <span className="label mono">Taking bookings</span>
-                  </div>
-                </div>
-                <p className="profile-card-desc">
-                  Wedding and corporate coverage &#8212; two shooters,
-                  same-week highlight edits, full gallery delivery.
-                </p>
-                <div className="profile-card-tags">
-                  <span className="profile-card-tag-chip">Weddings</span>
-                  <span className="profile-card-tag-chip">Corporate</span>
-                  <span className="profile-card-tag-chip">Content days</span>
-                </div>
-                <div className="profile-card-thumbs">
-                  <div className="profile-card-thumb">
-                    <img
-                      src="/images/photographer.jpg"
-                      alt="Portrait shoot"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                  <div className="profile-card-thumb">
-                    <img
-                      src="/images/getting-ready.jpg"
-                      alt="Getting ready"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                  <div className="profile-card-thumb">
-                    <img
-                      src="/images/stage-production.jpg"
-                      alt="Stage production"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                </div>
-                <div className="profile-card-actions">
-                  <span className="profile-card-message mono">Message</span>
-                  <span className="profile-card-save mono">Save</span>
-                </div>
-              </div>
-            </div>
-          </div>
+      {/* WHERE DO WE START */}
+      <section className="section process-section">
+        <div className="section-inner process-inner">
+          <div className="section-eyebrow mono">Where do we start?</div>
+          <h2 className="section-headline">With your business.</h2>
+          <p className="process-body">
+            Every event business tells a different story.
+          </p>
+          <p className="process-body">
+            A photographer has something different to show from a venue. A
+            caterer has a different customer journey from a rental company.
+            The way people discover you, understand your work and decide to
+            enquire will be different too.
+          </p>
+          <p className="process-body">We start there.</p>
+          <p className="process-body">
+            We look at how people currently see your business, where they
+            find you and what happens when they enquire.
+          </p>
+          <p className="process-body">
+            Then we build the right mix around what your business needs.
+          </p>
+          <a
+            href="#contact"
+            className="btn-pill btn-primary mono"
+            onClick={(e) => {
+              e.preventDefault();
+              openModal();
+            }}
+          >
+            Book a Consultation <span className="arrow">&#8594;</span>
+          </a>
         </div>
       </section>
 
@@ -692,20 +778,27 @@ export default function LandingPage() {
             />
           </div>
           <div className="about-copy">
-            <h2 className="about-title">Who are we?</h2>
+            <div className="section-eyebrow mono">Who are we?</div>
+            <h2 className="about-title">
+              We believe good work deserves attention.
+            </h2>
             <p>
               RE5 brings together marketers, videographers, photographers,
-              event professionals and creative minds with different skills
-              and one shared focus:
+              event professionals and creative minds around one shared
+              focus:
             </p>
             <p>
               Putting event businesses{" "}
-              <span className="accent-text">in the spotlight</span>.
+              <span className="accent-text">in the Spotlight</span>.
             </p>
             <p>
-              We bring those skills together to create visibility, improve
-              discoverability and create clearer paths from being found to
-              being booked.
+              We understand an industry built around experiences people can
+              see, feel and remember.
+            </p>
+            <p>
+              Our job is to help you tell that story, make your business
+              easier to discover and create a clearer path from interest to
+              opportunity.
             </p>
           </div>
         </div>
@@ -715,10 +808,13 @@ export default function LandingPage() {
       <section id="contact" className="cta-section">
         <div className="cta-glow" />
         <div className="cta-inner">
-          <h2 className="cta-title">
-            Your work deserves to be <span className="accent-strong">seen.</span>
-          </h2>
-          <p className="cta-sub">Let&apos;s put it in the right places.</p>
+          <h2 className="cta-title">Your work deserves the Spotlight.</h2>
+          <p className="cta-sub">
+            You have already created something worth seeing.
+          </p>
+          <p className="cta-sub">
+            Let&apos;s put it in front of the people looking for it.
+          </p>
           <a
             href="#contact"
             className="btn-pill btn-primary mono"
@@ -727,7 +823,7 @@ export default function LandingPage() {
               openModal();
             }}
           >
-            Get in the spotlight <span className="arrow">&#8594;</span>
+            Get in the Spotlight <span className="arrow">&#8594;</span>
           </a>
         </div>
       </section>
@@ -740,12 +836,15 @@ export default function LandingPage() {
               RE5<span className="dot">.</span>
             </span>
           </div>
-          <div className="footer-tagline">Your work deserves the spotlight.</div>
+          <div className="footer-tagline">
+            Your work deserves the Spotlight.
+          </div>
         </div>
         <div className="footer-links mono">
-          <a href="https://www.eventorytt.com" target="_blank" rel="noopener">
-            Eventory
-          </a>
+          <a href="#how-it-works">How RE5 Works</a>
+          <a href="#eventory">Eventory</a>
+          <a href="#momentum">Momentum</a>
+          <a href="#about">Who We Are</a>
           <a
             href="#contact"
             onClick={(e) => {
@@ -753,16 +852,7 @@ export default function LandingPage() {
               openModal();
             }}
           >
-            Work with RE5
-          </a>
-          <a
-            href="#contact"
-            onClick={(e) => {
-              e.preventDefault();
-              openModal();
-            }}
-          >
-            Contact
+            Book a Consultation
           </a>
           <a
             href="https://www.eventorytt.com"
