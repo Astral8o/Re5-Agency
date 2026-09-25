@@ -81,6 +81,41 @@ const PACKAGES: PackageGroup[] = [
   },
 ];
 
+const MOMENTUM_FEATURES: { label: string; body: string }[] = [
+  {
+    label: "Customer information & history",
+    body: "Keep important customer details and past interactions in one place.",
+  },
+  {
+    label: "Follow-ups & reminders",
+    body: "Know who you need to get back to and when.",
+  },
+  {
+    label: "Customer organization",
+    body: "Easily organize and understand the people you do business with.",
+  },
+  {
+    label: "AI-powered customer insights",
+    body: "Surface useful information and opportunities from your customer data.",
+  },
+  {
+    label: "Re-engagement",
+    body: "Identify opportunities to reconnect with people you've done business with before.",
+  },
+  {
+    label: "Automated workflows",
+    body: "Let routine customer tasks happen automatically.",
+  },
+  {
+    label: "Marketing & communication tools",
+    body: "Stay connected with customers through organized, targeted communication.",
+  },
+  {
+    label: "Ongoing system management",
+    body: "RE5 keeps the system configured, maintained and working for your business.",
+  },
+];
+
 function ImageTile({
   src,
   alt,
@@ -477,6 +512,62 @@ export default function LandingPage() {
               </div>
             </div>
           ))}
+
+          <div className="momentum-feature">
+            <div className="momentum-feature-glow" />
+            <div className="momentum-feature-eyebrow mono">Featured</div>
+            <div className="momentum-feature-head">
+              <h3 className="momentum-feature-title">RE5 Momentum</h3>
+              <div className="momentum-feature-price mono">TTD 3,500/mo</div>
+            </div>
+            <p className="momentum-feature-tagline">
+              Keep up with the people who matter to your business.
+            </p>
+            <div className="momentum-feature-copy">
+              <p>
+                Running a business means juggling customers, conversations
+                and everything else that needs your attention.
+              </p>
+              <p>
+                RE5 Momentum brings it all together, helping you stay
+                organized, keep up with customers, follow up and uncover
+                opportunities to grow your business.
+              </p>
+            </div>
+            <div className="momentum-feature-included">
+              <h4 className="momentum-feature-included-title mono">
+                What&apos;s included
+              </h4>
+              <ul className="momentum-feature-list">
+                {MOMENTUM_FEATURES.map((item) => (
+                  <li key={item.label}>
+                    <strong>{item.label}:</strong> {item.body}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="momentum-feature-footer">
+              <div className="momentum-feature-footer-copy">
+                <p className="momentum-feature-question">
+                  Ready to see what Momentum could do for your business?
+                </p>
+                <p className="momentum-feature-subline">
+                  Book a consultation with RE5 and let&apos;s talk about how
+                  we can set it up for you.
+                </p>
+              </div>
+              <a
+                href="#contact"
+                className="btn-pill btn-primary mono"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openModal("Interested in: RE5 Momentum");
+                }}
+              >
+                Book a Consultation
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
