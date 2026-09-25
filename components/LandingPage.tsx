@@ -17,6 +17,7 @@ type PackageTier = {
 
 type PackageGroup = {
   group: string;
+  headline: string;
   intro: string[];
   tiers: PackageTier[];
 };
@@ -24,15 +25,16 @@ type PackageGroup = {
 const PACKAGES: PackageGroup[] = [
   {
     group: "Content Day",
+    headline: "Give your work something to show for itself.",
     intro: [
-      "Create a library of photography and video around the work you are already doing.",
+      "One shoot gives you a library of photography and video built around your business, ready to use across your social media, website, Eventory profile and marketing.",
     ],
     tiers: [
       {
         name: "Essentials",
         price: "TTD 3,500",
         value:
-          "One shoot gives you fresh content to use across your social media, website, Eventory profile and marketing.",
+          "Fresh content you can keep working with long after the shoot is over.",
         features: [
           "On-site content shoot",
           "15 to 20 edited photos",
@@ -44,7 +46,7 @@ const PACKAGES: PackageGroup[] = [
         name: "Signature",
         price: "TTD 8,000",
         value:
-          "A larger content library built around your work, your style and the experience you create.",
+          "A larger content library that captures more of your work, your style and the experience you create.",
         features: [
           "On-site content shoot",
           "30+ edited photos",
@@ -56,9 +58,10 @@ const PACKAGES: PackageGroup[] = [
   },
   {
     group: "Social Content Management",
+    headline: "Keep your story moving.",
     intro: [
-      "Keep telling your story after the shoot is over.",
-      "RE5 plans, writes and schedules your content so your business keeps showing up and giving people more chances to remember you.",
+      "One great piece of content can catch someone's attention. Consistency helps them remember who you are.",
+      "RE5 plans, writes and schedules your content so your business keeps showing up with something worth seeing.",
     ],
     tiers: [
       {
@@ -93,28 +96,28 @@ const PACKAGES: PackageGroup[] = [
 
 const MOMENTUM_BLOCKS: { title: string; body: string }[] = [
   {
-    title: "Keep your customer information together.",
-    body: "See customer details, conversations and history in one place.",
+    title: "Keep your customers together.",
+    body: "See customer information, conversations and history in one place.",
   },
   {
     title: "Know who needs your attention.",
     body: "Keep track of enquiries, follow-ups and opportunities as they move.",
   },
   {
-    title: "Stay connected.",
-    body: "Use reminders and workflows to keep important conversations going.",
+    title: "Keep the conversation going.",
+    body: "Use reminders and workflows to stay connected with people who have shown interest in your business.",
   },
   {
     title: "Reconnect with past customers.",
-    body: "Bring previous customers and older enquiries back into view when there is an opportunity to reach out again.",
+    body: "Bring previous customers and older enquiries back into view when it is time to reach out again.",
   },
   {
-    title: "Understand what is happening in your business.",
-    body: "Use AI-assisted customer insights to get more context around your customers, conversations and opportunities.",
+    title: "Understand your customers better.",
+    body: "AI-assisted insights help you see more context around your customers, conversations and opportunities.",
   },
   {
-    title: "Keep the system running.",
-    body: "RE5 helps manage the workflows, communication and structure behind Momentum.",
+    title: "Keep it all running.",
+    body: "RE5 manages the system, workflows and communication behind Momentum as your business grows.",
   },
 ];
 
@@ -367,9 +370,9 @@ export default function LandingPage() {
             </div>
             <p className="worth-seeing-lede">The work is already there.</p>
             <p className="worth-seeing-closer">
-              <span className="accent-text">RE5</span> helps you show people
-              what makes your business yours and puts that story in front of
-              the people looking for what you do.
+              <span className="accent-text">RE5</span> helps you tell the
+              story behind it and put it in front of the people looking for
+              what you do.
             </p>
           </div>
 
@@ -401,17 +404,18 @@ export default function LandingPage() {
         <div className="section-inner how-it-works-inner">
           <div className="section-eyebrow mono">How RE5 Works</div>
           <h2 className="section-headline">Seen. Found. Booked.</h2>
-          <p className="how-it-works-body">
-            We created the Spotlight Framework around the three moments that
-            matter most in marketing an event business.
+          <p className="body-copy">
+            We created the{" "}
+            <span className="accent-text">Spotlight Framework</span> around
+            how people move from discovering an event business to deciding
+            it is exactly what they need.
           </p>
-          <p className="how-it-works-body">
-            People need to see your work, find you when they start planning,
-            and understand enough about your business to know when you are
-            exactly what they need.
+          <p className="body-copy">
+            First they see the work. Then they find the business behind it.
+            Then something connects.
           </p>
-          <p className="how-it-works-body">
-            Everything RE5 offers connects back to one of those moments.
+          <p className="body-copy">
+            Every RE5 service is built around those moments.
           </p>
         </div>
       </section>
@@ -424,26 +428,28 @@ export default function LandingPage() {
           <h2 className="pillar-headline">
             Your work is great. Now it is time for more people to see it.
           </h2>
-          <p className="pillar-body">
-            RE5 helps you tell your unique story through photography, video
-            and consistent social content that shows people what makes your
-            business yours.
+          <p className="body-copy">
+            Your work already tells a story. RE5 helps you capture it
+            through photography, video and social content so people can see
+            your style, your ideas and the experience you create.
           </p>
           <p className="pillar-stat">
-            Short-form video continues to rank among the
-            strongest-performing content formats for marketers, which makes
-            visual storytelling even more valuable for businesses built
-            around experiences.
-          </p>
-          <p className="pillar-source mono">
-            Source: HubSpot, State of Marketing
+            For event businesses, that visual story matters.{" "}
+            <span className="accent-text">
+              HubSpot&apos;s 2026 State of Marketing
+            </span>{" "}
+            ranks short-form video as the highest-ROI content format among
+            marketers.
           </p>
 
           {PACKAGES.map((group) => (
             <div className="package-group" key={group.group}>
-              <h3 className="package-group-title">{group.group}</h3>
+              <div className="offer-header">
+                <div className="offer-label mono">{group.group}</div>
+                <h3 className="offer-headline">{group.headline}</h3>
+              </div>
               {group.intro.map((paragraph) => (
-                <p className="package-group-intro" key={paragraph}>
+                <p className="body-copy-sm" key={paragraph}>
                   {paragraph}
                 </p>
               ))}
@@ -491,47 +497,50 @@ export default function LandingPage() {
           <h2 className="pillar-headline">
             Being found in all the noise online is getting harder.
           </h2>
-          <p className="pillar-body">
+          <p className="body-copy">
             People are searching across Google, social media, websites,
-            directories and AI. That gives your business more places to be
-            discovered, but also more places to get lost.
+            directories and AI. The places people look have multiplied, and
+            being present when that search begins matters.
           </p>
           <p className="pillar-stat">
-            Google says businesses with complete and accurate information are
-            more likely to appear in relevant local search results.
+            <span className="accent-text">Google</span> says complete and
+            accurate business information makes a business more likely to
+            appear in relevant local search results.
           </p>
-          <p className="pillar-transition">
-            We built Eventory around that shift.
+          <p className="body-copy">
+            RE5 created{" "}
+            <span className="accent-text">Eventory</span> to give the event
+            industry another place to be discovered.
           </p>
-          <p className="pillar-source mono">Source: Google Business Profile</p>
 
           <div className="eventory-card-wrap">
             <div id="eventory" className="eventory-inner">
               <div className="eventory-copy">
-                <h3 className="eventory-eyebrow">Meet Eventory.</h3>
-                <p className="eventory-title">
-                  Built for people planning events.
-                </p>
-                <div className="eventory-search-list">
-                  <p>Someone is looking for a venue.</p>
-                  <p>A photographer.</p>
-                  <p>A caterer.</p>
-                  <p>Lighting.</p>
-                  <p>D&#233;cor.</p>
-                  <p>Entertainment.</p>
-                  <p>Rentals.</p>
-                  <p className="eventory-search-list-close">
-                    The people who can bring their event together.
-                  </p>
+                <div className="offer-header">
+                  <div className="offer-label mono">Meet Eventory.</div>
+                  <h3 className="offer-headline">
+                    Built for people planning events.
+                  </h3>
                 </div>
-                <p className="eventory-body">
-                  Eventory gives them one place to discover event
-                  businesses, explore what they offer and enquire directly.
+                <p className="body-copy-sm">
+                  Every event starts with someone searching.
                 </p>
-                <p className="eventory-body">
-                  Built by RE5 for the event industry in Trinidad &amp;
-                  Tobago, Eventory gives your business another place to be
-                  found while someone is actively looking for what you do.
+                <p className="body-copy-sm">
+                  They need a venue, a photographer, a caterer, d&#233;cor,
+                  lighting, entertainment, rentals and the people who can
+                  bring their idea together.
+                </p>
+                <p className="body-copy-sm">
+                  <span className="accent-text">Eventory</span> brings event
+                  vendors and suppliers into one place, giving people a
+                  simpler way to discover businesses, explore what they
+                  offer and enquire directly.
+                </p>
+                <p className="body-copy-sm">
+                  Built by RE5 for Trinidad &amp; Tobago&apos;s event
+                  industry, <span className="accent-text">Eventory</span>{" "}
+                  puts your business in front of people while they are
+                  actively looking for what you do.
                 </p>
                 <a
                   href="https://www.eventorytt.com"
@@ -637,49 +646,54 @@ export default function LandingPage() {
             Being booked starts with someone thinking, &#8220;Yes. This is
             exactly what I need.&#8221;
           </h2>
-          <p className="pillar-body">
-            People choose businesses when they understand the story behind
-            the work, connect with what they see and recognize that the
-            experience you create is right for them.
+          <p className="body-copy">
+            Your work catches their attention. Your story helps them
+            understand who you are. The way you present your business helps
+            them see that what you create fits what they have been looking
+            for.
           </p>
-          <p className="pillar-transition">Then the enquiry comes in.</p>
-          <p className="pillar-transition">
-            That conversation becomes part of the experience too.
+          <p className="body-copy">Then they enquire.</p>
+          <p className="body-copy">Now the conversation matters.</p>
+          <p className="body-copy">
+            RE5 helps you keep that opportunity moving.
           </p>
-          <p className="pillar-stat">
-            Salesforce research found that 80% of customers consider the
-            experience a company provides as important as its products and
-            services.
-          </p>
-          <p className="pillar-transition">
-            RE5 helps you keep that conversation moving.
-          </p>
-          <p className="pillar-source mono">Source: Salesforce</p>
 
           <div id="momentum" className="momentum-feature">
             <div className="momentum-feature-eyebrow mono">Featured</div>
-            <div className="momentum-feature-head">
-              <h3 className="momentum-feature-title">RE5 Momentum</h3>
-              <div className="momentum-feature-price mono">
-                TTD 3,500/month
+            <div className="offer-header">
+              <div className="offer-label-row">
+                <div className="offer-label mono">RE5 Momentum</div>
+                <div className="momentum-feature-price mono">
+                  TTD 3,500/month
+                </div>
               </div>
+              <h3 className="offer-headline">
+                Your customer relationship team, sales support and marketing
+                assistant, all in one.
+              </h3>
             </div>
-            <p className="momentum-feature-role">
-              Your customer relationship team, sales support and marketing
-              assistant, all in one.
-            </p>
 
-            <div className="momentum-scenario-list">
-              <p>Someone enquires.</p>
-              <p>Another person asks about a date.</p>
-              <p>A customer says they will get back to you.</p>
-              <p>Someone needs a follow-up next week.</p>
-              <p>A past customer could be ready to book again.</p>
-            </div>
-            <p className="momentum-feature-lede">
-              Momentum brings those conversations, customers and
-              opportunities together so you can keep up with the people
-              already showing interest in your business.
+            <p className="body-copy-sm">
+              Someone asks about a date. Another person wants a package. A
+              customer says they will get back to you. Someone needs a
+              follow-up next week. A past customer may be ready to work with
+              you again.
+            </p>
+            <p className="body-copy-sm">
+              Those conversations are part of your business.
+            </p>
+            <p className="body-copy-sm">
+              <span className="accent-text">Momentum</span> brings them
+              together so you can keep track of the people showing
+              interest, know where each conversation stands and see the
+              opportunities already around you.
+            </p>
+            <p className="pillar-stat">
+              Customer experience matters here too.{" "}
+              <span className="accent-text">Salesforce</span> reports that{" "}
+              <span className="accent-text">80%</span> of customers consider
+              the experience a company provides as important as its
+              products and services.
             </p>
 
             <div className="momentum-blocks">
@@ -732,22 +746,18 @@ export default function LandingPage() {
         <div className="section-inner process-inner">
           <div className="section-eyebrow mono">Where do we start?</div>
           <h2 className="section-headline">With your business.</h2>
-          <p className="process-body">
-            Every event business tells a different story.
+          <p className="body-copy">
+            Every event business has its own story. The way a photographer
+            shows their work is different from a venue. The way someone
+            searches for a caterer is different from how they find an event
+            rental company.
           </p>
-          <p className="process-body">
-            A photographer has something different to show from a venue. A
-            caterer has a different customer journey from a rental company.
-            The way people discover you, understand your work and decide to
-            enquire will be different too.
+          <p className="body-copy">
+            We look at your business, how people currently see you, where
+            they find you and what happens when they enquire.
           </p>
-          <p className="process-body">We start there.</p>
-          <p className="process-body">
-            We look at how people currently see your business, where they
-            find you and what happens when they enquire.
-          </p>
-          <p className="process-body">
-            Then we build the right mix around what your business needs.
+          <p className="body-copy">
+            Then we build the right mix around what you need.
           </p>
           <a
             href="#contact"
@@ -778,23 +788,17 @@ export default function LandingPage() {
             <h2 className="about-title">
               We believe good work deserves attention.
             </h2>
-            <p>
+            <p className="body-copy">
               RE5 brings together marketers, videographers, photographers,
               event professionals and creative minds around one shared
-              focus:
-            </p>
-            <p>
-              Putting event businesses{" "}
+              focus: putting event businesses{" "}
               <span className="accent-text">in the Spotlight</span>.
             </p>
-            <p>
-              We understand an industry built around experiences people can
-              see, feel and remember.
-            </p>
-            <p>
-              Our job is to help you tell that story, make your business
-              easier to discover and create a clearer path from interest to
-              opportunity.
+            <p className="body-copy">
+              We know the event industry is built around ideas brought to
+              life and experiences people remember. RE5 helps you tell that
+              story, be there when people are looking, and keep the
+              opportunities that follow moving.
             </p>
           </div>
         </div>
@@ -806,7 +810,7 @@ export default function LandingPage() {
         <div className="cta-inner">
           <h2 className="cta-title">Your work deserves the Spotlight.</h2>
           <p className="cta-sub">
-            You have already created something worth seeing.
+            You already have something worth seeing.
           </p>
           <p className="cta-sub">
             Let&apos;s put it in front of the people looking for it.
