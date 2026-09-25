@@ -439,11 +439,8 @@ export default function LandingPage() {
             Source: HubSpot, State of Marketing
           </p>
 
-          {PACKAGES.map((group, index) => (
+          {PACKAGES.map((group) => (
             <div className="package-group" key={group.group}>
-              <div className="package-group-number mono">
-                {String(index + 1).padStart(2, "0")}
-              </div>
               <h3 className="package-group-title">{group.group}</h3>
               {group.intro.map((paragraph) => (
                 <p className="package-group-intro" key={paragraph}>
@@ -511,10 +508,10 @@ export default function LandingPage() {
           <div className="eventory-card-wrap">
             <div id="eventory" className="eventory-inner">
               <div className="eventory-copy">
-                <div className="eventory-eyebrow mono">Meet Eventory.</div>
-                <h3 className="eventory-title">
+                <h3 className="eventory-eyebrow">Meet Eventory.</h3>
+                <p className="eventory-title">
                   Built for people planning events.
-                </h3>
+                </p>
                 <div className="eventory-search-list">
                   <p>Someone is looking for a venue.</p>
                   <p>A photographer.</p>
@@ -540,7 +537,7 @@ export default function LandingPage() {
                   href="https://www.eventorytt.com"
                   target="_blank"
                   rel="noopener"
-                  className="btn-pill btn-outline-light mono"
+                  className="btn-pill btn-outline mono"
                 >
                   Explore Eventory <span className="arrow">&#8594;</span>
                 </a>
@@ -660,7 +657,6 @@ export default function LandingPage() {
           <p className="pillar-source mono">Source: Salesforce</p>
 
           <div id="momentum" className="momentum-feature">
-            <div className="momentum-feature-glow" />
             <div className="momentum-feature-eyebrow mono">Featured</div>
             <div className="momentum-feature-head">
               <h3 className="momentum-feature-title">RE5 Momentum</h3>

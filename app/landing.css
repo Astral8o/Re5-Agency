@@ -283,7 +283,7 @@
 
 .hero-copy {
   margin: 0;
-  max-width: 460px;
+  max-width: 560px;
   font-weight: 300;
   font-size: clamp(17px, 1.5vw, 21px);
   line-height: 1.55;
@@ -585,12 +585,7 @@
   padding: clamp(28px, 3vw, 40px);
   border: 1px solid rgba(244, 239, 232, 0.14);
   border-radius: 24px;
-}
-
-.package-group-number {
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  color: var(--accent, #ff5a1f);
+  background: rgba(244, 239, 232, 0.02);
 }
 
 .package-group-title {
@@ -681,34 +676,13 @@
 
 .momentum-feature {
   position: relative;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding: clamp(32px, 4vw, 56px);
-  border: 1px solid rgba(255, 122, 51, 0.4);
-  border-radius: 28px;
-  background: linear-gradient(
-    165deg,
-    rgba(255, 90, 31, 0.1) 0%,
-    rgba(244, 239, 232, 0.02) 55%
-  );
-}
-
-.momentum-feature-glow {
-  position: absolute;
-  top: -140px;
-  right: -100px;
-  width: 440px;
-  height: 440px;
-  pointer-events: none;
-  filter: blur(110px);
-  opacity: 0.5;
-  background: radial-gradient(
-    circle,
-    var(--accent, #ff5a1f) 0%,
-    rgba(10, 9, 8, 0) 70%
-  );
+  padding: clamp(28px, 3vw, 40px);
+  border: 1px solid rgba(244, 239, 232, 0.14);
+  border-radius: 24px;
+  background: rgba(244, 239, 232, 0.02);
 }
 
 .momentum-feature-eyebrow {
@@ -732,13 +706,16 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(244, 239, 232, 0.12);
 }
 
 .momentum-feature-title {
   margin: 0;
   font-weight: 600;
-  font-size: clamp(28px, 3vw, 40px);
+  font-size: clamp(24px, 2.4vw, 32px);
   letter-spacing: -0.01em;
+  color: var(--accent, #ff5a1f);
 }
 
 .momentum-feature-price {
@@ -911,18 +888,22 @@
 }
 
 .eventory-eyebrow {
-  font-size: 11px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
+  margin: 0;
+  font-weight: 600;
+  font-size: clamp(24px, 2.4vw, 32px);
+  letter-spacing: -0.01em;
+  padding-bottom: 16px;
   color: var(--accent, #ff5a1f);
+  border-bottom: 1px solid rgba(244, 239, 232, 0.12);
 }
 
 .eventory-title {
   margin: 0;
   margin-top: -8px;
   font-weight: 600;
-  font-size: clamp(24px, 2.4vw, 32px);
+  font-size: clamp(18px, 1.8vw, 23px);
   letter-spacing: -0.01em;
+  color: #f4efe8;
 }
 
 .eventory-search-list {
@@ -954,20 +935,6 @@
   text-wrap: pretty;
 }
 
-.btn-outline-light {
-  align-self: flex-start;
-  margin-top: 4px;
-  padding: 15px 26px;
-  border: 1px solid rgba(247, 242, 236, 0.5);
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-
-.btn-outline-light:hover {
-  background: #f7f2ec;
-  color: #150d07;
-  border-color: #f7f2ec;
-}
-
 .eventory-card-col {
   display: flex;
   flex-direction: column;
@@ -983,13 +950,13 @@
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(247, 242, 236, 0.6);
+  color: rgba(244, 239, 232, 0.55);
 }
 
 .eventory-card-label .rule {
   width: 26px;
   height: 1px;
-  background: rgba(247, 242, 236, 0.4);
+  background: rgba(244, 239, 232, 0.35);
 }
 
 .profile-card {
@@ -1209,10 +1176,11 @@
 
 .about-title {
   margin: 0;
+  margin-top: -8px;
   font-weight: 200;
-  font-size: clamp(36px, 5.4vw, 76px);
-  line-height: 0.96;
-  letter-spacing: -0.035em;
+  font-size: clamp(34px, 5vw, 68px);
+  line-height: 1;
+  letter-spacing: -0.03em;
 }
 
 .about-copy p {
