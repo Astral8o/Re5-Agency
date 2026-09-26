@@ -115,9 +115,9 @@ const SEARCH_WORDS = [
 ];
 
 const NAV_ITEMS = [
-  { label: "How RE5 Works", href: "#how", img: "/images/sunset-reception.jpg" },
-  { label: "Eventory", href: "#eventory", img: "/images/dj-setup-tent.jpg" },
-  { label: "Momentum", href: "#momentum", img: "/images/branded-stage.jpg" },
+  { label: "Seen", href: "#seen", img: "/images/videographers.jpg" },
+  { label: "Found", href: "#eventory", img: "/images/dj-setup-tent.jpg" },
+  { label: "Booked", href: "#momentum", img: "/images/branded-stage.jpg" },
   { label: "Who We Are", href: "#who", img: "/images/team-tugofwar.jpg" },
   { label: "Contact", href: "#contact", img: "/images/hero-dancefloor.jpg" },
 ];
@@ -1005,29 +1005,32 @@ export default function LandingPage() {
                 Your work deserves the Spotlight.
               </span>
             </div>
-            <nav className="footer-links">
-              <a href="#how">How RE5 Works</a>
-              <a
-                href="#contact"
-                onClick={(e) => {
-                  e.preventDefault();
-                  openModal();
-                }}
-              >
-                Book a Consultation
-              </a>
-              <a href="#eventory">Eventory</a>
-              <a
-                href="https://www.eventorytt.com"
-                target="_blank"
-                rel="noopener"
-              >
-                www.eventorytt.com
-              </a>
-              <a href="#momentum">Momentum</a>
-              <span />
-              <a href="#who">Who We Are</a>
-            </nav>
+            <div className="footer-links-cols">
+              <nav className="footer-links-group">
+                <a href="#seen">Seen</a>
+                <a href="#eventory">Found</a>
+                <a href="#momentum">Booked</a>
+                <a href="#who">Who We Are</a>
+              </nav>
+              <nav className="footer-links-group">
+                <a
+                  href="#contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openModal();
+                  }}
+                >
+                  Book a Consultation
+                </a>
+                <a
+                  href="https://www.eventorytt.com"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  www.eventorytt.com
+                </a>
+              </nav>
+            </div>
           </div>
         </div>
       </footer>

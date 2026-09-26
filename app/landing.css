@@ -1788,16 +1788,22 @@
   color: #b8afa3;
 }
 
-.footer-links {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(140px, auto));
+.footer-links-cols {
+  display: flex;
+  flex-wrap: wrap;
   gap: 14px 56px;
-  font-size: 15px;
-  color: #d9d2c7;
-  align-content: start;
 }
 
-.footer-links a:hover {
+.footer-links-group {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 15px;
+  color: #d9d2c7;
+  min-width: 140px;
+}
+
+.footer-links-group a:hover {
   color: var(--accent);
 }
 
