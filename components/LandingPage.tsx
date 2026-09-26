@@ -53,9 +53,9 @@ const PACKAGES: PackageGroup[] = [
   },
   {
     group: "Social Content Management",
-    headline: "Keep your story moving.",
+    headline: "Great work gives us plenty to talk about.",
     intro: [
-      "RE5 plans, writes and schedules the content so the business keeps showing up with something worth seeing.",
+      "RE5 plans, writes and schedules content that brings the story, personality and work behind the business to social media consistently.",
     ],
     tiers: [
       {
