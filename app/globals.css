@@ -1,7 +1,10 @@
 :root {
   --accent: #ff5a1f;
+  --accent-deep: #c2410c;
   --ink: #0a0908;
+  --ink-warm: #17120d;
   --bone: #f4efe8;
+  --cream: #f7f3ec;
 }
 
 * {
@@ -16,7 +19,7 @@ body {
   margin: 0;
   background: var(--ink);
   color: var(--bone);
-  font-family: var(--font-sora), "Helvetica Neue", Helvetica, sans-serif;
+  font-family: var(--font-sans), "Helvetica Neue", Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 

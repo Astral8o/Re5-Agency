@@ -1,18 +1,26 @@
 import type { Metadata } from "next";
-import { Sora, JetBrains_Mono } from "next/font/google";
+import { Hanken_Grotesk, IBM_Plex_Mono, Instrument_Serif } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
 const GA_MEASUREMENT_ID = "G-6RBX04Y5KR";
 
-const sora = Sora({
+const hankenGrotesk = Hanken_Grotesk({
   subsets: ["latin"],
-  weight: ["200", "300", "400", "600"],
-  variable: "--font-sora",
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-sans",
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+  variable: "--font-serif",
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-mono",
@@ -38,7 +46,10 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${sora.variable} ${jetbrainsMono.variable}`}>
+    <html
+      lang="en"
+      className={`${hankenGrotesk.variable} ${instrumentSerif.variable} ${plexMono.variable}`}
+    >
       <body>
         {children}
         <Script
