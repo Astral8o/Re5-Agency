@@ -539,11 +539,17 @@ export default function LandingPage() {
         <div className="section-inner pillar-inner">
           <div className="pillar-eyebrow mono">03 &#183; Booked</div>
           <h2 className="pillar-headline">
-            Being booked starts with someone thinking: &#8220;Yes. This is
-            exactly what I need.&#8221;
+            Keep every opportunity connected.
           </h2>
-          <p className="body-copy">Then they enquire.</p>
-          <p className="body-copy">Now the conversation matters.</p>
+          <p className="body-copy">
+            Running an event business comes with a lot of conversations.
+            New enquiries, questions about packages, follow-ups, returning
+            customers and people who may be ready to book later.
+          </p>
+          <p className="body-copy">
+            <span className="accent-text">Momentum</span> helps keep all of
+            it together.
+          </p>
 
           <div id="momentum" className="momentum-feature">
             <div className="momentum-feature-eyebrow mono">Featured</div>
@@ -574,10 +580,8 @@ export default function LandingPage() {
             <div className="momentum-feature-footer">
               <div className="momentum-feature-footer-copy">
                 <p className="momentum-feature-question">
-                  A lot happens between an enquiry and a booking.
-                </p>
-                <p className="momentum-feature-subline">
-                  Momentum helps keep up with it.
+                  More support behind the business, so every opportunity
+                  gets the attention it deserves.
                 </p>
               </div>
               <a
