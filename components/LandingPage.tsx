@@ -353,14 +353,25 @@ export default function LandingPage() {
       <section id="seen" className="section pillar-section">
         <div className="pillar-glow" />
         <div className="section-inner pillar-inner">
-          <div className="pillar-eyebrow mono">01 &#183; Seen</div>
-          <h2 className="pillar-headline">
-            Your work is great. Now it is time for more people to see it.
-          </h2>
-          <p className="body-copy">
-            Photography, video and social content that show the style,
-            ideas and experience behind the work.
-          </p>
+          <div className="pillar-intro">
+            <div className="pillar-eyebrow mono">01 &#183; Seen</div>
+            <h2 className="pillar-headline">
+              Your work is great. Now it is time for more people to see it.
+            </h2>
+            <p className="body-copy">
+              Photography, video and social content that show the style,
+              ideas and experience behind the work.
+            </p>
+          </div>
+
+          <div className="pillar-photo">
+            <img
+              src="/images/event-signage.jpg"
+              alt="Branded event signage"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
 
           {PACKAGES.map((group) => (
             <div className="package-group" key={group.group}>
@@ -412,32 +423,34 @@ export default function LandingPage() {
       <section id="found" className="section pillar-section">
         <div className="pillar-glow" />
         <div className="section-inner pillar-inner">
-          <div className="pillar-eyebrow mono">02 &#183; Found</div>
-          <h2 className="pillar-headline">
-            Be there when people are looking.
-          </h2>
-          <p className="body-copy">
-            Every event starts with someone searching.
-          </p>
-          <div className="chip-row">
-            <div className="chip">A venue.</div>
-            <div className="chip">A photographer.</div>
-            <div className="chip">A caterer.</div>
-            <div className="chip">D&#233;cor.</div>
-            <div className="chip">Lighting.</div>
-            <div className="chip">Entertainment.</div>
-            <div className="chip">Rentals.</div>
+          <div className="pillar-intro">
+            <div className="pillar-eyebrow mono">02 &#183; Found</div>
+            <h2 className="pillar-headline">
+              Be there when people are looking.
+            </h2>
+            <p className="body-copy">
+              Every event starts with someone searching.
+            </p>
+            <div className="chip-row">
+              <div className="chip">A venue.</div>
+              <div className="chip">A photographer.</div>
+              <div className="chip">A caterer.</div>
+              <div className="chip">D&#233;cor.</div>
+              <div className="chip">Lighting.</div>
+              <div className="chip">Entertainment.</div>
+              <div className="chip">Rentals.</div>
+            </div>
           </div>
-          <p className="body-copy">
-            <span className="accent-text">Eventory</span> gives event
-            businesses a dedicated place to be discovered by people actively
-            planning events across{" "}
-            <span className="accent-text">Trinidad &amp; Tobago</span>.
-          </p>
 
           <div className="eventory-card-wrap">
             <div id="eventory" className="eventory-inner">
               <div className="eventory-copy">
+                <p className="body-copy-sm">
+                  <span className="accent-text">Eventory</span> gives event
+                  businesses a dedicated place to be discovered by people
+                  actively planning events across{" "}
+                  <span className="accent-text">Trinidad &amp; Tobago</span>.
+                </p>
                 <a
                   href="https://www.eventorytt.com"
                   target="_blank"
@@ -537,19 +550,21 @@ export default function LandingPage() {
       <section id="booked" className="section pillar-section">
         <div className="pillar-glow" />
         <div className="section-inner pillar-inner">
-          <div className="pillar-eyebrow mono">03 &#183; Booked</div>
-          <h2 className="pillar-headline">
-            Keep every opportunity connected.
-          </h2>
-          <p className="body-copy">
-            Running an event business comes with a lot of conversations.
-            New enquiries, questions about packages, follow-ups, returning
-            customers and people who may be ready to book later.
-          </p>
-          <p className="body-copy">
-            <span className="accent-text">Momentum</span> helps keep all of
-            it together.
-          </p>
+          <div className="pillar-intro">
+            <div className="pillar-eyebrow mono">03 &#183; Booked</div>
+            <h2 className="pillar-headline">
+              Keep every opportunity connected.
+            </h2>
+            <p className="body-copy">
+              Running an event business comes with a lot of conversations.
+              New enquiries, questions about packages, follow-ups, returning
+              customers and people who may be ready to book later.
+            </p>
+            <p className="body-copy">
+              <span className="accent-text">Momentum</span> helps keep all
+              of it together.
+            </p>
+          </div>
 
           <div id="momentum" className="momentum-feature">
             <div className="momentum-feature-eyebrow mono">Featured</div>
@@ -628,29 +643,39 @@ export default function LandingPage() {
 
       {/* WHERE DO WE START */}
       <section className="section process-section">
-        <div className="section-inner process-inner">
-          <div className="section-eyebrow mono">Where do we start?</div>
-          <h2 className="section-headline">With the business.</h2>
-          <p className="body-copy">
-            No two event businesses need exactly the same thing.
-          </p>
-          <p className="body-copy">
-            RE5 looks at how the business is being seen, where people are
-            finding it and what happens after they enquire.
-          </p>
-          <p className="body-copy">
-            Then we build the right mix around what is needed.
-          </p>
-          <a
-            href="#contact"
-            className="btn-pill btn-primary mono"
-            onClick={(e) => {
-              e.preventDefault();
-              openModal();
-            }}
-          >
-            Book a Consultation <span className="arrow">&#8594;</span>
-          </a>
+        <div className="section-inner process-grid">
+          <div className="process-copy">
+            <div className="section-eyebrow mono">Where do we start?</div>
+            <h2 className="section-headline">With the business.</h2>
+            <p className="body-copy">
+              No two event businesses need exactly the same thing.
+            </p>
+            <p className="body-copy">
+              RE5 looks at how the business is being seen, where people are
+              finding it and what happens after they enquire.
+            </p>
+            <p className="body-copy">
+              Then we build the right mix around what is needed.
+            </p>
+            <a
+              href="#contact"
+              className="btn-pill btn-primary mono"
+              onClick={(e) => {
+                e.preventDefault();
+                openModal();
+              }}
+            >
+              Book a Consultation <span className="arrow">&#8594;</span>
+            </a>
+          </div>
+          <div className="process-photo">
+            <img
+              src="/images/conference-stage.jpg"
+              alt="Conference stage setup"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
         </div>
       </section>
 

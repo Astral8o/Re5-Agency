@@ -514,7 +514,27 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 48px;
+}
+
+.pillar-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pillar-photo {
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #141110;
+}
+
+.pillar-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* ---- Offer header (shared by Content Day / Social Content Management /
@@ -542,10 +562,6 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding: clamp(32px, 3vw, 40px);
-  border: 1px solid rgba(244, 239, 232, 0.14);
-  border-radius: 24px;
-  background: rgba(244, 239, 232, 0.02);
 }
 
 .package-grid {
@@ -978,13 +994,31 @@
   border-top: 1px solid rgba(244, 239, 232, 0.08);
 }
 
-.process-inner {
-  max-width: 720px;
-  margin: 0 auto;
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(40px, 5vw, 88px);
+  align-items: center;
+}
+
+.process-copy {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 24px;
+}
+
+.process-photo {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #141110;
+}
+
+.process-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* ---- Who are we ---- */
