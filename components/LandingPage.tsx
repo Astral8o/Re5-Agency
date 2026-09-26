@@ -1029,7 +1029,6 @@ export default function LandingPage() {
               <a href="#who">Who We Are</a>
             </nav>
           </div>
-          <div className="footer-bg-word">RE5.</div>
         </div>
       </footer>
 
