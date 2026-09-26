@@ -92,18 +92,6 @@ const SERVICE_TABS: ServiceTab[] = [
   },
 ];
 
-const MOMENTUM_INCLUDED: string[] = [
-  "Customer information and history",
-  "Enquiry and lead organization",
-  "Follow-ups and reminders",
-  "Customer organization",
-  "AI-powered customer insights",
-  "Customer re-engagement",
-  "Automated workflows",
-  "Marketing and communication tools",
-  "Ongoing system management",
-];
-
 const SEARCH_WORDS = [
   "A venue.",
   "A photographer.",
@@ -117,7 +105,7 @@ const SEARCH_WORDS = [
 const NAV_ITEMS = [
   { label: "Seen", href: "#seen", img: "/images/videographers.jpg" },
   { label: "Found", href: "#eventory", img: "/images/dj-setup-tent.jpg" },
-  { label: "Booked", href: "#momentum", img: "/images/branded-stage.jpg" },
+  { label: "Booked", href: "#booked", img: "/images/branded-stage.jpg" },
   { label: "Who We Are", href: "#who", img: "/images/team-tugofwar.jpg" },
   { label: "Contact", href: "#contact", img: "/images/hero-dancefloor.jpg" },
 ];
@@ -464,7 +452,7 @@ export default function LandingPage() {
               </span>
               <span className="hero-link-arrow">&#8595;</span>
             </a>
-            <a href="#momentum" className="hero-link">
+            <a href="#booked" className="hero-link">
               <span className="hero-link-label">
                 <span className="hero-link-num">03</span>Get booked.
               </span>
@@ -776,7 +764,7 @@ export default function LandingPage() {
       </section>
 
       {/* PILLAR 03: BOOKED */}
-      <section id="momentum" className="pillar section-dark-alt on-dark">
+      <section id="booked" className="pillar section-dark-alt on-dark">
         <div className="pillar-inner">
           <div className="pillar-head-grid">
             <div className="pillar-head-copy">
@@ -797,67 +785,32 @@ export default function LandingPage() {
                 later.
               </p>
               <p style={{ margin: 0, color: "var(--bone)", fontSize: 20 }}>
-                Momentum helps keep all of it together.
+                Eventory Plus helps keep all of it together.
               </p>
             </div>
           </div>
 
-          <div className="momentum-grid">
-            <div className="momentum-feature-card">
-              <img
-                src="/images/branded-stage.jpg"
-                alt="Branded conference stage"
-              />
-              <div className="momentum-feature-scrim" />
-              <div className="momentum-feature-top">
-                <span className="momentum-feature-badge">Featured</span>
-                <span className="momentum-feature-name">RE5 Momentum</span>
-              </div>
-              <div className="momentum-feature-bottom">
-                <div className="momentum-feature-price-row">
-                  <span style={{ fontSize: 16, fontWeight: 500 }}>TTD</span>
-                  <span className="momentum-feature-price">3,500</span>
-                  <span style={{ fontSize: 18 }}>/month</span>
-                </div>
-                <h3 className="momentum-feature-headline">
-                  Your customer relationship team, sales support and
-                  marketing assistant, all in one.
-                </h3>
-                <a
-                  href="#contact"
-                  className="btn-spot btn-spot-sm"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    openModal("Interested in: RE5 Momentum");
-                  }}
-                >
-                  <span>Book a Momentum Consultation</span>
-                  <span className="btn-spot-icon">&#8594;</span>
-                </a>
-              </div>
-            </div>
-
-            <div className="momentum-included-card">
-              <div className="momentum-included-head">
-                <h4 className="momentum-included-title mono">
-                  What&apos;s included
-                </h4>
-                <ul className="momentum-checklist">
-                  {MOMENTUM_INCLUDED.map((item, i) => (
-                    <li key={item}>
-                      <span className="momentum-checklist-num mono">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <p className="momentum-quote">
-                More support behind the business, so every opportunity gets
-                the attention it deserves.
-              </p>
-            </div>
+          <div className="feature-intro-card">
+            <div className="feature-intro-eyebrow mono">Eventory Plus</div>
+            <h3 className="feature-intro-name">
+              A booking platform, built in.
+            </h3>
+            <p className="feature-intro-tagline">
+              Eventory Plus brings booking and social media management
+              together, so enquiries can move toward a confirmed booking and
+              your content keeps working for you across every platform.
+            </p>
+            <a
+              href="#contact"
+              className="btn-spot btn-spot-sm"
+              onClick={(e) => {
+                e.preventDefault();
+                openModal("Interested in: Eventory Plus");
+              }}
+            >
+              <span>Ask About Eventory Plus</span>
+              <span className="btn-spot-icon">&#8594;</span>
+            </a>
           </div>
         </div>
       </section>
@@ -893,7 +846,7 @@ export default function LandingPage() {
                 <p>A place to be discovered while people are planning.</p>
               </div>
             </a>
-            <a href="#momentum" className="recap-card recap-card-dark">
+            <a href="#booked" className="recap-card recap-card-dark">
               <div className="recap-card-top">
                 <span>03</span>
                 <span>&#8599;</span>
@@ -1009,7 +962,7 @@ export default function LandingPage() {
               <nav className="footer-links-group">
                 <a href="#seen">Seen</a>
                 <a href="#eventory">Found</a>
-                <a href="#momentum">Booked</a>
+                <a href="#booked">Booked</a>
                 <a href="#who">Who We Are</a>
               </nav>
               <nav className="footer-links-group">
