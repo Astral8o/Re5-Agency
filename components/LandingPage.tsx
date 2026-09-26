@@ -8,6 +8,7 @@ import {
   type FormEvent,
   type MouseEvent as ReactMouseEvent,
 } from "react";
+import { LogoMark } from "./Logo";
 import "../app/landing.css";
 
 type FormStatus = "idle" | "sending" | "sent" | "error";
@@ -335,10 +336,13 @@ export default function LandingPage() {
           className="nav-logo"
           onClick={() => setMenuOpen(false)}
         >
-          <span className="nav-logo-mark">
-            RE5<span className="dot">.</span>
+          <LogoMark size={28} />
+          <span className="nav-logo-text">
+            <span className="nav-logo-mark">
+              RE5<span className="dot">.</span>
+            </span>
+            <span className="nav-logo-word">Agency</span>
           </span>
-          <span className="nav-logo-word">Agency</span>
         </a>
         <a
           href="#contact"
@@ -991,9 +995,12 @@ export default function LandingPage() {
         <div className="footer-inner">
           <div className="footer-top">
             <div className="footer-brand">
-              <span className="footer-wordmark">
-                RE5<span className="dot">.</span>
-              </span>
+              <div className="footer-logo-row">
+                <LogoMark size={44} />
+                <span className="footer-wordmark">
+                  RE5<span className="dot">.</span>
+                </span>
+              </div>
               <span className="footer-tagline">
                 Your work deserves the Spotlight.
               </span>

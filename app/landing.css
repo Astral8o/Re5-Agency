@@ -230,6 +230,12 @@
 
 .nav-logo {
   display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-logo-text {
+  display: flex;
   align-items: baseline;
   gap: 8px;
 }
@@ -1736,6 +1742,12 @@
   display: grid;
   gap: 10px;
   align-content: start;
+}
+
+.footer-logo-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .footer-wordmark {
