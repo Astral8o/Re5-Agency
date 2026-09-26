@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Instrument_Sans, Instrument_Serif } from "next/font/google";
+import { Caveat, IBM_Plex_Mono, Instrument_Sans, Instrument_Serif } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -27,6 +27,13 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  variable: "--font-script",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "RE5 Agency — Your work deserves the spotlight.",
   description:
@@ -48,7 +55,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSans.variable} ${instrumentSerif.variable} ${plexMono.variable}`}
+      className={`${instrumentSans.variable} ${instrumentSerif.variable} ${plexMono.variable} ${caveat.variable}`}
     >
       <body>
         {children}

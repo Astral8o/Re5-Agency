@@ -417,7 +417,7 @@ export default function LandingPage() {
             RE5. Agency
           </div>
           <h1 className="hero-title">
-            Your work deserves the <span className="serif">Spotlight.</span>
+            Your work deserves the <span className="script">Spotlight.</span>
           </h1>
           <div className="hero-sub-row">
             <p className="hero-copy">
@@ -466,7 +466,7 @@ export default function LandingPage() {
       <section id="how" className="intro-section section-cream on-cream">
         <div className="wrap intro-head">
           <h2 className="intro-title">
-            Seen. Found. <span className="serif">Booked.</span>
+            Seen. Found. <span className="script">Booked.</span>
           </h2>
           <div className="intro-subhead">
             <p className="intro-lede">Your work is already worth seeing.</p>
@@ -543,10 +543,7 @@ export default function LandingPage() {
                 <span className="pillar-num-label mono">Seen</span>
               </div>
               <h2 className="pillar-headline">
-                Your work is great.{" "}
-                <span className="serif">
-                  Now it is time for more people to see it.
-                </span>
+                Your work is great. Now it is time for more people to see it.
               </h2>
               <p className="pillar-body">
                 Photography, video and social content that show the style,
@@ -644,7 +641,7 @@ export default function LandingPage() {
             </div>
             <h2 className="pillar-headline">
               Be there when people are{" "}
-              <span className="serif accent-text">looking.</span>
+              <span className="accent-text">looking.</span>
             </h2>
             <div className="found-search-block">
               <p className="found-search-lede">
@@ -774,7 +771,7 @@ export default function LandingPage() {
               </div>
               <h2 className="pillar-headline">
                 Keep every opportunity{" "}
-                <span className="serif accent-text">connected.</span>
+                <span className="accent-text">connected.</span>
               </h2>
             </div>
             <div style={{ display: "grid", gap: 16, maxWidth: 540 }}>
@@ -883,8 +880,7 @@ export default function LandingPage() {
               Who we are
             </div>
             <h2 className="who-headline">
-              We believe good work deserves{" "}
-              <span className="serif">attention.</span>
+              We believe good work deserves attention.
             </h2>
             <div className="who-body">
               <p>
@@ -921,7 +917,7 @@ export default function LandingPage() {
           <div className="final-cta-scrim" />
           <div className="final-cta-content">
             <h2 className="final-cta-title">
-              Your work deserves the <span className="serif">Spotlight.</span>
+              Your work deserves the <span className="script">Spotlight.</span>
             </h2>
             <div className="final-cta-row">
               <div className="final-cta-copy">

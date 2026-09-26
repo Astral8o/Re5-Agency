@@ -21,6 +21,11 @@
   font-family: var(--font-serif), serif;
 }
 
+.script {
+  font-family: var(--font-script), cursive;
+  font-weight: 700;
+}
+
 .dot {
   color: var(--accent);
 }
@@ -483,10 +488,8 @@
   max-width: 13ch;
 }
 
-.hero-title .serif {
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.02em;
+.hero-title .script {
+  letter-spacing: 0;
   color: var(--accent);
 }
 
@@ -581,8 +584,7 @@
   letter-spacing: -0.035em;
 }
 
-.intro-title .serif {
-  font-style: italic;
+.intro-title .script {
   color: var(--accent-deep);
 }
 
@@ -794,12 +796,6 @@
   line-height: 1.02;
   letter-spacing: -0.035em;
   text-wrap: balance;
-}
-
-.pillar-headline .serif {
-  font-family: var(--font-serif), serif;
-  font-style: italic;
-  font-weight: 400;
 }
 
 .pillar-body {
@@ -1521,13 +1517,6 @@
   text-wrap: balance;
 }
 
-.who-headline .serif {
-  font-family: var(--font-serif), serif;
-  font-style: italic;
-  font-weight: 400;
-  color: var(--accent);
-}
-
 .who-body {
   display: grid;
   gap: 16px;
@@ -1595,10 +1584,7 @@
   max-width: 12ch;
 }
 
-.final-cta-title .serif {
-  font-family: var(--font-serif), serif;
-  font-style: italic;
-  font-weight: 400;
+.final-cta-title .script {
   color: var(--accent);
 }
 
