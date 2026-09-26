@@ -89,19 +89,6 @@
   text-wrap: pretty;
 }
 
-.pillar-stat {
-  margin: 0;
-  max-width: 65ch;
-  padding-left: 20px;
-  border-left: 2px solid var(--accent, #ff5a1f);
-  font-weight: 300;
-  font-style: italic;
-  font-size: 18px;
-  line-height: 1.6;
-  color: #f4efe8;
-  text-wrap: pretty;
-}
-
 /* ---- Nav ---- */
 
 .nav {
@@ -447,27 +434,6 @@
   gap: 24px;
 }
 
-.worth-seeing-heading {
-  margin: 0;
-  font-weight: 300;
-  font-size: clamp(30px, 3.6vw, 52px);
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  text-wrap: balance;
-}
-
-.accent-strong {
-  color: #ff5a1f;
-}
-
-.worth-seeing-lede {
-  margin: 0;
-  font-weight: 300;
-  font-size: 18px;
-  line-height: 1.5;
-  color: rgba(244, 239, 232, 0.7);
-}
-
 .chip-row {
   display: flex;
   flex-wrap: wrap;
@@ -481,15 +447,6 @@
   font-weight: 300;
   font-size: 16px;
   white-space: nowrap;
-}
-
-.worth-seeing-closer {
-  margin: 0;
-  max-width: 48ch;
-  font-weight: 300;
-  font-size: clamp(19px, 1.7vw, 24px);
-  line-height: 1.4;
-  color: #f4efe8;
 }
 
 .image-grid-2x2 {
@@ -531,15 +488,6 @@
   filter: blur(120px);
   opacity: 0.35;
   background: radial-gradient(ellipse at 50% 50%, var(--accent, #ff5a1f) 0%, rgba(10, 9, 8, 0) 70%);
-}
-
-.how-it-works-inner {
-  position: relative;
-  max-width: 780px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
 }
 
 /* ---- Pillar sections (Seen / Found / Booked) ---- */
@@ -637,15 +585,6 @@
   white-space: nowrap;
 }
 
-.package-card-value {
-  margin: 0;
-  font-weight: 300;
-  font-size: 15px;
-  line-height: 1.6;
-  color: rgba(244, 239, 232, 0.7);
-  text-wrap: pretty;
-}
-
 .package-card-features {
   margin: 0;
   padding: 0;
@@ -712,31 +651,6 @@
   letter-spacing: 0.04em;
   color: var(--accent, #ff5a1f);
   white-space: nowrap;
-}
-
-.momentum-blocks {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px 32px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(244, 239, 232, 0.12);
-}
-
-.momentum-block h4 {
-  margin: 0 0 6px;
-  font-weight: 600;
-  font-size: 17px;
-  line-height: 1.4;
-  color: #f4efe8;
-}
-
-.momentum-block p {
-  margin: 0;
-  font-weight: 300;
-  font-size: 15px;
-  line-height: 1.6;
-  color: rgba(244, 239, 232, 0.65);
 }
 
 .momentum-feature-included {
@@ -1020,6 +934,42 @@
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+/* ---- Bring it all together ---- */
+
+.recap-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.recap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 32px;
+}
+
+.recap-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recap-block h3 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  color: var(--accent, #ff5a1f);
+}
+
+.recap-block p {
+  margin: 0;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(244, 239, 232, 0.68);
 }
 
 /* ---- Where do we start ---- */
