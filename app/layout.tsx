@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Caveat, IBM_Plex_Mono, Instrument_Sans, Instrument_Serif } from "next/font/google";
+import { Caveat, Instrument_Sans } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -7,23 +7,8 @@ const GA_MEASUREMENT_ID = "G-6RBX04Y5KR";
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: "variable",
   variable: "--font-sans",
-  display: "swap",
-});
-
-const instrumentSerif = Instrument_Serif({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  variable: "--font-serif",
-  display: "swap",
-});
-
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
   display: "swap",
 });
 
@@ -55,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSans.variable} ${instrumentSerif.variable} ${plexMono.variable} ${caveat.variable}`}
+      className={`${instrumentSans.variable} ${caveat.variable}`}
     >
       <body>
         {children}
