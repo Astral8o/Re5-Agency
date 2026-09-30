@@ -20,14 +20,14 @@ const schibstedGrotesk = Schibsted_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Re5 | Roll up. Pop up.",
+  title: "Re5 | Roll up. Experience it.",
   description:
     "We create mobile experiences designed around your brand, event or celebration. Across Trinidad and Tobago.",
   metadataBase: new URL("https://www.re5agency.com"),
   openGraph: {
-    title: "Re5 | Roll up. Pop up.",
+    title: "Re5 | Roll up. Experience it.",
     description:
-      "Mobile pop-up experiences for brands, events and celebrations across Trinidad and Tobago.",
+      "Mobile experiences for brands, events and celebrations across Trinidad and Tobago.",
     url: "https://www.re5agency.com",
     siteName: "Re5",
     type: "website",

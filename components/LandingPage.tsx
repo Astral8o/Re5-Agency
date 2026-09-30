@@ -64,7 +64,7 @@ const BRANDED = ["Our logo or names on the cart", "Match our colours or theme"];
 const hasK = (a: Answers) => ["Slushie Sweets", MULTI].includes(String(a.offer));
 const hasC = (a: Answers) => ["Signature Slushie", MULTI].includes(String(a.offer));
 const hasS = (a: Answers) => hasK(a) || hasC(a);
-const hasP = (a: Answers) => ["Popcorn Pop-Up", MULTI].includes(String(a.offer));
+const hasP = (a: Answers) => ["Popcorn Experience", MULTI].includes(String(a.offer));
 
 const EVENT_FIELDS: FieldConfig[] = [
   { key: "eventDate", label: "Event date", type: "date" },
@@ -109,7 +109,7 @@ const STEPS: StepConfig[] = [
     q: "What would you like to book?",
     type: "single",
     req: true,
-    opts: ["Slushie Sweets", "Signature Slushie", "Popcorn Pop-Up", MULTI, CUSTOM],
+    opts: ["Slushie Sweets", "Signature Slushie", "Popcorn Experience", MULTI, CUSTOM],
   },
   {
     id: "occasion",
@@ -308,7 +308,7 @@ const HOW_STEPS = [
     body: "We design the look, details and experience around your brand or occasion.",
   },
   { n: "03", title: "Add the extras", body: "Choose any add-ons you want when you book." },
-  { n: "04", title: "We Pop Up", body: "We deliver, set up, serve and pack down." },
+  { n: "04", title: "The Experience", body: "We deliver, set up, serve and pack down." },
   {
     n: "05",
     title: "Share the moments with your friends",
@@ -344,7 +344,7 @@ type CategoryDef = {
 const CATEGORIES: CategoryDef[] = [
   {
     id: "build",
-    title: "Make it Your Pop Up",
+    title: "Make it Your Experience",
     eyebrow: "Build It Your Way",
     heading: "Start with a blank cart. Make it yours.",
     body: "Your sign, your products, your decorations. We'll walk you through it step by step, and bring in a designer if you want one.",
@@ -357,7 +357,7 @@ const CATEGORIES: CategoryDef[] = [
     title: "Food + Beverage Experiences",
     eyebrow: "Food + Beverage Experiences",
     heading: "The good stuff, made even better.",
-    body: "The kind of pop-up people gather around, enjoy together and keep coming back to. A little something that makes the moment feel more fun, more social and more memorable.",
+    body: "The kind of experience people gather around, enjoy together and keep coming back to. A little something that makes the moment feel more fun, more social and more memorable.",
     images: [
       { src: "/images/re5popup/signature-slushie-cocktail.png", pos: "50% 30%" },
       { src: "/images/re5popup/popcorn-boxes.png", pos: "50% 55%" },
@@ -789,7 +789,7 @@ export default function LandingPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          offer: "Make it Your Pop Up",
+          offer: "Make it Your Experience",
           contact: builderAnswers.contact,
           email: builderAnswers.email,
           phone: builderAnswers.phone,
@@ -832,7 +832,7 @@ export default function LandingPage() {
         </a>
         {!mobile ? (
           <nav className="nav">
-            <a href="#popups">Pop-Ups</a>
+            <a href="#popups">Experiences</a>
             <a href="#how">How It Works</a>
             <div className="nav-actions">
               <a
@@ -845,7 +845,7 @@ export default function LandingPage() {
                 <WhatsAppIcon />
               </a>
               <button className="btn btn-accent" onClick={openWizard}>
-                Create Your Pop-Up
+                Create Your Experience
               </button>
             </div>
           </nav>
@@ -872,7 +872,7 @@ export default function LandingPage() {
           <h1 className="hero-heading">
             <span className="hero-kicker">Roll up.</span>
             <span className="hero-headline">
-              POP UP.
+              EXPERIENCE IT.
               <StarIcon className="hero-star" />
             </span>
           </h1>
@@ -882,7 +882,7 @@ export default function LandingPage() {
           </p>
           <div className="hero-actions">
             <button className="btn btn-ink" onClick={openWizard}>
-              Create Your Pop-Up <ArrowCircle />
+              Create Your Experience <ArrowCircle />
             </button>
             <a href="#popups" className="link-underline">
               See what we offer
@@ -892,7 +892,7 @@ export default function LandingPage() {
         <div className="hero-media">
           <img
             src="/images/re5popup/hero-popcorn-serving.png"
-            alt="Re5 popcorn pop-up serving guests"
+            alt="Re5 popcorn experience serving guests"
             fetchPriority="high"
           />
         </div>
@@ -904,7 +904,7 @@ export default function LandingPage() {
 
       <section id="popups" className="categories">
         <div className="category-tabs">
-          <div className="category-tablist" role="tablist" aria-label="Pop-up packages">
+          <div className="category-tablist" role="tablist" aria-label="Experience packages">
             {CATEGORIES.map((c, i) => (
               <button
                 key={c.id}
@@ -955,7 +955,7 @@ export default function LandingPage() {
       <section className="customize">
         <div className="customize-head">
           <h2>
-            Your pop-up. <span className="accent">Your way.</span>
+            Your experience. <span className="accent">Your way.</span>
           </h2>
           <p>Every Re5 experience can be customized around what you&rsquo;re creating.</p>
         </div>
@@ -1011,7 +1011,7 @@ export default function LandingPage() {
           ))}
         </ol>
         <a href="#popups" className="btn btn-accent how-cta">
-          Explore All Pop Ups <ArrowCircle dark />
+          Explore All Experiences <ArrowCircle dark />
         </a>
         <div className="how-footer">
           <div>
@@ -1049,7 +1049,7 @@ export default function LandingPage() {
         </h2>
         <p className="final-cta-sub">Ready when you are.</p>
         <button className="btn btn-ink" onClick={openWizard}>
-          Create Your Pop-Up <ArrowCircle />
+          Create Your Experience <ArrowCircle />
         </button>
       </section>
 
@@ -1060,16 +1060,16 @@ export default function LandingPage() {
               Re5<span className="accent">.</span>
             </span>
             <p>
-              Mobile pop-up experiences for brands, events and celebrations across Trinidad and
+              Mobile experiences for brands, events and celebrations across Trinidad and
               Tobago.
             </p>
           </div>
           <div className="footer-cols">
             <div className="footer-col">
               <span className="footer-col-title">Explore</span>
-              <a href="#popups">Pop-Ups</a>
+              <a href="#popups">Experiences</a>
               <button className="footer-link-btn" onClick={openWizard}>
-                Create Your Pop-Up
+                Create Your Experience
               </button>
               <a href="#how">How It Works</a>
             </div>
@@ -1088,7 +1088,7 @@ export default function LandingPage() {
       {mobile && scrolled && !open && !builderOpen && (
         <div className="mobile-bar">
           <button className="btn btn-accent mobile-bar-cta" onClick={openWizard}>
-            Create Your Pop-Up <span className="arrow-circle arrow-circle-dark">&rarr;</span>
+            Create Your Experience <span className="arrow-circle arrow-circle-dark">&rarr;</span>
           </button>
           <a
             href={WHATSAPP_URL}
@@ -1106,7 +1106,7 @@ export default function LandingPage() {
         <div
           role="dialog"
           aria-modal="true"
-          aria-label="Make it your pop up"
+          aria-label="Make it your experience"
           className="modal wizard-modal"
         >
           <div className="modal-topbar">
@@ -1137,7 +1137,7 @@ export default function LandingPage() {
               {builderStep === 0 && (
                 <>
                   <span className="wizard-tag">
-                    <StarIcon className="wizard-tag-star" /> Make it your pop up
+                    <StarIcon className="wizard-tag-star" /> Make it your experience
                   </span>
                   <h2 className="wizard-question">This is your blank canvas.</h2>
                   <p className="wizard-hint">
@@ -1145,7 +1145,7 @@ export default function LandingPage() {
                     and the finishing touches, and we bring it to life.
                   </p>
                   <div className="builder-intro-cart">
-                    <img src="/images/re5popup/cart-blank.png" alt="Blank Re5 pop-up cart" />
+                    <img src="/images/re5popup/cart-blank.png" alt="Blank Re5 experience cart" />
                   </div>
                 </>
               )}
@@ -1385,7 +1385,7 @@ export default function LandingPage() {
                     Got it<span className="accent">.</span>
                   </h2>
                   <p>
-                    We&rsquo;ll put your pop-up together and follow up within a day with next
+                    We&rsquo;ll put your experience together and follow up within a day with next
                     steps
                     {builderAnswers.wantsConsultation
                       ? ", and we'll see you at the consultation."
@@ -1522,7 +1522,7 @@ export default function LandingPage() {
               {isDone && (
                 <div className="wizard-done">
                   <h2>
-                    You&rsquo;re ready to <span className="wizard-review-brand">pop up.</span>
+                    You&rsquo;re ready to <span className="wizard-review-brand">experience it.</span>
                   </h2>
                   <p>
                     Thanks! We&rsquo;ve received your request. We&rsquo;ll check the date and get
@@ -1560,7 +1560,7 @@ export default function LandingPage() {
 /* ---------------------------------------------------------------- */
 
 function Marquee() {
-  const words = ["Pop Up", "Stand Out", "Make A Moment", "Make It Pop"];
+  const words = ["Experiences", "Stand Out", "Make A Moment", "Make It Pop"];
   const items: string[] = [];
   for (let i = 0; i < words.length * 3; i++) items.push(words[i % words.length]);
   const track = (key: number) => (
@@ -1734,7 +1734,7 @@ function WizardQuestion({
           )}
           {isKidsPopContext && (
             <span>
-              <strong>Slushie Sweets and Popcorn Pop-Up:</strong> a friendly attendant serves, tops
+              <strong>Slushie Sweets and Popcorn Experience:</strong> a friendly attendant serves, tops
               up and keeps the cart looking good.
             </span>
           )}

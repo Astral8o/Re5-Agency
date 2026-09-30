@@ -239,7 +239,7 @@
   align-self: flex-start;
   font-family: var(--font-display), cursive;
   font-weight: 400;
-  font-size: clamp(72px, 11vw, 196px);
+  font-size: clamp(48px, 7.2vw, 130px);
   line-height: 0.72;
   letter-spacing: -0.01em;
   padding-top: 0.12em;
