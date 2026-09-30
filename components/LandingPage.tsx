@@ -203,42 +203,6 @@ function ArrowCircle({ dark }: { dark?: boolean }) {
   return <span className={`arrow-circle ${dark ? "arrow-circle-dark" : ""}`}>&rarr;</span>;
 }
 
-const HOW_ICONS: string[] = [
-  'M4 7.5L6 3.5h11l2 4z|M4 7.5c0 1.2 1 2 2.2 2s2.3-.8 2.3-2c0 1.2 1 2 2.2 2s2.3-.8 2.3-2c0 1.2 1 2 2.2 2s2.3-.8 2.3-2c0 1.2.8 2 1.5 2|M6 9.5v3M17 9.5v3',
-  "M6 7.5h12l-1.5 13.5h-9z|M5 5h14v2.5H5z|M7.5 5l.8-2h7.4l.8 2|M6.6 11.5h10.8M16.9 16.5H7.1",
-  "M12 5v14M5 12h14",
-  "M12 12V2.5M12 12l6.7-6.7M12 12h9.5M12 12l6.7 6.7M12 12v9.5M12 12l-6.7 6.7M12 12H2.5M12 12L5.3 5.3",
-  "M6 2.5h12v19H6z",
-];
-
-const HOW_STEPS = [
-  {
-    n: "01",
-    title: "Pick",
-    body: "Start with one of our experiences or come to us with an idea of your own.",
-  },
-  {
-    n: "02",
-    title: "Connect",
-    body: "We talk through your event or brand, what you have in mind and how you want people to experience it.",
-  },
-  {
-    n: "03",
-    title: "Make it yours",
-    body: "Together, we choose the details that bring your experience to life.",
-  },
-  {
-    n: "04",
-    title: "Experience",
-    body: "We bring it together, set it up and show up for the moment.",
-  },
-  {
-    n: "05",
-    title: "Share",
-    body: "The experience doesn't have to end there. The photos, the videos and the conversations keep your moment moving after it's over.",
-  },
-];
-
 const PILLARS = [
   {
     n: "01",
@@ -795,10 +759,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="pillars">
+      <section id="how" className="pillars">
         <div className="pillars-head">
           <h2 className="pillars-heading">
-            We bring it all <span className="accent">together.</span>
+            How it <span className="accent">works.</span>
           </h2>
           <p className="pillars-intro">
             It starts with a conversation. We get to know your idea, your moment and how you want
@@ -837,40 +801,6 @@ export default function LandingPage() {
               Tell us your idea <ArrowCircle />
             </button>
           </div>
-        </div>
-      </section>
-
-      <section id="how" className="how">
-        <h2 className="how-heading">
-          How <span className="how-brand">Re5</span> works
-        </h2>
-        <ol className="how-steps">
-          {HOW_STEPS.map((s, i) => (
-            <li key={s.n} className="how-step">
-              <span className="how-step-top">
-                <span className="how-step-num">{s.n}</span>
-                <span className="how-step-icon">
-                  <HowIcon paths={HOW_ICONS[i]} />
-                </span>
-              </span>
-              <span className="how-step-title">{s.title}</span>
-              <span className="how-step-body">{s.body}</span>
-            </li>
-          ))}
-        </ol>
-        <a href="#popups" className="btn btn-accent how-cta">
-          Explore All Experiences <ArrowCircle dark />
-        </a>
-        <div className="how-footer">
-          <div>
-            <span className="how-footer-title">Let&rsquo;s talk it through.</span>
-            <span className="how-footer-body">
-              Tell us what you have in mind and we&rsquo;ll work with you to create the experience.
-            </span>
-          </div>
-          <a href={WHATSAPP_URL} target="_blank" rel="noopener" className="btn btn-outline-light">
-            <WhatsAppIcon /> Chat on WhatsApp &rarr;
-          </a>
         </div>
       </section>
 
@@ -1729,16 +1659,6 @@ function Marquee() {
         {track(1)}
       </div>
     </div>
-  );
-}
-
-function HowIcon({ paths }: { paths: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className="how-icon" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-      {paths.split("|").map((d, i) => (
-        <path d={d} key={i} />
-      ))}
-    </svg>
   );
 }
 
