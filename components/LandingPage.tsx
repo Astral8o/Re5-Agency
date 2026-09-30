@@ -895,6 +895,17 @@ export default function LandingPage() {
 
       <section className="final-cta">
         <StarIcon className="final-cta-star" />
+        <div className="final-cta-collage" aria-hidden="true">
+          <div className="cta-photo cta-photo-1">
+            <img src="/images/re5popup/slushie-candy-crop.png" alt="" />
+          </div>
+          <div className="cta-photo cta-photo-2">
+            <img src="/images/re5popup/popcorn-kernels-crop.png" alt="" />
+          </div>
+          <div className="cta-photo cta-photo-3">
+            <img src="/images/re5popup/cart-blank.png" alt="" />
+          </div>
+        </div>
         <h2 className="final-cta-heading">
           <span>
             Make your moment <span className="final-cta-pop">POP!</span>
