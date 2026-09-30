@@ -773,10 +773,6 @@ export default function LandingPage() {
           <span className="category-num" aria-hidden="true">
             01
           </span>
-          <StarIcon className="category-decor-star" />
-          <div className="category-photo category-photo-food">
-            <img src="/images/re5popup/signature-slushie-cocktail.png" alt="" style={{ objectPosition: "50% 30%" }} />
-          </div>
           <div className="category-content">
             <span className="category-eyebrow">Food + Beverage Experiences</span>
             <h2 className="category-heading">The good stuff, made even better.</h2>
@@ -785,6 +781,13 @@ export default function LandingPage() {
               little something that makes the moment feel more fun, more social and more
               memorable.
             </p>
+            <CategoryCarousel
+              images={[
+                { src: "/images/re5popup/signature-slushie-cocktail.png", pos: "50% 30%" },
+                { src: "/images/re5popup/popcorn-kernels-crop.png" },
+                { src: "/images/re5popup/slushie-candy-crop.png" },
+              ]}
+            />
             <span className="category-tags">Slushie &middot; Popcorn</span>
             <div className="category-cta-group">
               <button className="btn btn-ink category-cta" onClick={openWizard}>
@@ -798,10 +801,6 @@ export default function LandingPage() {
           <span className="category-num" aria-hidden="true">
             02
           </span>
-          <StarIcon className="category-decor-star" />
-          <div className="category-photo category-photo-brand">
-            <img src="/images/re5popup/popcorn-machine-crop.png" alt="" style={{ objectPosition: "50% 40%" }} />
-          </div>
           <div className="category-content">
             <span className="category-eyebrow">Product + Brand Experiences</span>
             <h2 className="category-heading">Give them something to experience.</h2>
@@ -809,6 +808,13 @@ export default function LandingPage() {
               Turn seeing your brand into experiencing it. Something that draws people in, gets
               them curious and gives them a reason to stop, explore and remember you.
             </p>
+            <CategoryCarousel
+              images={[
+                { src: "/images/re5popup/popcorn-machine-crop.png", pos: "50% 40%" },
+                { src: "/images/re5popup/cart-blank.png" },
+                { src: "/images/re5popup/slushie-group-toast.png", pos: "50% 35%" },
+              ]}
+            />
             <div className="category-cta-group">
               <button className="btn btn-accent category-cta" onClick={() => startWith(CUSTOM)}>
                 Make your brand pop <ArrowCircle dark />
@@ -1234,6 +1240,57 @@ function HowIcon({ paths }: { paths: string }) {
         <path d={d} key={i} />
       ))}
     </svg>
+  );
+}
+
+function CategoryCarousel({ images }: { images: { src: string; pos?: string }[] }) {
+  const [i, setI] = useState(0);
+  const go = (next: number) => setI((next + images.length) % images.length);
+
+  return (
+    <div className="category-carousel">
+      <div
+        className="category-carousel-track"
+        style={{ transform: `translateX(-${i * 100}%)` }}
+      >
+        {images.map((img, idx) => (
+          <div className="category-carousel-slide" key={idx}>
+            <img src={img.src} alt="" style={img.pos ? { objectPosition: img.pos } : undefined} />
+          </div>
+        ))}
+      </div>
+      {images.length > 1 && (
+        <>
+          <button
+            type="button"
+            className="category-carousel-nav category-carousel-prev"
+            onClick={() => go(i - 1)}
+            aria-label="Previous photo"
+          >
+            &lsaquo;
+          </button>
+          <button
+            type="button"
+            className="category-carousel-nav category-carousel-next"
+            onClick={() => go(i + 1)}
+            aria-label="Next photo"
+          >
+            &rsaquo;
+          </button>
+          <div className="category-carousel-dots">
+            {images.map((_, idx) => (
+              <button
+                type="button"
+                key={idx}
+                className={`category-carousel-dot ${idx === i ? "active" : ""}`}
+                onClick={() => go(idx)}
+                aria-label={`Go to photo ${idx + 1}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 

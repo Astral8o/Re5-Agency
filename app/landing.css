@@ -393,10 +393,6 @@
   transform: translateY(-6px);
 }
 
-.category-card:hover .category-photo {
-  transform: rotate(0deg) translateY(-4px);
-}
-
 .category-card-food {
   background: var(--accent);
   color: var(--ink);
@@ -437,39 +433,30 @@
   color: rgba(243, 239, 231, 0.08);
 }
 
-.category-decor-star {
-  position: absolute;
-  right: clamp(20px, 3vw, 36px);
-  bottom: clamp(20px, 3vw, 36px);
-  z-index: 0;
-  width: clamp(28px, 3vw, 44px);
-  height: clamp(28px, 3vw, 44px);
-  pointer-events: none;
-  animation: suTwinkle 5.6s ease-in-out infinite;
-}
-
-.category-card-food .category-decor-star {
-  color: rgba(23, 20, 15, 0.18);
-}
-
-.category-card-brand .category-decor-star {
-  color: rgba(255, 91, 31, 0.5);
-}
-
-.category-photo {
-  position: absolute;
-  top: clamp(-40px, -6vw, -28px);
-  z-index: 4;
-  width: clamp(100px, 26vw, 200px);
-  aspect-ratio: 4 / 5;
+.category-carousel {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
   border-radius: 20px;
   overflow: hidden;
-  border: 6px solid var(--paper);
-  box-shadow: 0 20px 40px -14px rgba(23, 20, 15, 0.45);
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.category-photo img {
+.category-carousel-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.category-carousel-slide {
+  position: relative;
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.category-carousel-slide img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -478,18 +465,64 @@
   display: block;
 }
 
-.category-photo-food {
-  right: clamp(20px, 4vw, 40px);
-  transform: rotate(-6deg);
+.category-carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(23, 20, 15, 0.55);
+  color: var(--paper);
+  font-size: 22px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.25s;
 }
 
-.category-photo-brand {
-  right: clamp(20px, 4vw, 40px);
-  transform: rotate(6deg);
+.category-carousel-nav:hover {
+  background: rgba(23, 20, 15, 0.8);
+}
+
+.category-carousel-prev {
+  left: 10px;
+}
+
+.category-carousel-next {
+  right: 10px;
+}
+
+.category-carousel-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.category-carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 0;
+  padding: 0;
+  background: rgba(243, 239, 231, 0.55);
+  cursor: pointer;
+  transition: background 0.25s, transform 0.25s;
+}
+
+.category-carousel-dot.active {
+  background: var(--paper);
+  transform: scale(1.4);
 }
 
 .category-eyebrow {
-  max-width: 65%;
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.18em;
@@ -507,7 +540,6 @@
 
 .category-heading {
   margin: 0;
-  max-width: 80%;
   font-weight: 900;
   font-size: clamp(32px, 3.6vw, 52px);
   line-height: 0.98;
