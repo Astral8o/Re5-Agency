@@ -335,6 +335,73 @@ const CUSTOM_WORDS = ["branding", "colours", "menu", "signage", "experience"];
 
 const WHATSAPP_URL = "https://wa.me/18680000000";
 
+// TODO(Re5): swap in your real Google Calendar appointment scheduling link.
+const CONSULTATION_BOOKING_URL = "https://calendar.google.com/calendar/u/0/appointments";
+
+/* ---------------------------------------------------------------- */
+/* Packages (categories)                                             */
+/* ---------------------------------------------------------------- */
+
+type CategoryCta = "builder" | "wizard" | "custom";
+
+type CategoryDef = {
+  id: string;
+  title: string;
+  eyebrow: string;
+  heading: string;
+  body: string;
+  images: { src: string; pos?: string }[];
+  tags?: string;
+  ctaLabel: string;
+  cta: CategoryCta;
+};
+
+const CATEGORIES: CategoryDef[] = [
+  {
+    id: "build",
+    title: "Make it Your Pop Up",
+    eyebrow: "Build It Your Way",
+    heading: "Start with a blank cart. Make it yours.",
+    body: "Your sign, your products, your decorations. We'll walk you through it step by step, and bring in a designer if you want one.",
+    images: [{ src: "/images/re5popup/cart-blank.png" }],
+    ctaLabel: "Start building",
+    cta: "builder",
+  },
+  {
+    id: "food",
+    title: "Food + Beverage Experiences",
+    eyebrow: "Food + Beverage Experiences",
+    heading: "The good stuff, made even better.",
+    body: "The kind of pop-up people gather around, enjoy together and keep coming back to. A little something that makes the moment feel more fun, more social and more memorable.",
+    images: [
+      { src: "/images/re5popup/signature-slushie-cocktail.png", pos: "50% 30%" },
+      { src: "/images/re5popup/popcorn-boxes.png", pos: "50% 55%" },
+      { src: "/images/re5popup/slushie-candy-crop.png" },
+    ],
+    tags: "Slushie · Popcorn",
+    ctaLabel: "Make your moment pop",
+    cta: "wizard",
+  },
+  {
+    id: "brand",
+    title: "Brand Activation",
+    eyebrow: "Brand Activation",
+    heading: "Give them something to experience.",
+    body: "Turn seeing your brand into experiencing it. Something that draws people in, gets them curious and gives them a reason to stop, explore and remember you.",
+    images: [
+      { src: "/images/re5popup/hero-popcorn-serving.png", pos: "50% 42%" },
+      { src: "/images/re5popup/cart-blank.png" },
+      { src: "/images/re5popup/slushie-group-toast.png", pos: "50% 35%" },
+    ],
+    ctaLabel: "Make your brand pop",
+    cta: "custom",
+  },
+];
+
+const DECORATION_OPTS = ["Minimal & clean", "Bold & colourful", "Themed to my event", "Let us surprise you"];
+
+const BUILDER_STEP_COUNT = 6;
+
 /* ---------------------------------------------------------------- */
 /* Component                                                          */
 /* ---------------------------------------------------------------- */
@@ -355,12 +422,19 @@ export default function LandingPage() {
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState("");
 
-  const [desOpen, setDesOpen] = useState(false);
+  const [activeCat, setActiveCat] = useState(0);
+
+  const [builderOpen, setBuilderOpen] = useState(false);
+  const [builderStep, setBuilderStep] = useState(0);
+  const [builderErr, setBuilderErr] = useState("");
+  const [builderSending, setBuilderSending] = useState(false);
+  const [builderSendError, setBuilderSendError] = useState("");
   const [art, setArt] = useState<{ canopy?: string | null; body?: string | null }>({});
   const [fit, setFit] = useState<{ canopy: "contain" | "cover"; body: "contain" | "cover" }>({
     canopy: "contain",
     body: "contain",
   });
+  const [builderAnswers, setBuilderAnswers] = useState<Record<string, unknown>>({});
 
   const contRef = useRef<HTMLButtonElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -396,11 +470,11 @@ export default function LandingPage() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = open || desOpen ? "hidden" : "";
+    document.body.style.overflow = open || builderOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open, desOpen]);
+  }, [open, builderOpen]);
 
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = 0;
@@ -649,11 +723,6 @@ export default function LandingPage() {
     setFromReview(false);
   }, [close]);
 
-  const openDesigner = useCallback(() => {
-    setDesOpen(true);
-  }, []);
-  const closeDesigner = useCallback(() => setDesOpen(false), []);
-
   const setArtFile = useCallback((key: "canopy" | "body", e: ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
@@ -663,17 +732,100 @@ export default function LandingPage() {
     e.target.value = "";
   }, []);
 
-  const quoteCart = useCallback(() => {
-    const parts = [art.canopy && "canopy artwork", art.body && "front panel artwork"].filter(
-      Boolean
-    ) as string[];
-    openWizard();
-    setDesOpen(false);
-    setAnswers({
-      look: parts.length ? BRANDED[0] : undefined,
-      cartDesign: parts.length ? `Designed online: ${parts.join(" + ")}` : "No artwork yet",
-    });
-  }, [art, openWizard]);
+  const openBuilder = useCallback(() => {
+    setBuilderOpen(true);
+    setBuilderStep(0);
+    setBuilderErr("");
+    setBuilderSendError("");
+    setArt({});
+    setFit({ canopy: "contain", body: "contain" });
+    setBuilderAnswers({});
+  }, []);
+
+  const closeBuilder = useCallback(() => setBuilderOpen(false), []);
+
+  const setBA = useCallback((key: string, value: unknown) => {
+    setBuilderAnswers((prev) => ({ ...prev, [key]: value }));
+    setBuilderErr("");
+  }, []);
+
+  const builderNext = useCallback(() => {
+    if (builderStep === 2 && !String(builderAnswers.products || "").trim()) {
+      setBuilderErr("Tell us what you'll be serving or showcasing.");
+      return;
+    }
+    if (builderStep === 3 && !builderAnswers.decorations) {
+      setBuilderErr("Pick a decoration style to keep going.");
+      return;
+    }
+    setBuilderErr("");
+    setBuilderStep((s) => Math.min(s + 1, BUILDER_STEP_COUNT - 1));
+  }, [builderStep, builderAnswers]);
+
+  const builderBack = useCallback(() => {
+    setBuilderErr("");
+    setBuilderStep((s) => Math.max(s - 1, 0));
+  }, []);
+
+  const submitBuilder = useCallback(async () => {
+    if (!builderAnswers.contact || !builderAnswers.email) {
+      setBuilderErr("Add your name and email so we can reply.");
+      return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(String(builderAnswers.email))) {
+      setBuilderErr("That email looks incomplete.");
+      return;
+    }
+    setBuilderSending(true);
+    setBuilderSendError("");
+    const brief = [
+      {
+        n: "01",
+        tag: "Sign",
+        answer:
+          art.canopy || art.body
+            ? "Uploaded artwork online"
+            : "No artwork yet, ask Re5 to design it",
+      },
+      { n: "02", tag: "Products", answer: String(builderAnswers.products || "Not answered") },
+      {
+        n: "03",
+        tag: "Decorations",
+        answer:
+          [builderAnswers.decorations, builderAnswers.decorationsNote]
+            .filter(Boolean)
+            .join(", ") || "Not answered",
+      },
+      {
+        n: "04",
+        tag: "Design consultation",
+        answer: builderAnswers.wantsConsultation ? "Requested" : "Not requested",
+      },
+    ];
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          offer: "Make it Your Pop Up",
+          contact: builderAnswers.contact,
+          email: builderAnswers.email,
+          phone: builderAnswers.phone,
+          company: builderAnswers.company,
+          brief,
+        }),
+      });
+      if (!res.ok) throw new Error("failed");
+      confetti();
+      setBuilderStep(BUILDER_STEP_COUNT);
+    } catch {
+      setBuilderSendError(
+        "Something went wrong sending that. Please try again, or reach us on WhatsApp."
+      );
+    } finally {
+      setBuilderSending(false);
+    }
+  }, [builderAnswers, art, confetti]);
 
   /* ---- render helpers ---- */
 
@@ -769,59 +921,53 @@ export default function LandingPage() {
       </div>
 
       <section id="popups" className="categories">
-        <div className="category-card category-card-food">
-          <span className="category-num" aria-hidden="true">
-            01
-          </span>
-          <div className="category-content">
-            <span className="category-eyebrow">Food + Beverage Experiences</span>
-            <h2 className="category-heading">The good stuff, made even better.</h2>
-            <p className="category-body">
-              The kind of pop-up people gather around, enjoy together and keep coming back to. A
-              little something that makes the moment feel more fun, more social and more
-              memorable.
-            </p>
-            <CategoryCarousel
-              images={[
-                { src: "/images/re5popup/signature-slushie-cocktail.png", pos: "50% 30%" },
-                { src: "/images/re5popup/popcorn-kernels-crop.png" },
-                { src: "/images/re5popup/slushie-candy-crop.png" },
-              ]}
-            />
-            <span className="category-tags">Slushie &middot; Popcorn</span>
-            <div className="category-cta-group">
-              <button className="btn btn-ink category-cta" onClick={openWizard}>
-                Make your moment pop <ArrowCircle />
+        <div className="category-tabs">
+          <div className="category-tablist" role="tablist" aria-label="Pop-up packages">
+            {CATEGORIES.map((c, i) => (
+              <button
+                key={c.id}
+                type="button"
+                role="tab"
+                id={`cat-tab-${c.id}`}
+                aria-selected={activeCat === i}
+                aria-controls={`cat-panel-${c.id}`}
+                className={`category-tab ${activeCat === i ? "active" : ""}`}
+                onClick={() => setActiveCat(i)}
+              >
+                <span className="category-tab-num">{String(i + 1).padStart(2, "0")}</span>
+                <span className="category-tab-label">{c.title}</span>
               </button>
-              <span className="category-cta-note">Takes 2 minutes</span>
-            </div>
+            ))}
           </div>
-        </div>
-        <div className="category-card category-card-brand">
-          <span className="category-num" aria-hidden="true">
-            02
-          </span>
-          <div className="category-content">
-            <span className="category-eyebrow">Product + Brand Experiences</span>
-            <h2 className="category-heading">Give them something to experience.</h2>
-            <p className="category-body">
-              Turn seeing your brand into experiencing it. Something that draws people in, gets
-              them curious and gives them a reason to stop, explore and remember you.
-            </p>
-            <CategoryCarousel
-              images={[
-                { src: "/images/re5popup/popcorn-machine-crop.png", pos: "50% 40%" },
-                { src: "/images/re5popup/cart-blank.png" },
-                { src: "/images/re5popup/slushie-group-toast.png", pos: "50% 35%" },
-              ]}
-            />
-            <div className="category-cta-group">
-              <button className="btn btn-accent category-cta" onClick={() => startWith(CUSTOM)}>
-                Make your brand pop <ArrowCircle dark />
-              </button>
-              <span className="category-cta-note">Takes 2 minutes</span>
+          {CATEGORIES.map((c, i) => (
+            <div
+              key={c.id}
+              role="tabpanel"
+              id={`cat-panel-${c.id}`}
+              aria-labelledby={`cat-tab-${c.id}`}
+              className="category-panel"
+              hidden={activeCat !== i}
+            >
+              <span className="category-eyebrow">{c.eyebrow}</span>
+              <h2 className="category-heading">{c.heading}</h2>
+              <p className="category-body">{c.body}</p>
+              <CategoryCarousel images={c.images} />
+              {c.tags && <span className="category-tags">{c.tags}</span>}
+              <div className="category-cta-group">
+                <button
+                  className={`btn ${i === 0 ? "btn-accent" : "btn-ink"} category-cta`}
+                  onClick={() => {
+                    if (c.cta === "builder") openBuilder();
+                    else if (c.cta === "custom") startWith(CUSTOM);
+                    else openWizard();
+                  }}
+                >
+                  {c.ctaLabel} <ArrowCircle dark={i === 0} />
+                </button>
+                <span className="category-cta-note">Takes 2 minutes</span>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </section>
 
@@ -958,7 +1104,7 @@ export default function LandingPage() {
         <div className="footer-bottom">Made in Trinidad and Tobago.</div>
       </footer>
 
-      {mobile && scrolled && !open && !desOpen && (
+      {mobile && scrolled && !open && !builderOpen && (
         <div className="mobile-bar">
           <button className="btn btn-accent mobile-bar-cta" onClick={openWizard}>
             Create Your Pop-Up <span className="arrow-circle arrow-circle-dark">&rarr;</span>
@@ -975,111 +1121,334 @@ export default function LandingPage() {
         </div>
       )}
 
-      {desOpen && (
-        <div role="dialog" aria-modal="true" aria-label="Design your cart" className="modal designer-modal">
+      {builderOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Make it your pop up"
+          className="modal wizard-modal"
+        >
           <div className="modal-topbar">
             <span className="modal-logo">
               Re5<span className="accent">.</span>
             </span>
-            <button aria-label="Close" className="modal-close" onClick={closeDesigner}>
+            <button aria-label="Close" className="modal-close" onClick={closeBuilder}>
               &times;
             </button>
           </div>
-          <div className="designer-body">
-            <div className="designer-preview">
-              <div className="designer-cart">
-                <img src="/images/re5popup/cart-blank.png" alt="Blank Re5 cart" />
+
+          {builderStep < BUILDER_STEP_COUNT && (
+            <div className="wizard-progress-row">
+              <div className="wizard-progress-track">
                 <div
-                  className="designer-zone designer-zone-canopy"
-                  style={{
-                    backgroundImage: art.canopy ? `url("${art.canopy}")` : "none",
-                    backgroundSize: fit.canopy,
-                  }}
-                />
-                <div
-                  className="designer-zone designer-zone-body"
-                  style={{
-                    backgroundImage: art.body ? `url("${art.body}")` : "none",
-                    backgroundSize: fit.body,
-                  }}
+                  className="wizard-progress-fill"
+                  style={{ width: `${((builderStep + 1) / BUILDER_STEP_COUNT) * 100}%` }}
                 />
               </div>
-              <span className="designer-note">Preview only. Final finish may vary.</span>
+              <span className="wizard-counter">
+                {String(builderStep + 1).padStart(2, "0")} / {String(BUILDER_STEP_COUNT).padStart(2, "0")}
+              </span>
             </div>
-            <div className="designer-form">
-              <div className="designer-form-head">
-                <h2>
-                  Design your <span className="accent">cart.</span>
-                </h2>
-                <p>Upload your artwork and see it on the cart. Your logo on the canopy, your design on the front.</p>
-              </div>
-              <div className="designer-zones">
-                {(
-                  [
-                    ["canopy", "01", "Canopy", "Your logo or name along the front of the roof."],
-                    ["body", "02", "Cart front", "Your artwork, poster or pattern on the front panel."],
-                  ] as const
-                ).map(([key, n, label, hint]) => (
-                  <div className="designer-zone-card" key={key}>
-                    <div className="designer-zone-head">
-                      <div>
-                        <span className="designer-zone-n">{n}</span>
-                        <span className="designer-zone-label">{label}</span>
-                        <span className="designer-zone-hint">{hint}</span>
-                      </div>
-                      {art[key] && (
+          )}
+
+          <div className="wizard-scroll">
+            <div className="wizard-stage">
+              {builderStep === 0 && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> Make it your pop up
+                  </span>
+                  <h2 className="wizard-question">This is your blank canvas.</h2>
+                  <p className="wizard-hint">
+                    Every Re5 cart starts here. From this point, you choose the sign, the products
+                    and the finishing touches, and we bring it to life.
+                  </p>
+                  <div className="builder-intro-cart">
+                    <img src="/images/re5popup/cart-blank.png" alt="Blank Re5 pop-up cart" />
+                  </div>
+                </>
+              )}
+
+              {builderStep === 1 && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> Design your sign
+                  </span>
+                  <h2 className="wizard-question">Put your name on it.</h2>
+                  <p className="wizard-hint">
+                    Upload your logo for the canopy and any artwork for the front panel. No
+                    artwork yet? Skip it, we can design it for you.
+                  </p>
+                  <div className="builder-sign-body">
+                    <div className="designer-preview">
+                      <div className="designer-cart">
+                        <img src="/images/re5popup/cart-blank.png" alt="Blank Re5 cart" />
                         <div
-                          className="designer-zone-thumb"
-                          style={{ backgroundImage: `url("${art[key]}")` }}
+                          className="designer-zone designer-zone-canopy"
+                          style={{
+                            backgroundImage: art.canopy ? `url("${art.canopy}")` : "none",
+                            backgroundSize: fit.canopy,
+                          }}
                         />
-                      )}
+                        <div
+                          className="designer-zone designer-zone-body"
+                          style={{
+                            backgroundImage: art.body ? `url("${art.body}")` : "none",
+                            backgroundSize: fit.body,
+                          }}
+                        />
+                      </div>
+                      <span className="designer-note">Preview only. Final finish may vary.</span>
                     </div>
-                    <div className="designer-zone-actions">
-                      <label className="btn btn-ink designer-upload-btn">
-                        {art[key] ? "Replace image" : "Upload image"}
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => setArtFile(key, e)}
-                          hidden
-                        />
-                      </label>
-                      {art[key] && (
-                        <>
-                          <div className="designer-fit-toggle">
-                            <button
-                              className={fit[key] === "contain" ? "active" : ""}
-                              onClick={() => setFit((s) => ({ ...s, [key]: "contain" }))}
-                            >
-                              Fit
-                            </button>
-                            <button
-                              className={fit[key] === "cover" ? "active" : ""}
-                              onClick={() => setFit((s) => ({ ...s, [key]: "cover" }))}
-                            >
-                              Fill
-                            </button>
+                    <div className="designer-zones">
+                      {(
+                        [
+                          ["canopy", "01", "Canopy", "Your logo or name along the front of the roof."],
+                          ["body", "02", "Cart front", "Your artwork, poster or pattern on the front panel."],
+                        ] as const
+                      ).map(([key, n, label, hint]) => (
+                        <div className="designer-zone-card" key={key}>
+                          <div className="designer-zone-head">
+                            <div>
+                              <span className="designer-zone-n">{n}</span>
+                              <span className="designer-zone-label">{label}</span>
+                              <span className="designer-zone-hint">{hint}</span>
+                            </div>
+                            {art[key] && (
+                              <div
+                                className="designer-zone-thumb"
+                                style={{ backgroundImage: `url("${art[key]}")` }}
+                              />
+                            )}
                           </div>
-                          <button
-                            className="designer-remove"
-                            onClick={() => setArt((s) => ({ ...s, [key]: null }))}
-                          >
-                            Remove
-                          </button>
-                        </>
-                      )}
+                          <div className="designer-zone-actions">
+                            <label className="btn btn-ink designer-upload-btn">
+                              {art[key] ? "Replace image" : "Upload image"}
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => setArtFile(key, e)}
+                                hidden
+                              />
+                            </label>
+                            {art[key] && (
+                              <>
+                                <div className="designer-fit-toggle">
+                                  <button
+                                    className={fit[key] === "contain" ? "active" : ""}
+                                    onClick={() => setFit((s) => ({ ...s, [key]: "contain" }))}
+                                  >
+                                    Fit
+                                  </button>
+                                  <button
+                                    className={fit[key] === "cover" ? "active" : ""}
+                                    onClick={() => setFit((s) => ({ ...s, [key]: "cover" }))}
+                                  >
+                                    Fill
+                                  </button>
+                                </div>
+                                <button
+                                  className="designer-remove"
+                                  onClick={() => setArt((s) => ({ ...s, [key]: null }))}
+                                >
+                                  Remove
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ))}
-              </div>
-              <div className="designer-submit-row">
-                <button className="btn btn-accent designer-quote-btn" onClick={quoteCart}>
-                  Quote this cart <ArrowCircle dark />
-                </button>
-                <span className="designer-skip-note">No artwork yet? Skip it. We can design it for you.</span>
-              </div>
+                </>
+              )}
+
+              {builderStep === 2 && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> Add your products
+                  </span>
+                  <h2 className="wizard-question">What will you be serving or showing off?</h2>
+                  <p className="wizard-hint">
+                    Drinks, snacks, merch, samples, anything. Tell us what&rsquo;s going in the
+                    cart.
+                  </p>
+                  <textarea
+                    className="wizard-textarea"
+                    rows={3}
+                    placeholder="e.g. our own cold brew, branded tote bags, a mini tasting menu"
+                    value={String(builderAnswers.products || "")}
+                    onChange={(e) => setBA("products", e.target.value)}
+                  />
+                </>
+              )}
+
+              {builderStep === 3 && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> Decorations
+                  </span>
+                  <h2 className="wizard-question">How should it feel?</h2>
+                  <div className="wizard-options">
+                    {DECORATION_OPTS.map((opt) => (
+                      <button
+                        key={opt}
+                        type="button"
+                        className={`wizard-option ${
+                          builderAnswers.decorations === opt ? "wizard-option-active" : ""
+                        }`}
+                        onClick={() => setBA("decorations", opt)}
+                      >
+                        <span className="wizard-option-mark">
+                          {builderAnswers.decorations === opt ? "✓" : ""}
+                        </span>
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                  {builderAnswers.decorations === "Themed to my event" && (
+                    <label className="wizard-extra-field">
+                      <span>Tell us the theme</span>
+                      <input
+                        value={String(builderAnswers.decorationsNote || "")}
+                        onChange={(e) => setBA("decorationsNote", e.target.value)}
+                        placeholder="e.g. sage and gold, or a beach theme"
+                      />
+                    </label>
+                  )}
+                </>
+              )}
+
+              {builderStep === 4 && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> Expert help
+                  </span>
+                  <h2 className="wizard-question">Want a hand with the design?</h2>
+                  <p className="wizard-hint">
+                    If you&rsquo;d rather talk it through, book a free consultation with our
+                    design team. Or skip this and continue, we&rsquo;ve got everything we need.
+                  </p>
+                  <div className="builder-consult-actions">
+                    <a
+                      href={CONSULTATION_BOOKING_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-ink"
+                      onClick={() => setBA("wantsConsultation", true)}
+                    >
+                      Book a free consultation <ArrowCircle />
+                    </a>
+                    <span className="builder-consult-note">
+                      {builderAnswers.wantsConsultation
+                        ? "Nice, we’ll see you there. Hit continue when you’re ready."
+                        : "No consultation? No problem, just continue below."}
+                    </span>
+                  </div>
+                </>
+              )}
+
+              {builderStep === 5 && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> Last step
+                  </span>
+                  <h2 className="wizard-question">Where should we send this?</h2>
+                  <div className="wizard-fields">
+                    {CONTACT_FIELDS.map((f) => (
+                      <label className="wizard-field" key={f.key}>
+                        <span>{f.label}</span>
+                        <input
+                          type={f.type || "text"}
+                          placeholder={f.ph}
+                          value={String(builderAnswers[f.key] || "")}
+                          onChange={(e) => setBA(f.key, e.target.value)}
+                        />
+                      </label>
+                    ))}
+                  </div>
+                  <div className="wizard-review-list">
+                    <div className="wizard-review-row">
+                      <span className="wizard-review-tag">Sign</span>
+                      <span className="wizard-review-answer">
+                        {art.canopy || art.body ? "Uploaded artwork" : "No artwork yet"}
+                      </span>
+                    </div>
+                    <div className="wizard-review-row">
+                      <span className="wizard-review-tag">Products</span>
+                      <span className="wizard-review-answer">
+                        {builderAnswers.products ? String(builderAnswers.products) : "Not answered"}
+                      </span>
+                    </div>
+                    <div className="wizard-review-row">
+                      <span className="wizard-review-tag">Decorations</span>
+                      <span className="wizard-review-answer">
+                        {[builderAnswers.decorations, builderAnswers.decorationsNote]
+                          .filter(Boolean)
+                          .join(", ") || "Not answered"}
+                      </span>
+                    </div>
+                    <div className="wizard-review-row">
+                      <span className="wizard-review-tag">Consultation</span>
+                      <span className="wizard-review-answer">
+                        {builderAnswers.wantsConsultation ? "Requested" : "Not requested"}
+                      </span>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {builderStep >= BUILDER_STEP_COUNT && (
+                <div className="wizard-done">
+                  <h2>
+                    Got it<span className="accent">.</span>
+                  </h2>
+                  <p>
+                    We&rsquo;ll put your pop-up together and follow up within a day with next
+                    steps
+                    {builderAnswers.wantsConsultation
+                      ? ", and we'll see you at the consultation."
+                      : "."}
+                  </p>
+                  <button className="btn btn-accent" onClick={closeBuilder}>
+                    Back to Re5 <ArrowCircle dark />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
+
+          {builderStep < BUILDER_STEP_COUNT && (
+            <div className="wizard-footer">
+              {builderStep > 0 ? (
+                <button className="wizard-back-btn" onClick={builderBack}>
+                  &larr; Back
+                </button>
+              ) : (
+                <span />
+              )}
+              <div className="wizard-footer-right">
+                {(builderStep === BUILDER_STEP_COUNT - 1 ? builderSendError : builderErr) && (
+                  <span className="wizard-error">
+                    {builderStep === BUILDER_STEP_COUNT - 1 ? builderSendError : builderErr}
+                  </span>
+                )}
+                {builderStep < BUILDER_STEP_COUNT - 1 ? (
+                  <button className="wizard-continue" onClick={builderNext}>
+                    Continue <ArrowCircle />
+                  </button>
+                ) : (
+                  <button
+                    className="wizard-continue"
+                    onClick={submitBuilder}
+                    disabled={builderSending}
+                  >
+                    {builderSending ? "Sending…" : "Send it in"} <ArrowCircle />
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
