@@ -606,7 +606,7 @@
 .customize-head h2 {
   margin: 0;
   font-weight: 900;
-  font-size: clamp(40px, 5.6vw, 96px);
+  font-size: clamp(40px, 5.2vw, 80px);
   line-height: 0.9;
   letter-spacing: -0.04em;
   text-transform: uppercase;
@@ -776,10 +776,16 @@
   gap: 32px clamp(40px, 6vw, 96px);
 }
 
+@media (min-width: 860px) {
+  .cta-banner {
+    grid-template-columns: 1.3fr 1fr;
+  }
+}
+
 .cta-banner h2 {
   margin: 0;
   font-weight: 900;
-  font-size: clamp(40px, 5.6vw, 96px);
+  font-size: clamp(40px, 5.2vw, 80px);
   line-height: 0.9;
   letter-spacing: -0.04em;
   text-transform: uppercase;
