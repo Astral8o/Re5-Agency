@@ -301,18 +301,59 @@ const HOW_ICONS: string[] = [
 ];
 
 const HOW_STEPS = [
-  { n: "01", title: "Pick", body: "Choose one of our experiences or come to us with an idea." },
+  {
+    n: "01",
+    title: "Pick",
+    body: "Start with one of our experiences or come to us with an idea of your own.",
+  },
   {
     n: "02",
-    title: "Make it yours",
-    body: "We design the look, details and experience around your brand or occasion.",
+    title: "Connect",
+    body: "We talk through your event or brand, what you have in mind and how you want people to experience it.",
   },
-  { n: "03", title: "Add the extras", body: "Choose any add-ons you want when you book." },
-  { n: "04", title: "The Experience", body: "We deliver, set up, serve and pack down." },
+  {
+    n: "03",
+    title: "Make it yours",
+    body: "Together, we choose the details that bring your experience to life.",
+  },
+  {
+    n: "04",
+    title: "Experience",
+    body: "We bring it together, set it up and show up for the moment.",
+  },
   {
     n: "05",
-    title: "Share the moments with your friends",
-    body: "Enjoy it with your guests and share it on socials.",
+    title: "Share",
+    body: "The experience doesn't have to end there. The photos, the videos and the conversations keep your moment moving after it's over.",
+  },
+];
+
+const PILLARS = [
+  {
+    n: "01",
+    title: "The Idea",
+    body: "We shape the idea with you, thinking about the moment, the people and what you want them to experience.",
+  },
+  {
+    n: "02",
+    title: "The Look",
+    body: "From the cart to the signage and everything around it, we bring the look together around your event, idea or brand.",
+  },
+  {
+    n: "03",
+    title: "The Taste",
+    body: "From drinks and treats to something created for your moment, we work with you to bring the right tastes into your experience.",
+    extra: "Part of our mission is to bring local businesses into the experiences we create. Depending on the experience, we collaborate with small businesses, caterers and makers across Trinidad & Tobago, bringing their tastes to your moment while creating more opportunities for local businesses to grow.",
+  },
+  {
+    n: "04",
+    title: "The People",
+    body: "From serving and mixing to sampling and interacting with guests, we bring in the right people for your experience.",
+  },
+  {
+    n: "05",
+    title: "The Setup",
+    body: "We bring everything together, get it there, set it up and make sure it's ready for your moment.",
   },
 ];
 
@@ -324,61 +365,49 @@ const WHATSAPP_URL = "https://wa.me/18680000000";
 const CONSULTATION_BOOKING_URL = "https://calendar.google.com/calendar/u/0/appointments";
 
 /* ---------------------------------------------------------------- */
-/* Packages (categories)                                             */
+/* Paths (for your event / for your brand)                           */
 /* ---------------------------------------------------------------- */
 
-type CategoryCta = "builder" | "wizard";
+type PathCta = "builder" | "wizard";
 
-type CategoryDef = {
+type PathDef = {
   id: string;
-  title: string;
   eyebrow: string;
   heading: string;
   body: string;
+  bodyTwo: string;
   images: { src: string; pos?: string }[];
-  tags?: string;
   ctaLabel: string;
-  cta: CategoryCta;
+  cta: PathCta;
 };
 
-const CATEGORIES: CategoryDef[] = [
+const PATHS: PathDef[] = [
   {
-    id: "build",
-    title: "Make it Your Experience",
-    eyebrow: "Build It Your Way",
-    heading: "Start with a blank cart. Make it yours.",
-    body: "Your sign, your products, your decorations. We'll walk you through it step by step, and bring in a designer if you want one.",
-    images: [{ src: "/images/re5popup/cart-blank.png" }],
-    ctaLabel: "Start building",
-    cta: "builder",
-  },
-  {
-    id: "food",
-    title: "Food + Beverage Experiences",
-    eyebrow: "Food + Beverage Experiences",
-    heading: "The good stuff, made even better.",
-    body: "The kind of experience people gather around, enjoy together and keep coming back to. A little something that makes the moment feel more fun, more social and more memorable.",
+    id: "event",
+    eyebrow: "For Your Event",
+    heading: "Give them something to experience.",
+    body: "Weddings, birthdays, celebrations, corporate events and the moments that bring people together.",
+    bodyTwo: "We work with you to create an experience around your moment and the people you're sharing it with.",
     images: [
       { src: "/images/re5popup/signature-slushie-cocktail.png", pos: "50% 30%" },
       { src: "/images/re5popup/popcorn-boxes.png", pos: "50% 55%" },
       { src: "/images/re5popup/slushie-candy-crop.png" },
     ],
-    tags: "Slushie · Popcorn",
-    ctaLabel: "Make your moment pop",
+    ctaLabel: "Plan your experience",
     cta: "wizard",
   },
   {
     id: "brand",
-    title: "Brand Activation",
-    eyebrow: "Brand Activation",
-    heading: "Give them something to experience.",
-    body: "Turn seeing your brand into experiencing it. Something that draws people in, gets them curious and gives them a reason to stop, explore and remember you.",
+    eyebrow: "For Your Brand",
+    heading: "Put your brand where people can experience it.",
+    body: "Launching something new? Want people to try it, talk about it or experience your brand differently?",
+    bodyTwo: "We create mobile brand experiences that bring your idea directly to the people you want to reach.",
     images: [
       { src: "/images/re5popup/hero-popcorn-serving.png", pos: "50% 42%" },
       { src: "/images/re5popup/cart-blank.png" },
       { src: "/images/re5popup/slushie-group-toast.png", pos: "50% 35%" },
     ],
-    ctaLabel: "Make your brand pop",
+    ctaLabel: "Bring your brand to life",
     cta: "builder",
   },
 ];
@@ -406,8 +435,6 @@ export default function LandingPage() {
   const [infoOpen, setInfoOpen] = useState(false);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState("");
-
-  const [activeCat, setActiveCat] = useState(0);
 
   const [builderOpen, setBuilderOpen] = useState(false);
   const [builderStep, setBuilderStep] = useState(0);
@@ -876,10 +903,16 @@ export default function LandingPage() {
               <StarIcon className="hero-star" />
             </span>
           </h1>
-          <p className="hero-sub">
-            We create <span className="accent-strong">mobile experiences</span> designed around
-            your brand, event or celebration across Trinidad and Tobago.
-          </p>
+          <div className="hero-sub-group">
+            <p className="hero-sub">
+              <span className="accent-strong">Mobile experiences</span> designed for brands,
+              events and celebrations.
+            </p>
+            <p className="hero-sub hero-sub-two">
+              From the first look to the last interaction, we create experiences people want to
+              be part of.
+            </p>
+          </div>
           <div className="hero-actions">
             <button className="btn btn-ink" onClick={openWizard}>
               Create Your Experience <ArrowCircle />
@@ -902,48 +935,24 @@ export default function LandingPage() {
         <Marquee />
       </div>
 
-      <section id="popups" className="categories">
-        <div className="category-tabs">
-          <div className="category-tablist" role="tablist" aria-label="Experience packages">
-            {CATEGORIES.map((c, i) => (
-              <button
-                key={c.id}
-                type="button"
-                role="tab"
-                id={`cat-tab-${c.id}`}
-                aria-selected={activeCat === i}
-                aria-controls={`cat-panel-${c.id}`}
-                className={`category-tab ${activeCat === i ? "active" : ""}`}
-                onClick={() => setActiveCat(i)}
-              >
-                <span className="category-tab-num">{String(i + 1).padStart(2, "0")}</span>
-                <span className="category-tab-label">{c.title}</span>
-              </button>
-            ))}
-          </div>
-          {CATEGORIES.map((c, i) => (
-            <div
-              key={c.id}
-              role="tabpanel"
-              id={`cat-panel-${c.id}`}
-              aria-labelledby={`cat-tab-${c.id}`}
-              className="category-panel"
-              hidden={activeCat !== i}
-            >
-              <span className="category-eyebrow">{c.eyebrow}</span>
-              <h2 className="category-heading">{c.heading}</h2>
-              <p className="category-body">{c.body}</p>
-              <CategoryCarousel images={c.images} />
-              {c.tags && <span className="category-tags">{c.tags}</span>}
+      <section id="popups" className="paths">
+        <h2 className="paths-heading">
+          How do you want to <span className="accent">show up?</span>
+        </h2>
+        <div className="paths-grid">
+          {PATHS.map((p, i) => (
+            <div key={p.id} className={`path-card ${i === 1 ? "path-card-brand" : ""}`}>
+              <span className="category-eyebrow">{p.eyebrow}</span>
+              <h3 className="category-heading">{p.heading}</h3>
+              <p className="category-body">{p.body}</p>
+              <p className="category-body">{p.bodyTwo}</p>
+              <CategoryCarousel images={p.images} />
               <div className="category-cta-group">
                 <button
-                  className={`btn ${i === 0 ? "btn-accent" : "btn-ink"} category-cta`}
-                  onClick={() => {
-                    if (c.cta === "builder") openBuilder();
-                    else openWizard();
-                  }}
+                  className={`btn ${i === 1 ? "btn-accent" : "btn-ink"} category-cta`}
+                  onClick={() => (p.cta === "builder" ? openBuilder() : openWizard())}
                 >
-                  {c.ctaLabel} <ArrowCircle dark={i === 0} />
+                  {p.ctaLabel} <ArrowCircle dark={i === 1} />
                 </button>
                 <span className="category-cta-note">Takes 2 minutes</span>
               </div>
@@ -952,12 +961,27 @@ export default function LandingPage() {
         </div>
       </section>
 
+      <section className="signature">
+        <div className="signature-media">
+          <img src="/images/re5popup/cart-blank.png" alt="Re5 signature mobile cart" />
+        </div>
+        <div className="signature-copy">
+          <h2 className="signature-heading">
+            Our signature. <span className="accent">Your experience.</span>
+          </h2>
+          <p className="signature-body">
+            Our signature mobile carts are where it starts. From there, we work with you to build
+            the experience around your event, idea or brand, from the styling and signage to the
+            tastes and people that bring it to life.
+          </p>
+        </div>
+      </section>
+
       <section className="customize">
         <div className="customize-head">
           <h2>
             Your experience. <span className="accent">Your way.</span>
           </h2>
-          <p>Every Re5 experience can be customized around what you&rsquo;re creating.</p>
         </div>
         <div className="customize-list">
           <ul>
@@ -972,19 +996,50 @@ export default function LandingPage() {
             ))}
           </ul>
           <p className="customize-footnote">
-            We take care of the design, setup, service and pack down.
+            We work with you to bring every detail together around the experience you have in
+            mind.
           </p>
         </div>
+      </section>
+
+      <section className="pillars">
+        <div className="pillars-head">
+          <h2 className="pillars-heading">
+            We bring it all <span className="accent">together.</span>
+          </h2>
+          <p className="pillars-intro">
+            It starts with a conversation. We get to know your idea, your moment and how you want
+            people to experience it. Then we work with you to bring it to life.
+          </p>
+        </div>
+        <ol className="pillars-list">
+          {PILLARS.map((p) => (
+            <li key={p.n} className="pillar">
+              <span className="pillar-num">{p.n}</span>
+              <div className="pillar-copy">
+                <span className="pillar-title">{p.title}</span>
+                <p className="pillar-body">{p.body}</p>
+                {p.extra && <p className="pillar-extra">{p.extra}</p>}
+              </div>
+            </li>
+          ))}
+        </ol>
+        <button className="btn btn-accent" onClick={openWizard}>
+          Let&rsquo;s create it together <ArrowCircle dark />
+        </button>
       </section>
 
       <section className="cta-banner-wrap">
         <div className="cta-banner">
           <div>
             <h2>Have something else in mind?</h2>
-            <p className="cta-banner-lede">Re5 isn&rsquo;t limited to what you see here.</p>
+            <p className="cta-banner-lede">Have an idea we haven&rsquo;t mentioned? Tell us.</p>
           </div>
           <div className="cta-banner-side">
-            <p>Tell us what you want to create and we&rsquo;ll explore how to turn it into an experience.</p>
+            <p>
+              We love seeing where an idea can go and finding a way to make it{" "}
+              <span className="accent">show up.</span>
+            </p>
             <button className="btn btn-ink" onClick={openWizard}>
               Tell us your idea <ArrowCircle />
             </button>
@@ -1044,10 +1099,13 @@ export default function LandingPage() {
         </div>
         <h2 className="final-cta-heading">
           <span>
-            Make your moment <span className="final-cta-pop">POP!</span>
+            Make your moment <span className="final-cta-pop">show up.</span>
           </span>
         </h2>
-        <p className="final-cta-sub">Ready when you are.</p>
+        <p className="final-cta-sub">
+          Your event. Your brand. Your idea. Let&rsquo;s create an experience people want to be
+          part of.
+        </p>
         <button className="btn btn-ink" onClick={openWizard}>
           Create Your Experience <ArrowCircle />
         </button>
