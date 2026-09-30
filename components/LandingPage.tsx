@@ -65,7 +65,6 @@ const hasK = (a: Answers) => ["Slushie Sweets", MULTI].includes(String(a.offer))
 const hasC = (a: Answers) => ["Signature Slushie", MULTI].includes(String(a.offer));
 const hasS = (a: Answers) => hasK(a) || hasC(a);
 const hasP = (a: Answers) => ["Popcorn Pop-Up", MULTI].includes(String(a.offer));
-const isCustom = (a: Answers) => a.offer === CUSTOM;
 
 const EVENT_FIELDS: FieldConfig[] = [
   { key: "eventDate", label: "Event date", type: "date" },
@@ -88,8 +87,6 @@ const visibleStepsFor = (a: Answers) => STEPS.filter((s) => !s.when || s.when(a)
 
 function validateStep(step: StepConfig, a: Answers): string {
   if (step.id === "offer" && !a.offer) return "Pick one to keep going.";
-  if (step.id === "customIdea" && !String(a.customIdea || "").trim())
-    return "Tell us a bit about what you have in mind.";
   if (step.id === "brand") {
     if (!a.contact || !a.email) return "Add your name and email so we can reply.";
     if (!/^\S+@\S+\.\S+$/.test(String(a.email))) return "That email looks incomplete.";
@@ -113,16 +110,6 @@ const STEPS: StepConfig[] = [
     type: "single",
     req: true,
     opts: ["Slushie Sweets", "Signature Slushie", "Popcorn Pop-Up", MULTI, CUSTOM],
-  },
-  {
-    id: "customIdea",
-    tag: "Your idea",
-    q: "Tell us what you want to create.",
-    type: "text",
-    req: true,
-    ph: "Describe the pop-up, cart or experience you have in mind.",
-    hint: "Walk us through it. The more detail, the better.",
-    when: isCustom,
   },
   {
     id: "occasion",
@@ -204,7 +191,6 @@ const STEPS: StepConfig[] = [
     q: "Any add-ons?",
     type: "multi",
     hint: "Add-ons are priced separately and added to your quote.",
-    when: (a) => !isCustom(a),
     optsFn: (a) =>
       (
         [
@@ -239,7 +225,6 @@ const STEPS: StepConfig[] = [
     tag: "The look",
     q: "How should the cart look?",
     type: "single",
-    when: (a) => !isCustom(a),
     opts: [...BRANDED, "Classic Re5 look", "Help us choose"],
     extra: {
       key: "lookNote",
@@ -255,7 +240,7 @@ const STEPS: StepConfig[] = [
     q: "Share your artwork.",
     type: "uploads",
     hint: "All optional. Logos, invitations, mood boards, anything.",
-    when: (a) => hasP(a) || BRANDED.includes(String(a.look)) || isCustom(a),
+    when: (a) => hasP(a) || BRANDED.includes(String(a.look)),
   },
   {
     id: "brand",
@@ -342,7 +327,7 @@ const CONSULTATION_BOOKING_URL = "https://calendar.google.com/calendar/u/0/appoi
 /* Packages (categories)                                             */
 /* ---------------------------------------------------------------- */
 
-type CategoryCta = "builder" | "wizard" | "custom";
+type CategoryCta = "builder" | "wizard";
 
 type CategoryDef = {
   id: string;
@@ -394,7 +379,7 @@ const CATEGORIES: CategoryDef[] = [
       { src: "/images/re5popup/slushie-group-toast.png", pos: "50% 35%" },
     ],
     ctaLabel: "Make your brand pop",
-    cta: "custom",
+    cta: "builder",
   },
 ];
 
@@ -522,17 +507,19 @@ export default function LandingPage() {
     setSendError("");
   }, []);
 
-  const startWith = useCallback(
-    (offer: string) => {
-      openWizard();
-      setAnswers({ offer });
-    },
-    [openWizard]
-  );
-
   const close = useCallback(() => {
     if (revealTimer.current) clearTimeout(revealTimer.current);
     setOpen(false);
+  }, []);
+
+  const openBuilder = useCallback(() => {
+    setBuilderOpen(true);
+    setBuilderStep(0);
+    setBuilderErr("");
+    setBuilderSendError("");
+    setArt({});
+    setFit({ canopy: "contain", body: "contain" });
+    setBuilderAnswers({});
   }, []);
 
   const setA = useCallback((key: string, value: unknown) => {
@@ -618,6 +605,11 @@ export default function LandingPage() {
   const pick = useCallback(
     (step: StepConfig, label: string) => {
       if (step.type === "single") {
+        if (step.id === "offer" && label === CUSTOM) {
+          close();
+          openBuilder();
+          return;
+        }
         setAnswers((prev) => ({ ...prev, [step.id]: label }));
         setErr("");
         if (!(step.noAuto && step.noAuto(label))) {
@@ -639,7 +631,7 @@ export default function LandingPage() {
       });
       setErr("");
     },
-    [next]
+    [next, close, openBuilder]
   );
 
   const fmt = useCallback((step: StepConfig, a: Answers): string => {
@@ -730,16 +722,6 @@ export default function LandingPage() {
     reader.onload = () => setArt((prev) => ({ ...prev, [key]: reader.result as string }));
     reader.readAsDataURL(f);
     e.target.value = "";
-  }, []);
-
-  const openBuilder = useCallback(() => {
-    setBuilderOpen(true);
-    setBuilderStep(0);
-    setBuilderErr("");
-    setBuilderSendError("");
-    setArt({});
-    setFit({ canopy: "contain", body: "contain" });
-    setBuilderAnswers({});
   }, []);
 
   const closeBuilder = useCallback(() => setBuilderOpen(false), []);
@@ -958,7 +940,6 @@ export default function LandingPage() {
                   className={`btn ${i === 0 ? "btn-accent" : "btn-ink"} category-cta`}
                   onClick={() => {
                     if (c.cta === "builder") openBuilder();
-                    else if (c.cta === "custom") startWith(CUSTOM);
                     else openWizard();
                   }}
                 >
