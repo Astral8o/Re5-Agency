@@ -323,6 +323,8 @@ export default function LandingPage() {
   const contRef = useRef<HTMLButtonElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const finalCtaRef = useRef<HTMLElement | null>(null);
+  const [nearFinalCta, setNearFinalCta] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 960px)");
@@ -342,6 +344,16 @@ export default function LandingPage() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const el = finalCtaRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setNearFinalCta(entry.isIntersecting), {
+      rootMargin: "0px 0px -10% 0px",
+    });
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
   useEffect(() => {
@@ -814,22 +826,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="final-cta">
+      <section className="final-cta" ref={finalCtaRef}>
         <StarIcon className="final-cta-star" />
-        <div className="final-cta-collage" aria-hidden="true">
-          <div className="cta-photo cta-photo-1">
-            <img src="/images/re5popup/slushie-group-toast.png" alt="" style={{ objectPosition: "50% 35%" }} />
-          </div>
-          <div className="cta-photo cta-photo-2">
-            <img src="/images/re5popup/popcorn-kernels-crop.png" alt="" />
-          </div>
-          <div className="cta-photo cta-photo-3">
-            <img src="/images/re5popup/cart-blank.png" alt="" />
-          </div>
-          <div className="cta-photo cta-photo-4">
-            <img src="/images/re5popup/slushie-candy-crop.png" alt="" />
-          </div>
-        </div>
         <h2 className="final-cta-heading">
           <span>
             Make your moment <span className="final-cta-pop">show up.</span>
@@ -842,6 +840,20 @@ export default function LandingPage() {
         <button className="btn btn-ink" onClick={openWizard}>
           Create Your Experience <ArrowCircle />
         </button>
+        <div className="final-cta-gallery" aria-hidden="true">
+          <div className="final-cta-photo">
+            <img src="/images/re5popup/slushie-group-toast.png" alt="" style={{ objectPosition: "50% 35%" }} />
+          </div>
+          <div className="final-cta-photo">
+            <img src="/images/re5popup/popcorn-kernels-crop.png" alt="" />
+          </div>
+          <div className="final-cta-photo">
+            <img src="/images/re5popup/cart-blank.png" alt="" />
+          </div>
+          <div className="final-cta-photo">
+            <img src="/images/re5popup/slushie-candy-crop.png" alt="" />
+          </div>
+        </div>
       </section>
 
       <footer className="footer">
@@ -876,7 +888,7 @@ export default function LandingPage() {
         <div className="footer-bottom">Made in Trinidad and Tobago.</div>
       </footer>
 
-      {mobile && scrolled && !open && !builderOpen && (
+      {mobile && scrolled && !nearFinalCta && !open && !builderOpen && (
         <div className="mobile-bar">
           <button className="btn btn-accent mobile-bar-cta" onClick={openWizard}>
             Create Your Experience <span className="arrow-circle arrow-circle-dark">&rarr;</span>
