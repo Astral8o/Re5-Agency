@@ -14,9 +14,7 @@ import "../app/landing.css";
 /* Types                                                             */
 /* ---------------------------------------------------------------- */
 
-type Answers = Record<string, unknown> & {
-  assets?: Record<string, string[]>;
-};
+type Answers = Record<string, unknown>;
 
 type FieldConfig = {
   key: string;
@@ -25,239 +23,152 @@ type FieldConfig = {
   type?: "text" | "email" | "tel" | "date" | "time";
 };
 
-type StepType = "single" | "multi" | "fields" | "uploads" | "text";
-
-type ExtraConfig = {
-  key: string;
-  label: string;
-  ph: string;
-  show?: (a: Answers) => boolean;
-  top?: boolean;
-};
-
-type StepConfig = {
-  id: string;
-  tag: string;
-  q: string;
-  type: StepType;
-  req?: boolean;
-  hint?: string;
-  ph?: string;
-  opts?: string[];
-  optsFn?: (a: Answers) => string[];
-  fields?: FieldConfig[];
-  extra?: ExtraConfig;
-  noAuto?: (v: string) => boolean;
-  when?: (a: Answers) => boolean;
-};
-
 /* ---------------------------------------------------------------- */
 /* Wizard config                                                     */
 /* ---------------------------------------------------------------- */
 
-const MULTI = "More than one";
-const CUSTOM = "Create your own";
-const STAFF = "Re5 staff";
-const EXCL = ["Help us choose", "Not sure yet", "No add-ons"];
-const BRANDED = ["Our logo or names on the cart", "Match our colours or theme"];
-
-const hasK = (a: Answers) => ["Slushie Sweets", MULTI].includes(String(a.offer));
-const hasC = (a: Answers) => ["Signature Slushie", MULTI].includes(String(a.offer));
-const hasS = (a: Answers) => hasK(a) || hasC(a);
-const hasP = (a: Answers) => ["Popcorn Experience", MULTI].includes(String(a.offer));
-
-const EVENT_FIELDS: FieldConfig[] = [
-  { key: "eventDate", label: "Event date", type: "date" },
-  { key: "startTime", label: "Start time", type: "time" },
-  { key: "venue", label: "Venue", ph: "Venue name or address" },
-  { key: "area", label: "Area", ph: "e.g. Chaguanas, Tobago" },
+const PLANNING_OPTS = [
+  "Wedding",
+  "Birthday",
+  "Private celebration",
+  "Corporate event",
+  "Brand experience",
+  "Product launch",
+  "Other",
 ];
+
+const CREATE_OPTS = [
+  {
+    id: "slushie",
+    label: "Slushie Experience",
+    body: "A styled slushie experience for your event or brand.",
+  },
+  {
+    id: "popcorn",
+    label: "Popcorn Experience",
+    body: "A styled popcorn experience for your event or brand.",
+  },
+  {
+    id: "both",
+    label: "Slushie + Popcorn",
+    body: "Bring both experiences together.",
+  },
+  {
+    id: "another",
+    label: "I Have Another Idea",
+    body: "Have something different in mind? Tell us what you’re thinking.",
+  },
+];
+
+const showsSlushieDetails = (a: Answers) => a.create === "slushie" || a.create === "both";
 
 const CONTACT_FIELDS: FieldConfig[] = [
   { key: "contact", label: "Your name *", ph: "Full name" },
+  { key: "company", label: "Business / Brand", ph: "Your brand" },
   { key: "email", label: "Email *", ph: "you@email.com", type: "email" },
   { key: "phone", label: "Phone / WhatsApp", ph: "+1 868", type: "tel" },
-  { key: "company", label: "Business or brand (if any)", ph: "Your brand" },
-  { key: "instagram", label: "Instagram", ph: "@yourhandle" },
 ];
 
-const UPLOADS = ["Logo", "Packaging artwork", "Invitation or theme", "Inspiration images"];
+const WIZARD_PAGE_IDS = ["plan", "create", "details", "yours", "else", "connect"] as const;
+type WizardPageId = (typeof WIZARD_PAGE_IDS)[number];
 
-const visibleStepsFor = (a: Answers) => STEPS.filter((s) => !s.when || s.when(a));
+const visibleWizardPages = (a: Answers): WizardPageId[] =>
+  WIZARD_PAGE_IDS.filter((id) => id !== "details" || showsSlushieDetails(a));
 
-function validateStep(step: StepConfig, a: Answers): string {
-  if (step.id === "offer" && !a.offer) return "Pick one to keep going.";
-  if (step.id === "brand") {
+function validateWizardPage(id: WizardPageId, a: Answers): string {
+  if (id === "plan") {
+    if (!a.planning) return "Pick one to keep going.";
+    if (a.planning === "Other" && !String(a.planningOther || "").trim())
+      return "Tell us what you're planning.";
+  }
+  if (id === "create") {
+    if (!a.create) return "Pick one to keep going.";
+    if (a.create === "another" && !String(a.createIdea || "").trim())
+      return "Tell us what you'd like to create.";
+  }
+  if (id === "details") {
+    if (!a.slushieFor) return "Pick one to keep going.";
+    if ((a.slushieFor === "Adults" || a.slushieFor === "Both") && !a.alcohol)
+      return "Let us know about the alcoholic option.";
+  }
+  if (id === "yours" && !a.lookBasis) return "Pick one to keep going.";
+  if (id === "connect") {
     if (!a.contact || !a.email) return "Add your name and email so we can reply.";
     if (!/^\S+@\S+\.\S+$/.test(String(a.email))) return "That email looks incomplete.";
   }
   return "";
 }
 
-function isAnswered(step: StepConfig, a: Answers): boolean {
-  const v = a[step.id];
-  if (step.type === "fields") return (step.fields || CONTACT_FIELDS).some((f) => a[f.key]);
-  if (step.type === "uploads") return !!(a.assets && Object.values(a.assets).some((x) => x && x.length));
-  if (Array.isArray(v)) return v.length > 0;
-  return !!(v && String(v).trim());
+const LOOK_THEME = "Yes, I have an event theme or colour palette";
+const LOOK_BRAND = "Yes, I have an existing brand";
+const LOOK_NONE = "No, not yet";
+
+function formatWizardDate(v: unknown): string {
+  if (typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v)) {
+    return new Date(`${v}T12:00`).toLocaleDateString("en-GB", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  }
+  return "";
 }
 
-const STEPS: StepConfig[] = [
-  {
-    id: "offer",
-    tag: "The bar",
-    q: "What would you like to book?",
-    type: "single",
-    req: true,
-    opts: ["Slushie Sweets", "Signature Slushie", "Popcorn Experience", MULTI, CUSTOM],
-  },
-  {
-    id: "occasion",
-    tag: "The occasion",
-    q: "What are you celebrating?",
-    type: "single",
-    opts: [
-      "Wedding",
-      "Birthday party",
-      "Kids' party",
-      "Baby shower",
-      "Graduation",
-      "Corporate event",
-      "Brand activation or launch",
-      "Festival or fair",
-      "Something else",
-    ],
-    extra: {
-      key: "occasionOther",
-      label: "Tell us more",
-      ph: "What is the event?",
-      show: (a) => a.occasion === "Something else",
-    },
-    noAuto: (v) => v === "Something else",
-  },
-  {
-    id: "popPack",
-    tag: "Popcorn packaging",
-    q: "How should the popcorn be packed?",
-    type: "single",
-    opts: [
-      "Custom printed boxes with our logo",
-      "Branded paper bags",
-      "Plain Re5 packaging",
-      "Help us choose",
-    ],
-    when: hasP,
-  },
-  {
-    id: "guests",
-    tag: "Guests",
-    q: "How many guests are you expecting?",
-    type: "single",
-    opts: ["Under 50", "50 to 100", "100 to 200", "200 to 400", "400+", "Not sure yet"],
-  },
-  {
-    id: "hours",
-    tag: "Service time",
-    q: "How long should we serve?",
-    type: "single",
-    hint: "Every booking includes 3 hours of service. Extra hours are added to your quote.",
-    opts: [
-      "3 hours (standard)",
-      "4 hours (+1 extra hour)",
-      "5 hours (+2 extra hours)",
-      "6+ hours",
-      "Not sure yet",
-    ],
-  },
-  {
-    id: "staff",
-    tag: "Staff",
-    q: "Who will be serving?",
-    type: "single",
-    noAuto: (v) => v === STAFF,
-    optsFn: (a) =>
+function buildWizardBrief(a: Answers) {
+  const rows: { n: string; tag: string; answer: string }[] = [];
+  let n = 1;
+  const push = (tag: string, answer: string) => {
+    rows.push({ n: String(n++).padStart(2, "0"), tag, answer: answer || "Not answered" });
+  };
+
+  push(
+    "Planning",
+    a.planning === "Other" ? `Other: ${a.planningOther || ""}` : String(a.planning || "")
+  );
+  push("Date", formatWizardDate(a.eventDate));
+  push("Venue", [a.venue, a.venueStatus].filter(Boolean).join(" · "));
+  push("Guests", a.guestCount ? String(a.guestCount) : "");
+
+  const createLabel = CREATE_OPTS.find((c) => c.id === a.create)?.label || "";
+  push("Create", a.create === "another" ? `${createLabel}: ${a.createIdea || ""}` : createLabel);
+
+  if (showsSlushieDetails(a)) {
+    const alcoholNote =
+      a.slushieFor === "Adults" || a.slushieFor === "Both"
+        ? ` · Alcohol: ${a.alcohol || ""}`
+        : "";
+    push("Slushie details", `${a.slushieFor || ""}${alcoholNote}`);
+  }
+
+  if (a.lookBasis === LOOK_THEME) {
+    push(
+      "Look",
+      [a.themeNote, a.themeUpload ? `Uploaded: ${a.themeUpload}` : ""]
+        .filter(Boolean)
+        .join(" · ") || "Event theme or colour palette"
+    );
+  } else if (a.lookBasis === LOOK_BRAND) {
+    push(
+      "Look",
       [
-        a.offer === "Signature Slushie"
-          ? null
-          : "Self-serve (we set up, your guests help themselves)",
-        STAFF,
-        "Extra staff for a big crowd",
-        "Help us choose",
-      ].filter(Boolean) as string[],
-  },
-  {
-    id: "addons",
-    tag: "Add-ons",
-    q: "Any add-ons?",
-    type: "multi",
-    hint: "Add-ons are priced separately and added to your quote.",
-    optsFn: (a) =>
-      (
-        [
-          ["Custom cup stickers", hasS],
-          ["Extra flavours", () => true],
-          ["Printed napkins", () => true],
-          ["Menu sign", () => true],
-          ["Extra service time", () => true],
-          ["Lighting", () => true],
-          ["Music or speaker", () => true],
-        ] as [string, (a: Answers) => boolean][]
-      )
-        .filter((x) => x[1](a))
-        .map((x) => x[0])
-        .concat(["No add-ons"]),
-    extra: {
-      key: "addonsOther",
-      label: "Anything else? (optional)",
-      ph: "Tell us what you have in mind",
-    },
-  },
-  {
-    id: "event",
-    tag: "The event",
-    q: "When and where?",
-    type: "fields",
-    fields: EVENT_FIELDS,
-    hint: "Rough details are fine.",
-  },
-  {
-    id: "look",
-    tag: "The look",
-    q: "How should the cart look?",
-    type: "single",
-    opts: [...BRANDED, "Classic Re5 look", "Help us choose"],
-    extra: {
-      key: "lookNote",
-      label: "Colours, theme or wording",
-      ph: "e.g. sage and gold, or Kim and Andre 2026",
-      show: (a) => BRANDED.includes(String(a.look)),
-    },
-    noAuto: (v) => BRANDED.includes(v),
-  },
-  {
-    id: "assets",
-    tag: "Artwork",
-    q: "Share your artwork.",
-    type: "uploads",
-    hint: "All optional. Logos, invitations, mood boards, anything.",
-    when: (a) => hasP(a) || BRANDED.includes(String(a.look)),
-  },
-  {
-    id: "brand",
-    tag: "About you",
-    q: "Where should we send your quote?",
-    type: "fields",
-    fields: CONTACT_FIELDS,
-    req: true,
-  },
-  {
-    id: "else",
-    tag: "Last thing",
-    q: "Anything else we should know?",
-    type: "text",
-    ph: "Dietary needs, power at the venue, surprises, anything.",
-  },
-];
+        a.brandName,
+        a.brandColours,
+        a.brandLogo ? `Logo: ${a.brandLogo}` : "",
+        a.brandMaterial ? `Material: ${a.brandMaterial}` : "",
+      ]
+        .filter(Boolean)
+        .join(" · ") || "Existing brand"
+    );
+  } else {
+    push("Look", a.lookBasis ? "No, not yet" : "");
+  }
+
+  push("Anything else", String(a.notes || ""));
+  push("Preferred contact", String(a.contactPref || ""));
+
+  return rows;
+}
 
 /* ---------------------------------------------------------------- */
 /* Small shared bits                                                  */
@@ -426,13 +337,10 @@ export default function LandingPage() {
   const [headBorder, setHeadBorder] = useState(false);
 
   const [open, setOpen] = useState(false);
-  const [mode, setMode] = useState<"q" | "review" | "done">("q");
+  const [mode, setMode] = useState<"intro" | "q" | "done">("intro");
   const [idx, setIdx] = useState(0);
-  const [dir, setDir] = useState(1);
-  const [fromReview, setFromReview] = useState(false);
   const [err, setErr] = useState("");
   const [answers, setAnswers] = useState<Answers>({});
-  const [infoOpen, setInfoOpen] = useState(false);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState("");
 
@@ -451,15 +359,6 @@ export default function LandingPage() {
   const contRef = useRef<HTMLButtonElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const revealTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Mirrors the latest wizard state so callbacks fired from setTimeout
-  // (the single-choice auto-advance) always read fresh values instead of
-  // whatever was closed over when the timeout was scheduled.
-  const liveRef = useRef({ answers, idx, fromReview, mode });
-  useEffect(() => {
-    liveRef.current = { answers, idx, fromReview, mode };
-  });
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 960px)");
@@ -520,22 +419,18 @@ export default function LandingPage() {
     }
   }, []);
 
-  const visibleSteps = useMemo(() => STEPS.filter((s) => !s.when || s.when(answers)), [answers]);
+  const visibleWizard = useMemo(() => visibleWizardPages(answers), [answers]);
 
   const openWizard = useCallback(() => {
-    if (revealTimer.current) clearTimeout(revealTimer.current);
     setAnswers({});
     setOpen(true);
-    setMode("q");
+    setMode("intro");
     setIdx(0);
-    setDir(1);
     setErr("");
-    setFromReview(false);
     setSendError("");
   }, []);
 
   const close = useCallback(() => {
-    if (revealTimer.current) clearTimeout(revealTimer.current);
     setOpen(false);
   }, []);
 
@@ -554,20 +449,25 @@ export default function LandingPage() {
     setErr("");
   }, []);
 
-  const validate = useCallback((step: StepConfig): string => {
-    return validateStep(step, liveRef.current.answers);
-  }, []);
+  const setWizardFile = useCallback(
+    (key: string, e: ChangeEvent<HTMLInputElement>) => {
+      const f = e.target.files?.[0];
+      if (!f) return;
+      setA(key, f.name);
+      e.target.value = "";
+    },
+    [setA]
+  );
 
-  const answered = useCallback((step: StepConfig): boolean => {
-    return isAnswered(step, liveRef.current.answers);
+  const startQuestions = useCallback(() => {
+    setMode("q");
+    setIdx(0);
+    setErr("");
   }, []);
 
   const next = useCallback(() => {
-    if (revealTimer.current) clearTimeout(revealTimer.current);
-    const { answers: a, idx: curIdx, fromReview: fromRev } = liveRef.current;
-    const vis = visibleStepsFor(a);
-    const step = vis[Math.min(curIdx, vis.length - 1)];
-    const e = validateStep(step, a);
+    const page = visibleWizard[Math.min(idx, visibleWizard.length - 1)];
+    const e = validateWizardPage(page, answers);
     if (e) {
       setErr(e);
       const b = contRef.current;
@@ -584,138 +484,40 @@ export default function LandingPage() {
         );
       return;
     }
-    if (fromRev || curIdx >= vis.length - 1) {
-      setMode("review");
-      setFromReview(false);
-      setDir(1);
-      setErr("");
-    } else {
-      setIdx((i) => i + 1);
-      setDir(1);
-      setErr("");
-    }
-  }, []);
+    setErr("");
+    setIdx((i) => i + 1);
+  }, [answers, idx, visibleWizard]);
 
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
-      if (
-        e.key === "Enter" &&
-        !e.shiftKey &&
-        liveRef.current.mode === "q" &&
-        (e.target as HTMLElement)?.tagName !== "TEXTAREA"
-      ) {
-        e.preventDefault();
-        next();
-      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open, close, next]);
+  }, [open, close]);
 
   const back = useCallback(() => {
-    if (revealTimer.current) clearTimeout(revealTimer.current);
-    const { mode: curMode, answers: a, idx: curIdx } = liveRef.current;
-    if (curMode === "review") {
-      setMode("q");
-      setIdx(visibleStepsFor(a).length - 1);
-      setDir(-1);
-      return;
-    }
-    if (curIdx === 0) return;
-    setIdx((i) => i - 1);
-    setDir(-1);
     setErr("");
-  }, []);
-
-  const pick = useCallback(
-    (step: StepConfig, label: string) => {
-      if (step.type === "single") {
-        if (step.id === "offer" && label === CUSTOM) {
-          close();
-          openBuilder();
-          return;
-        }
-        setAnswers((prev) => ({ ...prev, [step.id]: label }));
-        setErr("");
-        if (!(step.noAuto && step.noAuto(label))) {
-          if (revealTimer.current) clearTimeout(revealTimer.current);
-          revealTimer.current = setTimeout(() => next(), 420);
-        }
-        return;
-      }
-      setAnswers((prev) => {
-        let cur = (prev[step.id] as string[] | undefined) || [];
-        if (cur.includes(label)) {
-          cur = cur.filter((x) => x !== label);
-        } else if (EXCL.includes(label)) {
-          cur = [label];
-        } else {
-          cur = [...cur.filter((x) => !EXCL.includes(x)), label];
-        }
-        return { ...prev, [step.id]: cur };
-      });
-      setErr("");
-    },
-    [next, close, openBuilder]
-  );
-
-  const fmt = useCallback((step: StepConfig, a: Answers): string => {
-    const v = a[step.id];
-    const note =
-      step.extra && a[step.extra.key] && (!step.extra.show || step.extra.show(a))
-        ? String(a[step.extra.key])
-        : "";
-    if (step.type === "fields") {
-      return (step.fields || CONTACT_FIELDS)
-        .map((f) => {
-          const x = a[f.key];
-          if (!x) return "";
-          if (f.type === "date" && /^\d{4}-\d{2}-\d{2}$/.test(String(x))) {
-            return new Date(`${x}T12:00`).toLocaleDateString("en-GB", {
-              weekday: "short",
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-            });
-          }
-          if (f.type === "time" && /^\d{2}:\d{2}/.test(String(x))) {
-            const [hh, mm] = String(x).split(":").map(Number);
-            return `${(hh % 12) || 12}:${String(mm).padStart(2, "0")} ${hh < 12 ? "am" : "pm"}`;
-          }
-          return String(x);
-        })
-        .filter(Boolean)
-        .join(" · ");
-    }
-    if (step.type === "uploads") {
-      return UPLOADS.map((u) => {
-        const n = (a.assets || {})[u];
-        return n && n.length ? `${u} (${n.length})` : "";
-      })
-        .filter(Boolean)
-        .join(" · ");
-    }
-    const base = Array.isArray(v) ? v.join(" · ") : v ? String(v) : "";
-    if (step.extra && step.extra.top) return [note, base].filter(Boolean).join(" · ");
-    return [base, note].filter(Boolean).join(", ");
+    setIdx((i) => Math.max(i - 1, 0));
   }, []);
 
   const submit = useCallback(async () => {
+    const page = visibleWizard[visibleWizard.length - 1];
+    const e = validateWizardPage(page, answers);
+    if (e) {
+      setErr(e);
+      return;
+    }
     setSending(true);
     setSendError("");
-    const brief = visibleSteps.map((s, i) => ({
-      n: String(i + 1).padStart(2, "0"),
-      tag: s.tag,
-      answer: fmt(s, answers) || "Not answered",
-    }));
+    const brief = buildWizardBrief(answers);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          offer: answers.offer,
+          offer: answers.planning,
           contact: answers.contact,
           email: answers.email,
           phone: answers.phone,
@@ -726,20 +528,18 @@ export default function LandingPage() {
       if (!res.ok) throw new Error("failed");
       confetti();
       setMode("done");
-      setDir(1);
     } catch {
       setSendError("Something went wrong sending that. Please try again, or reach us on WhatsApp.");
     } finally {
       setSending(false);
     }
-  }, [answers, visibleSteps, fmt, confetti]);
+  }, [answers, visibleWizard, confetti]);
 
   const finish = useCallback(() => {
     close();
-    setMode("q");
+    setMode("intro");
     setIdx(0);
     setAnswers({});
-    setFromReview(false);
   }, [close]);
 
   const setArtFile = useCallback((key: "canopy" | "body", e: ChangeEvent<HTMLInputElement>) => {
@@ -838,18 +638,11 @@ export default function LandingPage() {
 
   /* ---- render helpers ---- */
 
-  const step = visibleSteps[Math.min(idx, visibleSteps.length - 1)] as StepConfig | undefined;
+  const isIntro = mode === "intro";
   const isQ = mode === "q";
-  const isReview = mode === "review";
   const isDone = mode === "done";
-  const last = idx >= visibleSteps.length - 1;
-  const contLabel = fromReview
-    ? "Back to booking"
-    : last
-    ? "Review my booking"
-    : step && (answered(step) || step.req)
-    ? "Continue"
-    : "Skip";
+  const page = visibleWizard[Math.min(idx, visibleWizard.length - 1)] as WizardPageId | undefined;
+  const isLastPage = idx >= visibleWizard.length - 1;
 
   return (
     <div className="page">
@@ -1491,7 +1284,7 @@ export default function LandingPage() {
         </div>
       )}
 
-      {open && step && (
+      {open && (
         <div role="dialog" aria-modal="true" className="modal wizard-modal">
           <div className="wizard-topbar">
             <span className="modal-logo">
@@ -1507,92 +1300,381 @@ export default function LandingPage() {
               <div className="wizard-progress-track">
                 <div
                   className="wizard-progress-fill"
-                  style={{ width: `${((idx + 1) / visibleSteps.length) * 100}%` }}
+                  style={{ width: `${((idx + 1) / visibleWizard.length) * 100}%` }}
                 />
               </div>
               <span className="wizard-counter">
-                {String(idx + 1).padStart(2, "0")} / {String(visibleSteps.length).padStart(2, "0")}
+                {String(idx + 1).padStart(2, "0")} / {String(visibleWizard.length).padStart(2, "0")}
               </span>
             </div>
           )}
 
           <div className="wizard-scroll" ref={scrollRef}>
             <div className="wizard-stage" ref={stageRef}>
-              {isQ && (
-                <WizardQuestion
-                  step={step}
-                  answers={answers}
-                  infoOpen={infoOpen}
-                  onInfoToggle={() => setInfoOpen((v) => !v)}
-                  onPick={(label) => pick(step, label)}
-                  onSetA={setA}
-                />
+              {isIntro && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> Start your experience
+                  </span>
+                  <h2 className="wizard-question">Tell us what you have in mind.</h2>
+                  <p className="wizard-hint">
+                    We&rsquo;ll ask a few questions about your event or brand so we can
+                    understand the experience you want to create.
+                  </p>
+                </>
               )}
 
-              {isReview && (
-                <div className="wizard-review">
-                  <div className="wizard-review-sub">
-                    {answers.company || answers.contact
-                      ? `Prepared for ${answers.company || answers.contact}`
-                      : "Your booking"}
+              {isQ && page === "plan" && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> The plan
+                  </span>
+                  <h2 className="wizard-question">What are you planning?</h2>
+                  <div className="wizard-options">
+                    {PLANNING_OPTS.map((opt, i) => (
+                      <button
+                        key={opt}
+                        className={`wizard-option ${answers.planning === opt ? "wizard-option-active" : ""}`}
+                        onClick={() => setA("planning", opt)}
+                      >
+                        <span className="wizard-option-mark">
+                          {answers.planning === opt ? "✓" : String.fromCharCode(65 + i)}
+                        </span>
+                        {opt}
+                      </button>
+                    ))}
                   </div>
-                  <h2 className="wizard-review-heading">
-                    Your <span className="wizard-review-brand">booking</span>
-                  </h2>
-                  <div className="wizard-review-list">
-                    {visibleSteps.map((s, i) => {
-                      const ans = fmt(s, answers);
-                      return (
-                        <div className="wizard-review-row" key={s.id}>
-                          <span className="wizard-review-tag">
-                            {String(i + 1).padStart(2, "0")} &middot; {s.tag}
+                  {answers.planning === "Other" && (
+                    <label className="wizard-extra-field">
+                      <span>Tell us what you&rsquo;re planning</span>
+                      <input
+                        value={String(answers.planningOther || "")}
+                        onChange={(e) => setA("planningOther", e.target.value)}
+                        placeholder="What are you planning?"
+                      />
+                    </label>
+                  )}
+                  <div className="wizard-fields">
+                    <label className="wizard-field">
+                      <span>When is it happening?</span>
+                      <input
+                        type="date"
+                        value={String(answers.eventDate || "")}
+                        onChange={(e) => setA("eventDate", e.target.value)}
+                      />
+                    </label>
+                    <label className="wizard-field">
+                      <span>Where is it happening?</span>
+                      <input
+                        value={String(answers.venue || "")}
+                        onChange={(e) => setA("venue", e.target.value)}
+                        placeholder="Venue / Location"
+                      />
+                    </label>
+                  </div>
+                  <div className="wizard-subquestion">
+                    <div className="wizard-options">
+                      {["Venue confirmed", "Still deciding"].map((opt, i) => (
+                        <button
+                          key={opt}
+                          className={`wizard-option ${answers.venueStatus === opt ? "wizard-option-active" : ""}`}
+                          onClick={() => setA("venueStatus", opt)}
+                        >
+                          <span className="wizard-option-mark">
+                            {answers.venueStatus === opt ? "✓" : String.fromCharCode(65 + i)}
                           </span>
-                          <span className={`wizard-review-answer ${ans ? "" : "muted"}`}>
-                            {ans || "Not answered"}
-                          </span>
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <label className="wizard-extra-field">
+                    <span>How many guests or attendees are you expecting?</span>
+                    <input
+                      type="number"
+                      min="0"
+                      value={String(answers.guestCount || "")}
+                      onChange={(e) => setA("guestCount", e.target.value)}
+                      placeholder="Number"
+                    />
+                  </label>
+                </>
+              )}
+
+              {isQ && page === "create" && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> The experience
+                  </span>
+                  <h2 className="wizard-question">What would you like to create?</h2>
+                  <p className="wizard-hint">
+                    We&rsquo;re starting with Slushie and Popcorn, with more experiences to
+                    come. Have something else in mind? Tell us. We&rsquo;d love to see how we
+                    can make it <span className="accent">show up.</span>
+                  </p>
+                  <div className="wizard-choice-cards">
+                    {CREATE_OPTS.map((c) => (
+                      <button
+                        key={c.id}
+                        className={`wizard-choice-card ${
+                          answers.create === c.id ? "wizard-choice-card-active" : ""
+                        }`}
+                        onClick={() => setA("create", c.id)}
+                      >
+                        <span className="wizard-choice-card-label">{c.label}</span>
+                        <span className="wizard-choice-card-body">{c.body}</span>
+                        <span className="wizard-choice-card-mark">
+                          {answers.create === c.id ? "✓ Selected" : "Select"}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                  {answers.create === "another" && (
+                    <label className="wizard-extra-field">
+                      <span>What would you like to create?</span>
+                      <input
+                        value={String(answers.createIdea || "")}
+                        onChange={(e) => setA("createIdea", e.target.value)}
+                        placeholder="Tell us what you&rsquo;re thinking"
+                      />
+                    </label>
+                  )}
+                </>
+              )}
+
+              {isQ && page === "details" && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> The details
+                  </span>
+                  <h2 className="wizard-question">Tell us about your experience.</h2>
+                  <p className="wizard-hint">Who is the experience for?</p>
+                  <div className="wizard-options">
+                    {["Children", "Adults", "Both"].map((opt, i) => (
+                      <button
+                        key={opt}
+                        className={`wizard-option ${answers.slushieFor === opt ? "wizard-option-active" : ""}`}
+                        onClick={() => setA("slushieFor", opt)}
+                      >
+                        <span className="wizard-option-mark">
+                          {answers.slushieFor === opt ? "✓" : String.fromCharCode(65 + i)}
+                        </span>
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                  {(answers.slushieFor === "Adults" || answers.slushieFor === "Both") && (
+                    <div className="wizard-subquestion">
+                      <p className="wizard-hint">Would you like an alcoholic slushie option?</p>
+                      <div className="wizard-options">
+                        {["Yes", "No", "Not sure yet"].map((opt, i) => (
                           <button
-                            className="wizard-review-edit"
-                            onClick={() => {
-                              setMode("q");
-                              setIdx(i);
-                              setFromReview(true);
-                              setDir(1);
-                            }}
+                            key={opt}
+                            className={`wizard-option ${answers.alcohol === opt ? "wizard-option-active" : ""}`}
+                            onClick={() => setA("alcohol", opt)}
                           >
-                            EDIT
+                            <span className="wizard-option-mark">
+                              {answers.alcohol === opt ? "✓" : String.fromCharCode(65 + i)}
+                            </span>
+                            {opt}
                           </button>
-                        </div>
-                      );
-                    })}
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {isQ && page === "yours" && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> The look
+                  </span>
+                  <h2 className="wizard-question">Make it yours.</h2>
+                  <p className="wizard-hint">Are we creating this around an existing look?</p>
+                  <div className="wizard-options">
+                    {[LOOK_THEME, LOOK_BRAND, LOOK_NONE].map((opt, i) => (
+                      <button
+                        key={opt}
+                        className={`wizard-option ${answers.lookBasis === opt ? "wizard-option-active" : ""}`}
+                        onClick={() => setA("lookBasis", opt)}
+                      >
+                        <span className="wizard-option-mark">
+                          {answers.lookBasis === opt ? "✓" : String.fromCharCode(65 + i)}
+                        </span>
+                        {opt}
+                      </button>
+                    ))}
                   </div>
-                  {sendError && <p className="wizard-error">{sendError}</p>}
-                  <div className="wizard-review-actions">
-                    <button className="btn btn-accent" onClick={submit} disabled={sending}>
-                      {sending ? "Sending…" : "Send my request"} <ArrowCircle dark />
-                    </button>
-                    <button className="wizard-back-link" onClick={back}>
-                      &larr; BACK TO QUESTIONS
-                    </button>
+
+                  {answers.lookBasis === LOOK_THEME && (
+                    <div className="wizard-subquestion">
+                      <label className="wizard-extra-field">
+                        <span>Tell us about your theme or colours</span>
+                        <input
+                          value={String(answers.themeNote || "")}
+                          onChange={(e) => setA("themeNote", e.target.value)}
+                          placeholder="e.g. sage and gold"
+                        />
+                      </label>
+                      <div className="wizard-uploads">
+                        <label className="wizard-upload-row">
+                          <input type="file" hidden onChange={(e) => setWizardFile("themeUpload", e)} />
+                          <span className="wizard-upload-label">
+                            Have something you&rsquo;d like us to see? (Optional)
+                          </span>
+                          <span className="wizard-upload-status">
+                            <span className="wizard-upload-files">{String(answers.themeUpload || "")}</span>
+                            <span
+                              className={`wizard-upload-btn ${answers.themeUpload ? "wizard-upload-btn-filled" : ""}`}
+                            >
+                              {answers.themeUpload ? "Replace" : "Upload"}
+                            </span>
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  )}
+
+                  {answers.lookBasis === LOOK_BRAND && (
+                    <div className="wizard-subquestion">
+                      <div className="wizard-fields">
+                        <label className="wizard-field">
+                          <span>Business / Brand name</span>
+                          <input
+                            value={String(answers.brandName || "")}
+                            onChange={(e) => setA("brandName", e.target.value)}
+                          />
+                        </label>
+                        <label className="wizard-field">
+                          <span>Brand colours</span>
+                          <input
+                            value={String(answers.brandColours || "")}
+                            onChange={(e) => setA("brandColours", e.target.value)}
+                            placeholder="e.g. navy and gold"
+                          />
+                        </label>
+                      </div>
+                      <div className="wizard-uploads">
+                        <label className="wizard-upload-row">
+                          <input type="file" hidden onChange={(e) => setWizardFile("brandLogo", e)} />
+                          <span className="wizard-upload-label">Upload your logo</span>
+                          <span className="wizard-upload-status">
+                            <span className="wizard-upload-files">{String(answers.brandLogo || "")}</span>
+                            <span
+                              className={`wizard-upload-btn ${answers.brandLogo ? "wizard-upload-btn-filled" : ""}`}
+                            >
+                              {answers.brandLogo ? "Replace" : "Upload"}
+                            </span>
+                          </span>
+                        </label>
+                        <label className="wizard-upload-row">
+                          <input type="file" hidden onChange={(e) => setWizardFile("brandMaterial", e)} />
+                          <span className="wizard-upload-label">
+                            Have brand material you&rsquo;d like us to see? (Optional)
+                          </span>
+                          <span className="wizard-upload-status">
+                            <span className="wizard-upload-files">{String(answers.brandMaterial || "")}</span>
+                            <span
+                              className={`wizard-upload-btn ${answers.brandMaterial ? "wizard-upload-btn-filled" : ""}`}
+                            >
+                              {answers.brandMaterial ? "Replace" : "Upload"}
+                            </span>
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {isQ && page === "else" && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> Last thing
+                  </span>
+                  <h2 className="wizard-question">Anything else we should know?</h2>
+                  <p className="wizard-hint">
+                    Is there anything else you&rsquo;d like us to know about the experience?
+                    (Optional)
+                  </p>
+                  <textarea
+                    className="wizard-textarea"
+                    rows={4}
+                    value={String(answers.notes || "")}
+                    onChange={(e) => setA("notes", e.target.value)}
+                    placeholder="Tell us anything else that would help."
+                  />
+                </>
+              )}
+
+              {isQ && page === "connect" && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> Let&rsquo;s connect
+                  </span>
+                  <h2 className="wizard-question">Let&rsquo;s connect.</h2>
+                  <div className="wizard-fields">
+                    {CONTACT_FIELDS.map((f) => (
+                      <label key={f.key} className="wizard-field">
+                        <span>{f.label}</span>
+                        <input
+                          type={f.type || "text"}
+                          value={String(answers[f.key] || "")}
+                          onChange={(e) => setA(f.key, e.target.value)}
+                          placeholder={f.ph}
+                        />
+                      </label>
+                    ))}
                   </div>
-                </div>
+                  <div className="wizard-subquestion">
+                    <p className="wizard-hint">How would you prefer us to contact you?</p>
+                    <div className="wizard-options">
+                      {["WhatsApp", "Phone", "Email"].map((opt, i) => (
+                        <button
+                          key={opt}
+                          className={`wizard-option ${answers.contactPref === opt ? "wizard-option-active" : ""}`}
+                          onClick={() => setA("contactPref", opt)}
+                        >
+                          <span className="wizard-option-mark">
+                            {answers.contactPref === opt ? "✓" : String.fromCharCode(65 + i)}
+                          </span>
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </>
               )}
 
               {isDone && (
                 <div className="wizard-done">
                   <h2>
-                    You&rsquo;re ready to <span className="wizard-review-brand">experience it.</span>
+                    We&rsquo;ve got <span className="wizard-review-brand">it.</span>
                   </h2>
                   <p>
-                    Thanks! We&rsquo;ve received your request. We&rsquo;ll check the date and get
-                    back to you with a quote.
+                    Thanks for telling us what you have in mind. We&rsquo;ll review your
+                    request and get in touch to talk through your experience and the next
+                    steps.
                   </p>
                   <button className="btn btn-ink" onClick={finish}>
-                    BACK TO THE SITE
+                    Show up differently. <ArrowCircle />
                   </button>
                 </div>
               )}
             </div>
           </div>
+
+          {isIntro && (
+            <div className="wizard-footer">
+              <span />
+              <div className="wizard-footer-right">
+                <button ref={contRef} className="wizard-continue" onClick={startQuestions}>
+                  Let&rsquo;s start <span className="arrow-circle arrow-circle-dark">&rarr;</span>
+                </button>
+              </div>
+            </div>
+          )}
 
           {isQ && (
             <div className="wizard-footer">
@@ -1600,10 +1682,19 @@ export default function LandingPage() {
                 &larr; BACK
               </button>
               <div className="wizard-footer-right">
-                {err && <span className="wizard-error">{err}</span>}
-                <button ref={contRef} className="wizard-continue" onClick={next}>
-                  {contLabel} <span className="arrow-circle arrow-circle-dark">&rarr;</span>
-                </button>
+                {(err || (isLastPage && sendError)) && (
+                  <span className="wizard-error">{err || sendError}</span>
+                )}
+                {isLastPage ? (
+                  <button ref={contRef} className="wizard-continue" onClick={submit} disabled={sending}>
+                    {sending ? "Sending…" : "Send my request"}{" "}
+                    <span className="arrow-circle arrow-circle-dark">&rarr;</span>
+                  </button>
+                ) : (
+                  <button ref={contRef} className="wizard-continue" onClick={next}>
+                    Next <span className="arrow-circle arrow-circle-dark">&rarr;</span>
+                  </button>
+                )}
               </div>
             </div>
           )}
@@ -1702,167 +1793,3 @@ function CategoryCarousel({ images }: { images: { src: string; pos?: string }[] 
   );
 }
 
-function WizardQuestion({
-  step,
-  answers,
-  infoOpen,
-  onInfoToggle,
-  onPick,
-  onSetA,
-}: {
-  step: StepConfig;
-  answers: Answers;
-  infoOpen: boolean;
-  onInfoToggle: () => void;
-  onPick: (label: string) => void;
-  onSetA: (key: string, value: unknown) => void;
-}) {
-  const options = step.optsFn ? step.optsFn(answers) : step.opts || [];
-  const selected = step.type === "multi" ? ((answers[step.id] as string[]) || []) : [String(answers[step.id] || "")];
-  const showExtra = !!(step.extra && (!step.extra.show || step.extra.show(answers)));
-  const showInfoTooltip = infoOpen && step.id === "staff";
-  const isCocktailContext = hasC(answers) || !answers.offer;
-  const isKidsPopContext = hasK(answers) || hasP(answers) || !answers.offer;
-
-  return (
-    <>
-      <div className="wizard-tag">
-        <StarIcon className="wizard-tag-star" />
-        {step.tag}
-      </div>
-      <h2 className="wizard-question">{step.q}</h2>
-      {step.hint && <p className="wizard-hint">{step.hint}</p>}
-
-      {step.extra && step.extra.top && showExtra && (
-        <label className="wizard-extra-field">
-          <span>{step.extra.label}</span>
-          <input
-            value={String(answers[step.extra.key] || "")}
-            onChange={(e) => onSetA(step.extra!.key, e.target.value)}
-            placeholder={step.extra.ph}
-          />
-        </label>
-      )}
-
-      {(step.type === "single" || step.type === "multi") && (
-        <div className="wizard-options">
-          {options.map((label, i) => {
-            const on = selected.includes(label);
-            const isStaff = label === STAFF;
-            return (
-              <button
-                key={label}
-                className={`wizard-option ${on ? "wizard-option-active" : ""}`}
-                onClick={() => onPick(label)}
-              >
-                <span className="wizard-option-mark">{on ? "✓" : String.fromCharCode(65 + i)}</span>
-                <span>{label}</span>
-                {isStaff && (
-                  <span
-                    role="button"
-                    tabIndex={0}
-                    aria-label="What Re5 staff includes"
-                    className="wizard-option-info"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onInfoToggle();
-                    }}
-                  >
-                    i
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </div>
-      )}
-
-      {showInfoTooltip && (
-        <div role="note" className="wizard-info-note">
-          <button aria-label="Close" className="wizard-info-close" onClick={onInfoToggle}>
-            &times;
-          </button>
-          <span className="wizard-info-title">Re5 staff</span>
-          <span>Our own team runs the cart for you, from the first pour to pack down.</span>
-          {isCocktailContext && (
-            <span>
-              <strong>Signature Slushie:</strong> a trained bartender mixes, pours and checks IDs
-              for 18+.
-            </span>
-          )}
-          {isKidsPopContext && (
-            <span>
-              <strong>Slushie Sweets and Popcorn Experience:</strong> a friendly attendant serves, tops
-              up and keeps the cart looking good.
-            </span>
-          )}
-        </div>
-      )}
-
-      {step.type === "text" && (
-        <textarea
-          className="wizard-textarea"
-          value={String(answers[step.id] || "")}
-          onChange={(e) => onSetA(step.id, e.target.value)}
-          placeholder={step.ph}
-          rows={4}
-        />
-      )}
-
-      {step.type === "fields" && (
-        <div className="wizard-fields">
-          {(step.fields || CONTACT_FIELDS).map((f) => (
-            <label key={f.key} className="wizard-field">
-              <span>{f.label}</span>
-              <input
-                type={f.type || "text"}
-                value={String(answers[f.key] || "")}
-                onChange={(e) => onSetA(f.key, e.target.value)}
-                placeholder={f.ph}
-              />
-            </label>
-          ))}
-        </div>
-      )}
-
-      {step.type === "uploads" && (
-        <div className="wizard-uploads">
-          {UPLOADS.map((u) => {
-            const names = (answers.assets || {})[u] || [];
-            return (
-              <label key={u} className="wizard-upload-row">
-                <input
-                  type="file"
-                  multiple
-                  hidden
-                  onChange={(e) => {
-                    const fileNames = Array.from(e.target.files || []).map((f) => f.name);
-                    onSetA("assets", { ...(answers.assets || {}), [u]: fileNames });
-                  }}
-                />
-                <span className="wizard-upload-label">{u}</span>
-                <span className="wizard-upload-status">
-                  <span className="wizard-upload-files">{names.join(", ")}</span>
-                  <span className={`wizard-upload-btn ${names.length ? "wizard-upload-btn-filled" : ""}`}>
-                    {names.length ? "Replace" : "Add files"}
-                  </span>
-                </span>
-              </label>
-            );
-          })}
-        </div>
-      )}
-
-      {step.extra && !step.extra.top && showExtra && (
-        <label className="wizard-extra-field">
-          <span>{step.extra.label}</span>
-          <input
-            value={String(answers[step.extra.key] || "")}
-            onChange={(e) => onSetA(step.extra!.key, e.target.value)}
-            placeholder={step.extra.ph}
-          />
-        </label>
-      )}
-    </>
-  );
-}

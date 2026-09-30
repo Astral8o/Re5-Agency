@@ -1737,66 +1737,80 @@
   color: var(--paper);
 }
 
-.wizard-option-info {
-  margin-left: auto;
-  width: 32px;
-  height: 32px;
-  flex: none;
-  border-radius: 50%;
-  border: 2px solid var(--ink);
-  background: #fff;
-  display: grid;
-  place-items: center;
-  font-family: Georgia, serif;
-  font-style: italic;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 1;
-  color: var(--ink);
-  cursor: pointer;
-}
-
-.wizard-option-info:hover {
-  background: var(--ink);
-  color: var(--paper);
-}
-
-.wizard-info-note {
-  position: relative;
-  margin-top: 16px;
-  max-width: 560px;
-  padding: 24px 56px 24px 24px;
-  border-radius: 20px;
-  background: var(--ink);
-  color: var(--paper);
+.wizard-subquestion {
+  width: 100%;
+  margin-top: clamp(16px, 3vh, 28px);
+  padding-top: clamp(16px, 3vh, 28px);
+  border-top: 1px solid rgba(23, 20, 15, 0.14);
   display: flex;
   flex-direction: column;
+  gap: 16px;
+}
+
+.wizard-subquestion .wizard-options {
+  margin-top: 0;
+}
+
+.wizard-choice-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
   gap: 12px;
-  font-size: 16px;
-  line-height: 1.5;
-  font-weight: 500;
+  margin-top: clamp(18px, 3.4vh, 36px);
 }
 
-.wizard-info-close {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 44px;
-  height: 44px;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  color: var(--paper);
-  font-size: 20px;
+.wizard-choice-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  text-align: left;
+  padding: 20px 22px;
+  border-radius: 20px;
+  border: 2px solid rgba(23, 20, 15, 0.12);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--ink);
   cursor: pointer;
+  font-family: inherit;
+  transition: background 0.25s, border-color 0.25s;
 }
 
-.wizard-info-title {
-  font-weight: 700;
+.wizard-choice-card:hover {
+  border-color: var(--ink);
+}
+
+.wizard-choice-card-active {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.wizard-choice-card-label {
+  font-weight: 800;
+  font-size: clamp(16px, 1.3vw, 19px);
+  letter-spacing: -0.01em;
+}
+
+.wizard-choice-card-body {
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 500;
+  color: var(--stone);
+}
+
+.wizard-choice-card-active .wizard-choice-card-body {
+  color: rgba(23, 20, 15, 0.75);
+}
+
+.wizard-choice-card-mark {
+  margin-top: 4px;
+  font-weight: 800;
   font-size: 12px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--stone-soft);
+}
+
+.wizard-choice-card-active .wizard-choice-card-mark {
+  color: var(--ink);
 }
 
 .wizard-textarea {
