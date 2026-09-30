@@ -693,25 +693,35 @@ export default function LandingPage() {
       </div>
 
       <section id="popups" className="paths">
-        <h2 className="paths-heading">
-          How do you want to <span className="accent">show up?</span>
-        </h2>
-        <div className="paths-grid">
-          {PATHS.map((p, i) => (
-            <div key={p.id} className={`path-card ${i === 1 ? "path-card-brand" : ""}`}>
-              <span className="category-eyebrow">{p.eyebrow}</span>
-              <h3 className="category-heading">{p.heading}</h3>
-              <p className="category-body">{p.body}</p>
-              <p className="category-body">{p.bodyTwo}</p>
-              <CategoryCarousel images={p.images} />
-              <div className="category-cta-group">
-                <button
-                  className={`btn ${i === 1 ? "btn-accent" : "btn-ink"} category-cta`}
-                  onClick={() => (p.cta === "builder" ? openBuilder() : openWizard())}
-                >
-                  {p.ctaLabel} <ArrowCircle dark={i === 1} />
-                </button>
-                <span className="category-cta-note">Takes 2 minutes</span>
+        <div className="paths-head">
+          <h2 className="paths-heading">
+            How do you want to <span className="accent">show up?</span>
+          </h2>
+        </div>
+        <div className="paths-split">
+          {PATHS.map((p) => (
+            <div key={p.id} className="path-panel">
+              <img
+                className="path-panel-bg"
+                src={p.images[0].src}
+                alt={`${p.eyebrow} experience`}
+                style={p.images[0].pos ? { objectPosition: p.images[0].pos } : undefined}
+              />
+              <div className="path-panel-overlay" aria-hidden="true" />
+              <div className="path-panel-content">
+                <span className="path-panel-eyebrow">{p.eyebrow}</span>
+                <h3 className="path-panel-heading">{p.heading}</h3>
+                <p className="path-panel-body">{p.body}</p>
+                <p className="path-panel-body">{p.bodyTwo}</p>
+                <div className="path-panel-cta-row">
+                  <button
+                    className="btn btn-accent path-panel-cta"
+                    onClick={() => (p.cta === "builder" ? openBuilder() : openWizard())}
+                  >
+                    {p.ctaLabel} <ArrowCircle dark />
+                  </button>
+                  <span className="path-panel-note">Takes 2 minutes</span>
+                </div>
               </div>
             </div>
           ))}
@@ -1658,57 +1668,6 @@ function Marquee() {
         {track(0)}
         {track(1)}
       </div>
-    </div>
-  );
-}
-
-function CategoryCarousel({ images }: { images: { src: string; pos?: string }[] }) {
-  const [i, setI] = useState(0);
-  const go = (next: number) => setI((next + images.length) % images.length);
-
-  return (
-    <div className="category-carousel">
-      <div
-        className="category-carousel-track"
-        style={{ transform: `translateX(-${i * 100}%)` }}
-      >
-        {images.map((img, idx) => (
-          <div className="category-carousel-slide" key={idx}>
-            <img src={img.src} alt="" style={img.pos ? { objectPosition: img.pos } : undefined} />
-          </div>
-        ))}
-      </div>
-      {images.length > 1 && (
-        <>
-          <button
-            type="button"
-            className="category-carousel-nav category-carousel-prev"
-            onClick={() => go(i - 1)}
-            aria-label="Previous photo"
-          >
-            &lsaquo;
-          </button>
-          <button
-            type="button"
-            className="category-carousel-nav category-carousel-next"
-            onClick={() => go(i + 1)}
-            aria-label="Next photo"
-          >
-            &rsaquo;
-          </button>
-          <div className="category-carousel-dots">
-            {images.map((_, idx) => (
-              <button
-                type="button"
-                key={idx}
-                className={`category-carousel-dot ${idx === i ? "active" : ""}`}
-                onClick={() => go(idx)}
-                aria-label={`Go to photo ${idx + 1}`}
-              />
-            ))}
-          </div>
-        </>
-      )}
     </div>
   );
 }
