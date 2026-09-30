@@ -289,21 +289,6 @@ function StarIcon({ className }: { className?: string }) {
   );
 }
 
-function CheckIcon() {
-  return (
-    <svg viewBox="0 0 16 16" className="check-icon" aria-hidden="true">
-      <path
-        d="M3.5 8.5l3 3 6-6.5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 function WhatsAppIcon() {
   return (
     <svg viewBox="0 0 24 24" className="wa-icon" aria-hidden="true">
@@ -346,93 +331,6 @@ const HOW_STEPS = [
   },
 ];
 
-type Offering = {
-  key: "sweets" | "cocktail" | "popcorn";
-  num: string;
-  name: string;
-  eyebrow: string;
-  headline: string;
-  body: string;
-  included: string[];
-  price: string;
-  image: string;
-  alt: string;
-  imagePos: string;
-  dark?: boolean;
-};
-
-const SWEETS: Offering = {
-  key: "sweets",
-  num: "01",
-  name: "Slushie Sweets",
-  eyebrow: "Kids' parties · Birthdays · Wherever the party is",
-  headline: "The kind of fun they'll grow up remembering.",
-  body: "Give them something fun to enjoy with their favourite people, creating childhood memories they'll talk about for years to come.",
-  included: [
-    "The Slushie Sweets setup",
-    "3 hours of service",
-    "Candy toppings bar",
-    "2 slushie flavours",
-    "Kid-sized cups, lids and fun straws",
-    "Custom front signage",
-    "Design consultation and preview",
-    "Delivery, setup and pack down",
-  ],
-  price: "TT$2,400",
-  image: "/images/re5popup/slushie-sweets-kids.png",
-  alt: "Kids' slushie pop-up with a candy toppings bar",
-  imagePos: "50% 45%",
-};
-
-const COCKTAIL: Offering = {
-  key: "cocktail",
-  num: "01",
-  name: "Signature Slushie",
-  eyebrow: "Adults 18+ · Weddings · Parties · Celebrations",
-  headline: "Good drinks. Even better company.",
-  body: "Enjoy slushies with your favourite people and make more of the moments worth talking about, and sharing with friends on socials.",
-  included: [
-    "Up to 40 servings",
-    "3 hours of service",
-    "Our Signature setup",
-    "Two curated slushie flavours",
-    "Alcoholic or non-alcoholic options",
-    "Fruit, sweets and rim garnishes",
-    "Custom signage",
-    "Customized drinkware",
-    "On-site bartender",
-    "Setup and pack down",
-  ],
-  price: "TT$2,800",
-  image: "/images/re5popup/signature-slushie-cocktail.png",
-  alt: "Bartender topping a slushie cocktail",
-  imagePos: "50% 30%",
-};
-
-const POPCORN: Offering = {
-  key: "popcorn",
-  num: "02",
-  name: "Popcorn Pop-Up",
-  eyebrow: "Brands · Launches · Corporate",
-  headline: "Let the smell draw them in.",
-  body: "There's nothing like the smell of fresh popcorn to draw people in. Turn that curiosity into a chance to experience your brand.",
-  included: [
-    "The Popcorn setup",
-    "3 hours of service",
-    "Seasoning bar",
-    "2 popcorn flavours",
-    "Custom popcorn packaging",
-    "Custom front signage",
-    "Design consultation and preview",
-    "Delivery, setup and pack down",
-  ],
-  price: "TT$2,000",
-  image: "/images/re5popup/popcorn-boxes.png",
-  alt: "Branded popcorn boxes beside the popcorn machine",
-  imagePos: "50% 65%",
-  dark: true,
-};
-
 const CUSTOM_WORDS = ["branding", "colours", "menu", "signage", "experience"];
 
 const WHATSAPP_URL = "https://wa.me/18680000000";
@@ -445,9 +343,6 @@ export default function LandingPage() {
   const [mobile, setMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [headBorder, setHeadBorder] = useState(false);
-
-  const [activeOffer, setActiveOffer] = useState<"sweets" | "popcorn" | null>("sweets");
-  const [sweetsVariant, setSweetsVariant] = useState<"kids" | "adults">("kids");
 
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"q" | "review" | "done">("q");
@@ -780,15 +675,6 @@ export default function LandingPage() {
     });
   }, [art, openWizard]);
 
-  /* ---- pop-up tab data ---- */
-  const activeOffering: Offering | null =
-    activeOffer === "sweets" ? (sweetsVariant === "kids" ? SWEETS : COCKTAIL) : activeOffer === "popcorn" ? POPCORN : null;
-
-  const bookFromPanel = () => {
-    if (!activeOffering) return;
-    startWith(activeOffering.name);
-  };
-
   /* ---- render helpers ---- */
 
   const step = visibleSteps[Math.min(idx, visibleSteps.length - 1)] as StepConfig | undefined;
@@ -882,73 +768,30 @@ export default function LandingPage() {
         <Marquee />
       </div>
 
-      <section id="popups" className="popups">
-        <div className="popups-head">
-          <h2>Pick your pop-up</h2>
-          <p>Start with one of our experiences. We&rsquo;ll make it yours.</p>
+      <section id="popups" className="categories">
+        <div className="category-card">
+          <span className="category-eyebrow">Food + Beverage Experiences</span>
+          <h2 className="category-heading">The good stuff, made even better.</h2>
+          <p className="category-body">
+            The kind of pop-up people gather around, enjoy together and keep coming back to. A
+            little something that makes the moment feel more fun, more social and more
+            memorable.
+          </p>
+          <span className="category-tags">Slushie &middot; Popcorn</span>
+          <button className="btn btn-ink category-cta" onClick={openWizard}>
+            Make your moment pop <ArrowCircle />
+          </button>
         </div>
-        <div className="popups-grid">
-          <div className="popups-list">
-            <button
-              className={`popup-row ${activeOffer === "sweets" ? "popup-row-active" : ""}`}
-              onClick={() => setActiveOffer(mobile && activeOffer === "sweets" ? null : "sweets")}
-            >
-              <span className="popup-row-num">01</span>
-              <span className="popup-row-name">Slushie Pop-Up</span>
-              <span
-                className={`arrow-circle ${activeOffer === "sweets" ? "arrow-circle-active" : ""}`}
-              >
-                &rarr;
-              </span>
-            </button>
-            {mobile && activeOffer === "sweets" && (
-              <PopupPanel
-                offering={sweetsVariant === "kids" ? SWEETS : COCKTAIL}
-                variant={sweetsVariant}
-                onVariant={setSweetsVariant}
-                onBook={bookFromPanel}
-              />
-            )}
-
-            <button
-              className={`popup-row ${activeOffer === "popcorn" ? "popup-row-active" : ""}`}
-              onClick={() => setActiveOffer(mobile && activeOffer === "popcorn" ? null : "popcorn")}
-            >
-              <span className="popup-row-num">02</span>
-              <span className="popup-row-name">Popcorn Pop-Up</span>
-              <span
-                className={`arrow-circle ${activeOffer === "popcorn" ? "arrow-circle-active" : ""}`}
-              >
-                &rarr;
-              </span>
-            </button>
-            {mobile && activeOffer === "popcorn" && (
-              <PopupPanel offering={POPCORN} onBook={bookFromPanel} />
-            )}
-
-            <div className="popup-teaser">
-              <span className="popup-teaser-title">
-                <StarIcon className="popup-teaser-star" />
-                What&rsquo;s popping up next?
-              </span>
-              <span className="popup-teaser-body">
-                New Re5 experiences are always in the works. Check back to see what&rsquo;s coming.
-              </span>
-            </div>
-          </div>
-          {!mobile && (
-            <div className="popups-panel">
-              {activeOffer === "sweets" && (
-                <PopupPanel
-                  offering={sweetsVariant === "kids" ? SWEETS : COCKTAIL}
-                  variant={sweetsVariant}
-                  onVariant={setSweetsVariant}
-                  onBook={bookFromPanel}
-                />
-              )}
-              {activeOffer === "popcorn" && <PopupPanel offering={POPCORN} onBook={bookFromPanel} />}
-            </div>
-          )}
+        <div className="category-card category-card-dark">
+          <span className="category-eyebrow">Product + Brand Experiences</span>
+          <h2 className="category-heading">Give them something to experience.</h2>
+          <p className="category-body">
+            Turn seeing your brand into experiencing it. Something that draws people in, gets
+            them curious and gives them a reason to stop, explore and remember you.
+          </p>
+          <button className="btn btn-accent category-cta" onClick={() => startWith(CUSTOM)}>
+            Make your brand pop <ArrowCircle dark />
+          </button>
         </div>
       </section>
 
@@ -1323,9 +1166,9 @@ export default function LandingPage() {
 /* ---------------------------------------------------------------- */
 
 function Marquee() {
-  const words = ["Slushie Sweets", "Signature Slushie", "Popcorn Pop-Up"];
+  const words = ["Pop Up", "Stand Out", "Make A Moment", "Make It Pop"];
   const items: string[] = [];
-  for (let i = 0; i < 9; i++) items.push(words[i % 3]);
+  for (let i = 0; i < words.length * 3; i++) items.push(words[i % words.length]);
   const track = (key: number) => (
     <div className="marquee-track" key={key}>
       {items.map((w, i) => (
@@ -1353,73 +1196,6 @@ function HowIcon({ paths }: { paths: string }) {
         <path d={d} key={i} />
       ))}
     </svg>
-  );
-}
-
-function PopupPanel({
-  offering,
-  variant,
-  onVariant,
-  onBook,
-}: {
-  offering: Offering;
-  variant?: "kids" | "adults";
-  onVariant?: (v: "kids" | "adults") => void;
-  onBook: () => void;
-}) {
-  return (
-    <div className={`popup-panel ${offering.dark ? "popup-panel-dark" : ""}`}>
-      {onVariant && (
-        <div className="popup-subtabs">
-          <button
-            className={variant === "kids" ? "active" : ""}
-            onClick={() => onVariant("kids")}
-          >
-            <span className="popup-subtab-title">Slushie Sweets</span>
-            <span className="popup-subtab-tag">Kids</span>
-          </button>
-          <button
-            className={variant === "adults" ? "active" : ""}
-            onClick={() => onVariant("adults")}
-          >
-            <span className="popup-subtab-title">Signature Slushie</span>
-            <span className="popup-subtab-tag">Adults 18+</span>
-          </button>
-        </div>
-      )}
-      <div className="popup-panel-media">
-        <img src={offering.image} alt={offering.alt} style={{ objectPosition: offering.imagePos }} />
-      </div>
-      <div className="popup-panel-body">
-        <span className="popup-panel-eyebrow">{offering.eyebrow}</span>
-        <h3 className="popup-panel-name">{offering.name}</h3>
-        <div className="popup-panel-pitch">
-          <p className="popup-panel-headline">{offering.headline}</p>
-          <p className="popup-panel-copy">{offering.body}</p>
-        </div>
-        <div className="popup-panel-included">
-          <span className="popup-panel-eyebrow">What&rsquo;s included</span>
-          <ul>
-            {offering.included.map((item) => (
-              <li key={item}>
-                <CheckIcon />
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <p className="popup-panel-addons">Want more? Add on extras when you book.</p>
-        <div className="popup-panel-price-row">
-          <div>
-            <span className="popup-panel-eyebrow">Starting from</span>
-            <span className="popup-panel-price">{offering.price}</span>
-          </div>
-          <button className={`btn ${offering.dark ? "btn-accent" : "btn-ink"}`} onClick={onBook}>
-            Book {offering.name} <ArrowCircle dark={!offering.dark} />
-          </button>
-        </div>
-      </div>
-    </div>
   );
 }
 

@@ -135,14 +135,6 @@
   flex: none;
 }
 
-.check-icon {
-  width: 16px;
-  height: 16px;
-  flex: none;
-  margin-top: 4px;
-  color: var(--accent);
-}
-
 /* ---------------------------------------------------------------- */
 /* Header                                                             */
 /* ---------------------------------------------------------------- */
@@ -372,259 +364,39 @@
 }
 
 /* ---------------------------------------------------------------- */
-/* Pop-ups section                                                    */
+/* Category cards (Food + Beverage / Product + Brand)                 */
 /* ---------------------------------------------------------------- */
 
-.popups {
+.categories {
   max-width: 1520px;
   margin: 0 auto;
   padding: clamp(72px, 9vw, 128px) clamp(16px, 4vw, 56px);
   scroll-margin-top: 72px;
-}
-
-.popups-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px 60px;
-  margin-bottom: clamp(40px, 5vw, 64px);
-}
-
-.popups-head h2 {
-  margin: 0;
-  font-weight: 900;
-  font-size: clamp(40px, 5.6vw, 96px);
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-  text-transform: uppercase;
-}
-
-.popups-head p {
-  margin: 0;
-  max-width: 30ch;
-  font-size: clamp(17px, 1.4vw, 20px);
-  line-height: 1.5;
-  font-weight: 600;
-  color: var(--stone);
-}
-
-.popups-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 12px clamp(24px, 3vw, 48px);
-  align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+  gap: clamp(24px, 3vw, 40px);
+  align-items: stretch;
 }
 
-@media (min-width: 900px) {
-  .popups-grid {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  }
-}
-
-.popups-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.popup-row {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 4px 20px;
-  width: 100%;
-  text-align: left;
-  padding: clamp(20px, 2vw, 28px);
-  border-radius: 24px;
-  border: 1px solid rgba(23, 20, 15, 0.1);
-  background: #fff;
-  color: var(--ink);
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.35s, color 0.35s, border-color 0.35s;
-  scroll-margin-top: 88px;
-}
-
-.popup-row:hover {
-  border-color: var(--ink);
-}
-
-.popup-row-active {
-  background: var(--ink);
-  color: var(--paper);
-  border-color: var(--ink);
-}
-
-.popup-row-num {
-  font-family: var(--font-display), cursive;
-  font-size: 28px;
-  line-height: 0.8;
-  padding-top: 0.2em;
-  color: var(--accent);
-}
-
-.popup-row-name {
-  font-family: var(--font-display), cursive;
-  font-size: clamp(36px, 3vw, 52px);
-  line-height: 0.8;
-  padding-top: 0.12em;
-}
-
-.popup-teaser {
-  margin-top: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: clamp(20px, 2vw, 28px);
-  border-radius: 24px;
-  border: 1.5px dashed rgba(23, 20, 15, 0.28);
-}
-
-.popup-teaser-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 900;
-  font-size: clamp(18px, 1.6vw, 22px);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-}
-
-.popup-teaser-star {
-  width: 12px;
-  height: 12px;
-  flex: none;
-  color: var(--accent);
-}
-
-.popup-teaser-body {
-  font-size: 15px;
-  line-height: 1.5;
-  font-weight: 500;
-  color: var(--stone);
-}
-
-.popups-panel {
-  min-width: 0;
-}
-
-/* Popup panel (shared by desktop side panel + mobile accordion) */
-
-.popup-panel {
-  min-width: 0;
-  border-radius: 28px;
-  overflow: hidden;
-  background: #fff;
-  color: var(--ink);
-  border: 1px solid rgba(23, 20, 15, 0.1);
-  margin-top: 12px;
-  animation: suRise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-@media (min-width: 900px) {
-  .popup-panel {
-    margin-top: 0;
-  }
-}
-
-.popup-panel-dark {
-  background: var(--ink);
-  color: var(--paper);
-  border-color: var(--ink);
-}
-
-@keyframes suRise {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.popup-subtabs {
-  display: flex;
-  gap: 4px;
-  margin: 12px;
-  padding: 4px;
-  border-radius: 999px;
-  background: var(--paper);
-}
-
-.popup-subtabs button {
-  flex: 1;
-  min-width: 0;
+.category-card {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
-  min-height: 60px;
-  padding: 10px 18px;
-  border: 0;
-  border-radius: 999px;
-  text-align: left;
-  cursor: pointer;
-  font-family: inherit;
-  background: transparent;
+  gap: 20px;
+  padding: clamp(32px, 4vw, 56px);
+  border-radius: 32px;
+  background: #fff;
   color: var(--ink);
-  transition: background 0.3s;
+  border: 1px solid rgba(23, 20, 15, 0.1);
 }
 
-.popup-subtabs button:hover {
-  background: rgba(23, 20, 15, 0.07);
-}
-
-.popup-subtabs button.active {
+.category-card-dark {
   background: var(--ink);
   color: var(--paper);
+  border-color: var(--ink);
 }
 
-.popup-subtab-title {
-  font-weight: 800;
-  font-size: 15px;
-  line-height: 1.1;
-  letter-spacing: -0.01em;
-}
-
-.popup-subtab-tag {
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #6b6358;
-}
-
-.popup-subtabs button.active .popup-subtab-tag {
-  color: var(--accent);
-}
-
-.popup-panel-media {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  background: var(--bone);
-}
-
-.popup-panel-media img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.popup-panel-body {
-  padding: clamp(24px, 3vw, 44px);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.popup-panel-eyebrow {
+.category-eyebrow {
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.18em;
@@ -633,36 +405,20 @@
   color: var(--accent-deep);
 }
 
-.popup-panel-dark .popup-panel-eyebrow {
-  color: #cfc7b8;
+.category-card-dark .category-eyebrow {
+  color: var(--accent);
 }
 
-.popup-panel-name {
+.category-heading {
   margin: 0;
-  font-family: var(--font-display), cursive;
-  font-weight: 400;
-  font-size: clamp(52px, 5vw, 88px);
-  line-height: 0.78;
-  padding-top: 0.12em;
-}
-
-.popup-panel-pitch {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.popup-panel-headline {
-  margin: 0;
-  max-width: 22ch;
   font-weight: 900;
-  font-size: clamp(24px, 2.2vw, 34px);
-  line-height: 1;
+  font-size: clamp(32px, 3.6vw, 52px);
+  line-height: 0.98;
   letter-spacing: -0.03em;
   text-transform: uppercase;
 }
 
-.popup-panel-copy {
+.category-body {
   margin: 0;
   max-width: 46ch;
   font-size: clamp(17px, 1.3vw, 19px);
@@ -670,76 +426,20 @@
   font-weight: 500;
 }
 
-.popup-panel-included {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-top: 8px;
-}
-
-.popup-panel-included ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
-  column-gap: 32px;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.5;
-}
-
-.popup-panel-included li {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 11px 0;
-  border-bottom: 1px solid rgba(23, 20, 15, 0.1);
-}
-
-.popup-panel-dark .popup-panel-included li {
-  border-bottom-color: rgba(243, 239, 231, 0.14);
-}
-
-.popup-panel-addons {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.5;
-  font-weight: 600;
-  color: var(--accent-deep);
-}
-
-.popup-panel-dark .popup-panel-addons {
+.category-card-dark .category-body {
   color: #cfc7b8;
 }
 
-.popup-panel-price-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 20px 32px;
+.category-tags {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--stone-soft);
+}
+
+.category-cta {
   margin-top: 8px;
-  padding: 24px 0 4px;
-  border-top: 1px solid rgba(23, 20, 15, 0.16);
-}
-
-.popup-panel-dark .popup-panel-price-row {
-  border-top-color: rgba(243, 239, 231, 0.18);
-}
-
-.popup-panel-price-row > div {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.popup-panel-price {
-  font-weight: 900;
-  font-size: clamp(44px, 4.2vw, 68px);
-  line-height: 0.85;
-  letter-spacing: -0.045em;
-  font-variant-numeric: tabular-nums;
 }
 
 /* ---------------------------------------------------------------- */
