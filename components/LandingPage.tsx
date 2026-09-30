@@ -699,15 +699,15 @@ export default function LandingPage() {
           </h2>
         </div>
         <div className="paths-split">
-          {PATHS.map((p) => (
-            <div key={p.id} className="path-panel">
-              <img
-                className="path-panel-bg"
-                src={p.images[0].src}
-                alt={`${p.eyebrow} experience`}
-                style={p.images[0].pos ? { objectPosition: p.images[0].pos } : undefined}
-              />
-              <div className="path-panel-overlay" aria-hidden="true" />
+          {PATHS.map((p, i) => (
+            <div key={p.id} className={`path-panel ${i === 1 ? "path-panel-dark" : ""}`}>
+              <div className="path-panel-media">
+                <img
+                  src={p.images[0].src}
+                  alt={`${p.eyebrow} experience`}
+                  style={p.images[0].pos ? { objectPosition: p.images[0].pos } : undefined}
+                />
+              </div>
               <div className="path-panel-content">
                 <span className="path-panel-eyebrow">{p.eyebrow}</span>
                 <h3 className="path-panel-heading">{p.heading}</h3>
@@ -715,10 +715,10 @@ export default function LandingPage() {
                 <p className="path-panel-body">{p.bodyTwo}</p>
                 <div className="path-panel-cta-row">
                   <button
-                    className="btn btn-accent path-panel-cta"
+                    className={`btn ${i === 1 ? "btn-accent" : "btn-ink"} path-panel-cta`}
                     onClick={() => (p.cta === "builder" ? openBuilder() : openWizard())}
                   >
-                    {p.ctaLabel} <ArrowCircle dark />
+                    {p.ctaLabel} <ArrowCircle dark={i === 1} />
                   </button>
                   <span className="path-panel-note">Takes 2 minutes</span>
                 </div>
