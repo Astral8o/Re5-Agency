@@ -370,7 +370,7 @@
 .categories {
   max-width: 1520px;
   margin: 0 auto;
-  padding: clamp(72px, 9vw, 128px) clamp(16px, 4vw, 56px);
+  padding: clamp(96px, 11vw, 152px) clamp(16px, 4vw, 56px) clamp(72px, 9vw, 128px);
   scroll-margin-top: 72px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
@@ -379,38 +379,135 @@
 }
 
 .category-card {
+  position: relative;
+  overflow: visible;
+  display: flex;
+  min-height: clamp(380px, 34vw, 460px);
+  padding: clamp(32px, 4vw, 56px);
+  border-radius: 32px;
+  cursor: default;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+}
+
+.category-card:hover {
+  transform: translateY(-6px);
+}
+
+.category-card:hover .category-photo {
+  transform: rotate(0deg) translateY(-4px);
+}
+
+.category-card-food {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+.category-card-brand {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.category-content {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 20px;
-  padding: clamp(32px, 4vw, 56px);
-  border-radius: 32px;
-  background: #fff;
-  color: var(--ink);
-  border: 1px solid rgba(23, 20, 15, 0.1);
+  gap: 18px;
+  width: 100%;
 }
 
-.category-card-dark {
-  background: var(--ink);
-  color: var(--paper);
-  border-color: var(--ink);
+.category-num {
+  position: absolute;
+  top: clamp(-18px, -2vw, -8px);
+  left: clamp(4px, 1vw, 16px);
+  z-index: 0;
+  font-family: var(--font-display), cursive;
+  font-size: clamp(140px, 16vw, 240px);
+  line-height: 0.72;
+  pointer-events: none;
+  user-select: none;
+}
+
+.category-card-food .category-num {
+  color: rgba(23, 20, 15, 0.14);
+}
+
+.category-card-brand .category-num {
+  color: rgba(243, 239, 231, 0.08);
+}
+
+.category-decor-star {
+  position: absolute;
+  right: clamp(20px, 3vw, 36px);
+  bottom: clamp(20px, 3vw, 36px);
+  z-index: 0;
+  width: clamp(28px, 3vw, 44px);
+  height: clamp(28px, 3vw, 44px);
+  pointer-events: none;
+  animation: suTwinkle 5.6s ease-in-out infinite;
+}
+
+.category-card-food .category-decor-star {
+  color: rgba(23, 20, 15, 0.18);
+}
+
+.category-card-brand .category-decor-star {
+  color: rgba(255, 91, 31, 0.5);
+}
+
+.category-photo {
+  position: absolute;
+  top: clamp(-40px, -6vw, -28px);
+  z-index: 4;
+  width: clamp(100px, 26vw, 200px);
+  aspect-ratio: 4 / 5;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 6px solid var(--paper);
+  box-shadow: 0 20px 40px -14px rgba(23, 20, 15, 0.45);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.category-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.category-photo-food {
+  right: clamp(20px, 4vw, 40px);
+  transform: rotate(-6deg);
+}
+
+.category-photo-brand {
+  right: clamp(20px, 4vw, 40px);
+  transform: rotate(6deg);
 }
 
 .category-eyebrow {
+  max-width: 65%;
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.18em;
   line-height: 1.5;
   text-transform: uppercase;
-  color: var(--accent-deep);
 }
 
-.category-card-dark .category-eyebrow {
+.category-card-food .category-eyebrow {
+  color: rgba(23, 20, 15, 0.6);
+}
+
+.category-card-brand .category-eyebrow {
   color: var(--accent);
 }
 
 .category-heading {
   margin: 0;
+  max-width: 80%;
   font-weight: 900;
   font-size: clamp(32px, 3.6vw, 52px);
   line-height: 0.98;
@@ -426,7 +523,11 @@
   font-weight: 500;
 }
 
-.category-card-dark .category-body {
+.category-card-food .category-body {
+  color: rgba(23, 20, 15, 0.75);
+}
+
+.category-card-brand .category-body {
   color: #cfc7b8;
 }
 
@@ -435,12 +536,38 @@
   font-size: 12px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--stone-soft);
 }
 
-.category-cta {
+.category-card-food .category-tags {
+  color: rgba(23, 20, 15, 0.55);
+}
+
+.category-card-brand .category-tags {
+  color: #cfc7b8;
+}
+
+.category-cta-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
   margin-top: 8px;
 }
+
+.category-cta-note {
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.category-card-food .category-cta-note {
+  color: rgba(23, 20, 15, 0.65);
+}
+
+.category-card-brand .category-cta-note {
+  color: rgba(243, 239, 231, 0.65);
+}
+
 
 /* ---------------------------------------------------------------- */
 /* Customize                                                          */

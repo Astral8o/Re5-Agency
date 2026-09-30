@@ -769,29 +769,53 @@ export default function LandingPage() {
       </div>
 
       <section id="popups" className="categories">
-        <div className="category-card">
-          <span className="category-eyebrow">Food + Beverage Experiences</span>
-          <h2 className="category-heading">The good stuff, made even better.</h2>
-          <p className="category-body">
-            The kind of pop-up people gather around, enjoy together and keep coming back to. A
-            little something that makes the moment feel more fun, more social and more
-            memorable.
-          </p>
-          <span className="category-tags">Slushie &middot; Popcorn</span>
-          <button className="btn btn-ink category-cta" onClick={openWizard}>
-            Make your moment pop <ArrowCircle />
-          </button>
+        <div className="category-card category-card-food">
+          <span className="category-num" aria-hidden="true">
+            01
+          </span>
+          <StarIcon className="category-decor-star" />
+          <div className="category-photo category-photo-food">
+            <img src="/images/re5popup/signature-slushie-cocktail.png" alt="" style={{ objectPosition: "50% 30%" }} />
+          </div>
+          <div className="category-content">
+            <span className="category-eyebrow">Food + Beverage Experiences</span>
+            <h2 className="category-heading">The good stuff, made even better.</h2>
+            <p className="category-body">
+              The kind of pop-up people gather around, enjoy together and keep coming back to. A
+              little something that makes the moment feel more fun, more social and more
+              memorable.
+            </p>
+            <span className="category-tags">Slushie &middot; Popcorn</span>
+            <div className="category-cta-group">
+              <button className="btn btn-ink category-cta" onClick={openWizard}>
+                Make your moment pop <ArrowCircle />
+              </button>
+              <span className="category-cta-note">Takes 2 minutes</span>
+            </div>
+          </div>
         </div>
-        <div className="category-card category-card-dark">
-          <span className="category-eyebrow">Product + Brand Experiences</span>
-          <h2 className="category-heading">Give them something to experience.</h2>
-          <p className="category-body">
-            Turn seeing your brand into experiencing it. Something that draws people in, gets
-            them curious and gives them a reason to stop, explore and remember you.
-          </p>
-          <button className="btn btn-accent category-cta" onClick={() => startWith(CUSTOM)}>
-            Make your brand pop <ArrowCircle dark />
-          </button>
+        <div className="category-card category-card-brand">
+          <span className="category-num" aria-hidden="true">
+            02
+          </span>
+          <StarIcon className="category-decor-star" />
+          <div className="category-photo category-photo-brand">
+            <img src="/images/re5popup/popcorn-machine-crop.png" alt="" style={{ objectPosition: "50% 40%" }} />
+          </div>
+          <div className="category-content">
+            <span className="category-eyebrow">Product + Brand Experiences</span>
+            <h2 className="category-heading">Give them something to experience.</h2>
+            <p className="category-body">
+              Turn seeing your brand into experiencing it. Something that draws people in, gets
+              them curious and gives them a reason to stop, explore and remember you.
+            </p>
+            <div className="category-cta-group">
+              <button className="btn btn-accent category-cta" onClick={() => startWith(CUSTOM)}>
+                Make your brand pop <ArrowCircle dark />
+              </button>
+              <span className="category-cta-note">Takes 2 minutes</span>
+            </div>
+          </div>
         </div>
       </section>
 
