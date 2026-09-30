@@ -897,13 +897,16 @@ export default function LandingPage() {
         <StarIcon className="final-cta-star" />
         <div className="final-cta-collage" aria-hidden="true">
           <div className="cta-photo cta-photo-1">
-            <img src="/images/re5popup/slushie-candy-crop.png" alt="" />
+            <img src="/images/re5popup/slushie-group-toast.png" alt="" style={{ objectPosition: "50% 35%" }} />
           </div>
           <div className="cta-photo cta-photo-2">
             <img src="/images/re5popup/popcorn-kernels-crop.png" alt="" />
           </div>
           <div className="cta-photo cta-photo-3">
             <img src="/images/re5popup/cart-blank.png" alt="" />
+          </div>
+          <div className="cta-photo cta-photo-4">
+            <img src="/images/re5popup/slushie-candy-crop.png" alt="" />
           </div>
         </div>
         <h2 className="final-cta-heading">
