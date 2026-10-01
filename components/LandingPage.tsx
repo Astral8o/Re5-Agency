@@ -727,10 +727,10 @@ export default function LandingPage() {
                 <p className="path-panel-body">{p.bodyTwo}</p>
                 <div className="path-panel-cta-row">
                   <button
-                    className={`btn ${i === 1 ? "btn-accent" : "btn-ink"} path-panel-cta`}
+                    className="link-underline"
                     onClick={() => (p.cta === "builder" ? openBuilder() : openWizard())}
                   >
-                    {p.ctaLabel} <ArrowCircle dark={i === 1} />
+                    {p.ctaLabel}
                   </button>
                   <span className="path-panel-note">Takes 2 minutes</span>
                 </div>
@@ -803,8 +803,8 @@ export default function LandingPage() {
             </li>
           ))}
         </ol>
-        <button className="btn btn-accent" onClick={openWizard}>
-          Let&rsquo;s create it together <ArrowCircle dark />
+        <button className="link-underline" onClick={openWizard}>
+          Let&rsquo;s create it together
         </button>
       </section>
 
@@ -819,8 +819,8 @@ export default function LandingPage() {
               We love seeing where an idea can go and finding a way to make it{" "}
               <span className="accent">show up.</span>
             </p>
-            <button className="btn btn-ink" onClick={openWizard}>
-              Tell us your idea <ArrowCircle />
+            <button className="link-underline" onClick={openWizard}>
+              Tell us your idea
             </button>
           </div>
         </div>
@@ -846,12 +846,6 @@ export default function LandingPage() {
           </div>
           <div className="final-cta-photo">
             <img src="/images/re5popup/popcorn-kernels-crop.png" alt="" />
-          </div>
-          <div className="final-cta-photo">
-            <img src="/images/re5popup/cart-blank.png" alt="" />
-          </div>
-          <div className="final-cta-photo">
-            <img src="/images/re5popup/slushie-candy-crop.png" alt="" />
           </div>
         </div>
       </section>
