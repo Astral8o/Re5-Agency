@@ -203,34 +203,108 @@ function ArrowCircle({ dark }: { dark?: boolean }) {
   return <span className={`arrow-circle ${dark ? "arrow-circle-dark" : ""}`}>&rarr;</span>;
 }
 
+type StepIconName = "idea" | "look" | "taste" | "people" | "setup" | "local";
+
+const STEP_ICON_PATHS: Record<StepIconName, React.ReactNode> = {
+  idea: (
+    <>
+      <path d="M9 18h6M10 21h4" />
+      <path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V17h5v-1.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z" />
+    </>
+  ),
+  look: (
+    <>
+      <path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.6-.7 1.6-1.5 0-.5-.2-.8-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.7-1.6 1.6-1.6H16a5 5 0 0 0 5-5c0-4-4-7.5-9-7.5z" />
+      <circle cx="7.5" cy="11" r="1" />
+      <circle cx="10" cy="7" r="1" />
+      <circle cx="14.5" cy="7" r="1" />
+    </>
+  ),
+  taste: (
+    <>
+      <path d="M6 8h12l-1.5 12.2a1 1 0 0 1-1 .8h-7a1 1 0 0 1-1-.8L6 8z" />
+      <path d="M4.5 8h15M12 8l3-6h3" />
+    </>
+  ),
+  people: (
+    <>
+      <circle cx="9" cy="8" r="3" />
+      <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" />
+      <circle cx="17" cy="9" r="2.5" />
+      <path d="M16.5 14.2c2.6.4 4.5 2.7 4.5 5.8" />
+    </>
+  ),
+  setup: (
+    <>
+      <path d="M2.5 4h2.2l2.5 10.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 7H5.5" />
+      <circle cx="9" cy="19" r="1.5" />
+      <circle cx="17" cy="19" r="1.5" />
+    </>
+  ),
+  local: <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />,
+};
+
+function StepIcon({ name }: { name: StepIconName }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="24"
+      height="24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {STEP_ICON_PATHS[name]}
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="r5-check" aria-hidden="true">
+      <path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 const PILLARS = [
   {
     n: "01",
     title: "The Idea",
+    icon: "idea" as StepIconName,
     body: "We shape the idea with you, thinking about the moment, the people and what you want them to experience.",
   },
   {
     n: "02",
     title: "The Look",
+    icon: "look" as StepIconName,
     body: "From the cart to the signage and everything around it, we bring the look together around your event, idea or brand.",
   },
   {
     n: "03",
     title: "The Taste",
+    icon: "taste" as StepIconName,
     body: "From drinks and treats to something created for your moment, we work with you to bring the right tastes into your experience.",
-    extra: "Part of our mission is to bring local businesses into the experiences we create. Depending on the experience, we collaborate with small businesses, caterers and makers across Trinidad & Tobago, bringing their tastes to your moment while creating more opportunities for local businesses to grow.",
   },
   {
     n: "04",
     title: "The People",
+    icon: "people" as StepIconName,
     body: "From serving and mixing to sampling and interacting with guests, we bring in the right people for your experience.",
   },
   {
     n: "05",
     title: "The Setup",
+    icon: "setup" as StepIconName,
     body: "We bring everything together, get it there, set it up and make sure it's ready for your moment.",
   },
 ];
+
+const LOCAL_NOTE =
+  "Part of our mission is to bring local businesses into the experiences we create. Depending on the experience, we collaborate with small businesses, caterers and makers across Trinidad & Tobago, bringing their tastes to your moment while creating more opportunities for local businesses to grow.";
 
 const IMG = {
   toast: "/images/re5/slushie-group-toast.webp",
@@ -273,9 +347,15 @@ type PathDef = {
   id: "event" | "brand";
   n: string;
   eyebrow: string;
+  kicker: string;
   heading: string;
   body: string;
-  bodyTwo: string;
+  chooseTitle: React.ReactNode;
+  options: { name: string; body: string }[];
+  includesTitle: string;
+  includes: { item: string; sub?: string[] }[];
+  more: string;
+  price: string;
   images: { src: string; alt: string; pos: string }[];
   ctaLabel: string;
   cta: PathCta;
@@ -286,28 +366,80 @@ const PATHS: PathDef[] = [
     id: "event",
     n: "01",
     eyebrow: "For Your Event",
-    heading: "Give them something to experience.",
-    body: "Weddings, birthdays, celebrations, corporate events and the moments that bring people together.",
-    bodyTwo: "We work with you to create an experience around your moment and the people you're sharing it with.",
+    kicker: "The Signature Experience",
+    heading: "Give your guests something more to enjoy.",
+    body: "From weddings and birthdays to graduations and special celebrations, we create an experience that becomes part of the moment. Something your guests can walk up to, enjoy and share, designed around your event and served by us.",
+    chooseTitle: "Choose your experience",
+    options: [
+      { name: "Slushie", body: "Frozen flavours with toppings, with alcoholic options available for adult events." },
+      { name: "Popcorn", body: "Freshly popped and served with a selection of seasonings." },
+      { name: "Cotton Candy", body: "Made fresh for your guests throughout the experience." },
+      { name: "Candy & Sweets", body: "A selection of sweets presented and served from our Signature Cart." },
+    ],
+    includesTitle: "Your Signature Experience includes",
+    includes: [
+      { item: "RE5 Signature Cart" },
+      { item: "Your chosen experience" },
+      { item: "Custom front sign designed for your event" },
+      { item: "Custom small sign with your names, message or menu" },
+      { item: "Your choice of florals or balloons" },
+      { item: "One trained RE5 attendant" },
+      { item: "Serving essentials for your chosen experience" },
+      { item: "3 hours of service" },
+      { item: "Setup and breakdown" },
+    ],
+    more: "Want to make it even more yours? Additional customization, personalized packaging and extra service time can be added to your experience.",
+    price: "TT$2,800",
     images: [
       { src: IMG.cocktail, alt: "Bartender serving a slushie at a wedding", pos: "50% 30%" },
       { src: IMG.kids, alt: "Kids' birthday slushie cart", pos: "40% 50%" },
     ],
-    ctaLabel: "Plan your experience",
+    ctaLabel: "Create Your Experience",
     cta: "wizard",
   },
   {
     id: "brand",
     n: "02",
     eyebrow: "For Your Brand",
-    heading: "Put your brand where people can experience it.",
-    body: "Launching something new? Want people to try it, talk about it or experience your brand differently?",
-    bodyTwo: "We create mobile brand experiences that bring your idea directly to the people you want to reach.",
+    kicker: "The Brand Experience",
+    heading: "Give people a reason to come over.",
+    body: "Whether you're launching something new, putting your product into people's hands or creating a different way for customers to interact with your brand, we create a space that brings your brand and the people you want to reach together.",
+    chooseTitle: (
+      <>
+        Choose how you <span className="r5-accent">show up</span>
+      </>
+    ),
+    options: [
+      { name: "Product Sampling", body: "Put your product directly into people's hands." },
+      { name: "Product Showcases", body: "Give people a place to discover and interact with what you offer." },
+      { name: "Product Launches", body: "Bring something new directly to the people you want to reach." },
+      { name: "Gifting & Giveaways", body: "Turn giving something away into part of the experience." },
+      { name: "Sign-ups & Service Promotions", body: "Create a place for discovery, conversations and action." },
+      { name: "Branded RE5 Experiences", body: "Make Slushies, Popcorn, Cotton Candy or Sweets part of your campaign." },
+    ],
+    includesTitle: "Your Brand Experience includes",
+    includes: [
+      { item: "RE5 Signature Cart" },
+      { item: "Custom front branding" },
+      { item: "Custom message sign" },
+      { item: "Product or sample display, where applicable" },
+      {
+        item: "Two trained RE5 attendants",
+        sub: [
+          "One attendant to manage the cart and customer experience",
+          "One attendant to actively invite people over and bring them into the experience",
+        ],
+      },
+      { item: "4 hours of service" },
+      { item: "Setup and breakdown" },
+    ],
+    more: "Need more? Additional branding, custom packaging, additional attendants, extended service time and other campaign elements can be added based on what you're creating.",
+    price: "TT$3,500",
     images: [
       { src: IMG.popcorn, alt: "Branded popcorn cart in a mall", pos: "50% 45%" },
       { src: IMG.boxes, alt: "Branded popcorn boxes", pos: "60% 65%" },
     ],
-    ctaLabel: "Bring your brand to life",
+    ctaLabel: "Make Your Brand Show Up",
     cta: "builder",
   },
 ];
@@ -632,7 +764,8 @@ export default function LandingPage() {
               <WhatsAppIcon />
             </a>
             <button className="r5-btn r5-btn--orange r5-btn--sm" onClick={openWizard}>
-              Create Your Experience
+              <span className="r5-nav__cta-long">Create Your Experience</span>
+              <span className="r5-nav__cta-short">Book</span>
             </button>
           </nav>
         </header>
@@ -640,7 +773,7 @@ export default function LandingPage() {
         <main>
           <section className="r5-hero">
             <h1 className="r5-hero__title">
-              <span className="r5-hero__roll">Roll up.</span>
+              <span className="r5-hero__line r5-hero__line--top">MAKE IT</span>
               <span className="r5-hero__strip" aria-hidden="true">
                 <span className="r5-roll r5-roll--strip">
                   {[0, 1].map((r) =>
@@ -657,26 +790,15 @@ export default function LandingPage() {
                   )}
                 </span>
               </span>
-              <span className="r5-hero__exp">EXPERIENCE IT.</span>
+              <span className="r5-hero__line r5-hero__line--bottom">
+                AN <span className="r5-hero__break">EXPERIENCE.</span>
+              </span>
             </h1>
             <div className="r5-hero__body">
-              <div className="r5-hero__copy">
-                <p className="r5-hero__lead">
-                  Mobile experiences designed for brands, events and celebrations.
-                </p>
-                <p className="r5-hero__sub">
-                  From the first look to the last interaction, we create experiences people want
-                  to be part of.
-                </p>
-              </div>
-              <div className="r5-hero__ctas">
-                <button className="r5-btn r5-btn--orange" onClick={openWizard}>
-                  Create Your Experience →
-                </button>
-                <a href="#popups" className="r5-btn r5-btn--ghost">
-                  See what we offer
-                </a>
-              </div>
+              <p className="r5-hero__lead">Mobile experiences for events, celebrations and brands.</p>
+              <a href="#popups" className="r5-btn r5-btn--orange r5-hero__cta">
+                See what we offer <span aria-hidden="true">↓</span>
+              </a>
             </div>
           </section>
 
@@ -744,20 +866,59 @@ export default function LandingPage() {
                       ))}
                     </div>
                     <div className="r5-panel__body">
-                      <span className="r5-eyebrow">{p.eyebrow}</span>
-                      <h3 className="r5-h3">{p.heading}</h3>
-                      <div className="r5-stack-16">
-                        <p>{p.body}</p>
-                        <p>{p.bodyTwo}</p>
+                      <div className="r5-panel__head">
+                        <span className="r5-eyebrow">{p.eyebrow}</span>
+                        <span className="r5-panel__kicker">{p.kicker}</span>
                       </div>
+                      <h3 className="r5-h3">{p.heading}</h3>
+                      <p className="r5-panel__intro">{p.body}</p>
+
+                      <div className="r5-panel__block">
+                        <h4 className="r5-panel__subhead">{p.chooseTitle}</h4>
+                        <ul className="r5-options">
+                          {p.options.map((o) => (
+                            <li key={o.name} className="r5-option">
+                              <span className="r5-option__name">{o.name}</span>
+                              <span className="r5-option__body">{o.body}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="r5-panel__block">
+                        <h4 className="r5-panel__subhead">{p.includesTitle}</h4>
+                        <ul className="r5-includes">
+                          {p.includes.map((inc) => (
+                            <li key={inc.item} className={inc.sub ? "r5-includes__wide" : undefined}>
+                              <CheckIcon />
+                              <span>
+                                {inc.item}
+                                {inc.sub && (
+                                  <ul className="r5-includes__sub">
+                                    {inc.sub.map((s) => (
+                                      <li key={s}>{s}</li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <p className="r5-panel__more">{p.more}</p>
+
                       <div className="r5-panel__cta">
+                        <div className="r5-price">
+                          <span className="r5-price__label">Starting at</span>
+                          <span className="r5-price__value">{p.price}</span>
+                        </div>
                         <button
                           className="r5-btn r5-btn--dark"
                           onClick={() => (p.cta === "builder" ? openBuilder() : openWizard())}
                         >
                           {p.ctaLabel} →
                         </button>
-                        <span className="r5-note">Takes 2 minutes</span>
                       </div>
                     </div>
                   </div>
@@ -836,15 +997,15 @@ export default function LandingPage() {
 
           <section id="how" className="r5-section r5-section--sand">
             <div className="r5-container r5-how">
-              <div className="r5-how__aside">
+              <div className="r5-how__head">
                 <h2 className="r5-h2">
                   How it works<span className="r5-accent">.</span>
                 </h2>
-                <p className="r5-body-soft">
-                  It starts with a conversation. We get to know your idea, your moment and how you
-                  want people to experience it. Then we work with you to bring it to life.
-                </p>
-                <div className="r5-how__cta">
+                <div className="r5-how__intro">
+                  <p className="r5-body-soft">
+                    It starts with a conversation. We get to know your idea, your moment and how
+                    you want people to experience it. Then we work with you to bring it to life.
+                  </p>
                   <button className="r5-btn r5-btn--dark" onClick={openWizard}>
                     Let&rsquo;s create it together →
                   </button>
@@ -853,15 +1014,23 @@ export default function LandingPage() {
               <ol className="r5-steps">
                 {PILLARS.map((p) => (
                   <li key={p.n} className="r5-step">
-                    <span className="r5-step__num">{p.n}</span>
-                    <div className="r5-step__body">
-                      <h3 className="r5-step__title">{p.title}</h3>
-                      <p>{p.body}</p>
-                      {p.extra && <p className="r5-step__aside">{p.extra}</p>}
+                    <div className="r5-step__top">
+                      <span className="r5-step__icon">
+                        <StepIcon name={p.icon} />
+                      </span>
+                      <span className="r5-step__num">{p.n}</span>
                     </div>
+                    <h3 className="r5-step__title">{p.title}</h3>
+                    <p className="r5-step__body">{p.body}</p>
                   </li>
                 ))}
               </ol>
+              <div className="r5-local">
+                <span className="r5-local__icon">
+                  <StepIcon name="local" />
+                </span>
+                <p>{LOCAL_NOTE}</p>
+              </div>
             </div>
           </section>
 
