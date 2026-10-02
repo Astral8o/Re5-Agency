@@ -102,7 +102,7 @@ const showsSlushieDetails = (a: Answers) =>
     ? list(a.goals).includes("Branded RE5 Experiences") && list(a.branded).includes("Slushies")
     : list(a.experiences).includes("Slushie");
 
-const WIZARD_PAGE_IDS = ["plan", "experience", "details", "yours", "extras", "connect"] as const;
+const WIZARD_PAGE_IDS = ["plan", "when", "experience", "details", "yours", "look", "extras", "connect"] as const;
 type WizardPageId = (typeof WIZARD_PAGE_IDS)[number];
 
 const visibleWizardPages = (a: Answers): WizardPageId[] =>
@@ -733,6 +733,24 @@ export default function LandingPage() {
 
   /* ---- render helpers ---- */
 
+  // After a single choice, bring the question it unlocks into view. On phones the next
+  // question is often below the fold and people don't realise there's more to answer.
+  const revealNext = (el: HTMLElement) => {
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        const sc = scrollRef.current;
+        const group = el.closest(".wizard-options, .wizard-choice-cards");
+        const next = group?.nextElementSibling ?? group?.parentElement?.nextElementSibling;
+        if (!sc || !(next instanceof HTMLElement)) return;
+        const n = next.getBoundingClientRect();
+        const v = sc.getBoundingClientRect();
+        // Show as much of the new question as fits, without scrolling its top out of view.
+        if (n.bottom > v.bottom)
+          sc.scrollBy({ top: Math.min(n.top - v.top - 16, n.bottom - v.bottom + 24), behavior: "smooth" });
+      })
+    );
+  };
+
   // One answer button; multi-select keys hold a list and toggle.
   const renderOption = (key: string, value: string, i: number, multi = false) => {
     const on = multi ? list(answers[key]).includes(value) : answers[key] === value;
@@ -740,7 +758,11 @@ export default function LandingPage() {
       <button
         key={value}
         className={`wizard-option ${on ? "wizard-option-active" : ""}`}
-        onClick={() => (multi ? toggleA(key, value) : setA(key, value))}
+        onClick={(e) => {
+          if (multi) return toggleA(key, value);
+          setA(key, value);
+          revealNext(e.currentTarget);
+        }}
       >
         <span className="wizard-option-mark">{on ? "✓" : String.fromCharCode(65 + i)}</span>
         {value}
@@ -1174,7 +1196,10 @@ export default function LandingPage() {
                       <button
                         key={p.id}
                         className={`wizard-choice-card ${answers.path === p.id ? "wizard-choice-card-active" : ""}`}
-                        onClick={() => setA("path", p.id)}
+                        onClick={(e) => {
+                          setA("path", p.id);
+                          revealNext(e.currentTarget);
+                        }}
                       >
                         <span className="wizard-choice-card-label">{p.label}</span>
                         <span className="wizard-choice-card-body">{p.body}</span>
@@ -1213,47 +1238,52 @@ export default function LandingPage() {
                     </div>
                   )}
 
-                  {answers.path && (
-                    <>
-                      <div className="wizard-fields">
-                        <label className="wizard-field">
-                          <span>When is it happening?</span>
-                          <input
-                            type="date"
-                            value={String(answers.eventDate || "")}
-                            onChange={(e) => setA("eventDate", e.target.value)}
-                          />
-                        </label>
-                        <label className="wizard-field">
-                          <span>Where is it happening?</span>
-                          <input
-                            value={String(answers.venue || "")}
-                            onChange={(e) => setA("venue", e.target.value)}
-                            placeholder={answers.path === "brand" ? "Mall, store, office or event" : "Venue / Location"}
-                          />
-                        </label>
-                      </div>
-                      <div className="wizard-subquestion">
-                        <div className="wizard-options">
-                          {["Location confirmed", "Still deciding"].map((o, i) => renderOption("venueStatus", o, i))}
-                        </div>
-                      </div>
-                      <label className="wizard-extra-field">
-                        <span>
-                          {answers.path === "brand"
-                            ? "Roughly how many people do you want to reach?"
-                            : "How many guests are you expecting?"}
-                        </span>
-                        <input
-                          type="number"
-                          min="0"
-                          value={String(answers.guestCount || "")}
-                          onChange={(e) => setA("guestCount", e.target.value)}
-                          placeholder="Number"
-                        />
-                      </label>
-                    </>
-                  )}
+                </>
+              )}
+
+              {isQ && page === "when" && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> The plan
+                  </span>
+                  <h2 className="wizard-question">When and where?</h2>
+                  <div className="wizard-fields">
+                    <label className="wizard-field">
+                      <span>When is it happening?</span>
+                      <input
+                        type="date"
+                        value={String(answers.eventDate || "")}
+                        onChange={(e) => setA("eventDate", e.target.value)}
+                      />
+                    </label>
+                    <label className="wizard-field">
+                      <span>Where is it happening?</span>
+                      <input
+                        value={String(answers.venue || "")}
+                        onChange={(e) => setA("venue", e.target.value)}
+                        placeholder={answers.path === "brand" ? "Mall, store, office or event" : "Venue / Location"}
+                      />
+                    </label>
+                  </div>
+                  <div className="wizard-subquestion">
+                    <div className="wizard-options">
+                      {["Location confirmed", "Still deciding"].map((o, i) => renderOption("venueStatus", o, i))}
+                    </div>
+                  </div>
+                  <label className="wizard-extra-field">
+                    <span>
+                      {answers.path === "brand"
+                        ? "Roughly how many people do you want to reach?"
+                        : "How many guests are you expecting?"}
+                    </span>
+                    <input
+                      type="number"
+                      min="0"
+                      value={String(answers.guestCount || "")}
+                      onChange={(e) => setA("guestCount", e.target.value)}
+                      placeholder="Number"
+                    />
+                  </label>
                 </>
               )}
 
@@ -1331,7 +1361,7 @@ export default function LandingPage() {
               {isQ && page === "yours" && (
                 <>
                   <span className="wizard-tag">
-                    <StarIcon className="wizard-tag-star" /> The look
+                    <StarIcon className="wizard-tag-star" /> Make it yours
                   </span>
                   <h2 className="wizard-question">Make it yours.</h2>
                   <div className="wizard-fields">
@@ -1343,16 +1373,6 @@ export default function LandingPage() {
                         placeholder={nameQuestion(answers).ph}
                       />
                     </label>
-                    {isBrand(answers) && (
-                      <label className="wizard-field">
-                        <span>Brand colours</span>
-                        <input
-                          value={String(answers.brandColours || "")}
-                          onChange={(e) => setA("brandColours", e.target.value)}
-                          placeholder="e.g. navy and gold"
-                        />
-                      </label>
-                    )}
                   </div>
                   {nameQuestion(answers).hint && <p className="wizard-hint">{nameQuestion(answers).hint}</p>}
 
@@ -1373,6 +1393,27 @@ export default function LandingPage() {
                     />
                   </label>
 
+                </>
+              )}
+
+              {isQ && page === "look" && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> The look
+                  </span>
+                  <h2 className="wizard-question">{isBrand(answers) ? "Your branding." : "The finishing touches."}</h2>
+                  {isBrand(answers) && (
+                    <div className="wizard-fields">
+                      <label className="wizard-field">
+                        <span>Brand colours</span>
+                        <input
+                          value={String(answers.brandColours || "")}
+                          onChange={(e) => setA("brandColours", e.target.value)}
+                          placeholder="e.g. navy and gold"
+                        />
+                      </label>
+                    </div>
+                  )}
                   {!isBrand(answers) && (
                     <>
                       <div className="wizard-subquestion">
@@ -1508,7 +1549,7 @@ export default function LandingPage() {
           {isQ && (
             <div className="wizard-footer">
               <button className="wizard-back-btn" style={{ visibility: idx === 0 ? "hidden" : "visible" }} onClick={back}>
-                &larr; BACK
+                &larr;<span className="wizard-back-label"> Back</span>
               </button>
               <div className="wizard-footer-right">
                 {(err || (isLastPage && sendError)) && (
