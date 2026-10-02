@@ -332,7 +332,7 @@ const CUSTOM_WORDS = [
   { word: "experience", src: IMG.popcorn, pos: "50% 50%" },
 ];
 
-const WHATSAPP_URL = "https://wa.me/18680000000";
+const WHATSAPP_URL = "https://wa.me/18687177720";
 
 // TODO(Re5): swap in your real Google Calendar appointment scheduling link.
 const CONSULTATION_BOOKING_URL = "https://calendar.google.com/calendar/u/0/appointments";
@@ -1088,7 +1088,6 @@ export default function LandingPage() {
               </div>
               <div className="r5-footer__col">
                 <span className="r5-footer__label">Say hello</span>
-                <a href="mailto:hello@re5.tt">hello@re5.tt</a>
                 <a href={WHATSAPP_URL} target="_blank" rel="noopener">
                   WhatsApp
                 </a>
