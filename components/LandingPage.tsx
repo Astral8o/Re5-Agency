@@ -355,9 +355,7 @@ type PathDef = {
   includesTitle: string;
   includes: { item: string; sub?: string[] }[];
   more: string;
-  price: string;
   images: { src: string; alt: string; pos: string }[];
-  ctaLabel: string;
   cta: PathCta;
 };
 
@@ -389,12 +387,10 @@ const PATHS: PathDef[] = [
       { item: "Setup and breakdown" },
     ],
     more: "Want to make it even more yours? Additional customization, personalized packaging and extra service time can be added to your experience.",
-    price: "TT$2,800",
     images: [
       { src: IMG.cocktail, alt: "Bartender serving a slushie at a wedding", pos: "50% 30%" },
       { src: IMG.kids, alt: "Kids' birthday slushie cart", pos: "40% 50%" },
     ],
-    ctaLabel: "Create Your Experience",
     cta: "wizard",
   },
   {
@@ -434,12 +430,10 @@ const PATHS: PathDef[] = [
       { item: "Setup and breakdown" },
     ],
     more: "Need more? Additional branding, custom packaging, additional attendants, extended service time and other campaign elements can be added based on what you're creating.",
-    price: "TT$3,500",
     images: [
       { src: IMG.popcorn, alt: "Branded popcorn cart in a mall", pos: "50% 45%" },
       { src: IMG.boxes, alt: "Branded popcorn boxes", pos: "60% 65%" },
     ],
-    ctaLabel: "Make Your Brand Show Up",
     cta: "builder",
   },
 ];
@@ -928,19 +922,13 @@ export default function LandingPage() {
                       </div>
 
                       <div className="r5-offer">
-                        <div className="r5-offer__row">
-                          <div className="r5-price">
-                            <span className="r5-price__label">Starting at</span>
-                            <span className="r5-price__value">{p.price}</span>
-                          </div>
-                          <button
-                            className="r5-btn r5-btn--path"
-                            onClick={() => (p.cta === "builder" ? openBuilder() : openWizard())}
-                          >
-                            {p.ctaLabel} →
-                          </button>
-                        </div>
                         <p className="r5-offer__more">{p.more}</p>
+                        <button
+                          className="r5-btn r5-btn--path"
+                          onClick={() => (p.cta === "builder" ? openBuilder() : openWizard())}
+                        >
+                          Request a Quote →
+                        </button>
                       </div>
                     </div>
                   </div>

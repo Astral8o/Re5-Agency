@@ -517,26 +517,17 @@
   background: var(--ink);
   color: var(--cream);
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
 }
-.r5-offer__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; }
 .r5-panel__body .r5-offer__more {
-  font-size: 14px;
+  flex: 1 1 260px;
+  font-size: 15px;
   line-height: 1.5;
   color: var(--muted);
-  padding-top: 16px;
-  border-top: 1px solid var(--ink-2);
 }
-.r5-price { display: flex; flex-direction: column; gap: 6px; }
-.r5-price__label {
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.r5-price__value { font-family: var(--display); font-size: 48px; line-height: 0.8; color: var(--path); }
 .r5-btn--path { background: var(--path); color: var(--ink); }
 .r5-btn--path:hover { background: var(--cream); color: var(--ink); }
 
