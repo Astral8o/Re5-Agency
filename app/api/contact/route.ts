@@ -41,9 +41,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const toEmail = process.env.RESEND_TO_EMAIL ?? "hello@re5agency.com";
+  // Server-side only: never sent to the browser. Override with RESEND_TO_EMAIL in Vercel.
+  const toEmail = process.env.RESEND_TO_EMAIL ?? "astral.ochoa@hotmail.com";
+  // re5agency.com is verified in Resend, so any address on it can send without a mailbox.
   const fromEmail =
-    process.env.RESEND_FROM_EMAIL ?? "Re5 <onboarding@resend.dev>";
+    process.env.RESEND_FROM_EMAIL ?? "Re5 <bookings@re5agency.com>";
 
   const fields = {
     offer: typeof offer === "string" ? offer.trim().slice(0, 200) : "",
