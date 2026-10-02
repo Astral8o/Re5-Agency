@@ -134,8 +134,11 @@ function validateWizardPage(id: WizardPageId, a: Answers): string {
   if (id === "yours" && !String(a.name || "").trim())
     return isBrand(a) ? "Add your business or brand name." : "Tell us who we're celebrating.";
   if (id === "connect") {
+    if (!a.contactPref) return "Pick how you'd like us to contact you.";
     if (!a.contact || !a.email) return "Add your name and email so we can reply.";
     if (!/^\S+@\S+\.\S+$/.test(String(a.email))) return "That email looks incomplete.";
+    if ((a.contactPref === "WhatsApp" || a.contactPref === "Phone") && !String(a.phone || "").trim())
+      return `Add your number so we can reach you on ${a.contactPref}.`;
   }
   return "";
 }
@@ -1449,7 +1452,14 @@ export default function LandingPage() {
                     <StarIcon className="wizard-tag-star" /> Let&rsquo;s connect
                   </span>
                   <h2 className="wizard-question">Let&rsquo;s connect.</h2>
-                  <div className="wizard-fields">
+                  <div>
+                    <p className="wizard-hint">How would you prefer us to contact you?</p>
+                    <div className="wizard-options">
+                      {["WhatsApp", "Phone", "Email"].map((o, i) => renderOption("contactPref", o, i))}
+                    </div>
+                  </div>
+                  <div className="wizard-subquestion">
+                    <div className="wizard-fields">
                     {CONTACT_FIELDS.map((f) => (
                       <label key={f.key} className="wizard-field">
                         <span>{f.label}</span>
@@ -1462,11 +1472,6 @@ export default function LandingPage() {
                       </label>
                     ))}
                   </div>
-                  <div className="wizard-subquestion">
-                    <p className="wizard-hint">How would you prefer us to contact you?</p>
-                    <div className="wizard-options">
-                      {["WhatsApp", "Phone", "Email"].map((o, i) => renderOption("contactPref", o, i))}
-                    </div>
                   </div>
                 </>
               )}
