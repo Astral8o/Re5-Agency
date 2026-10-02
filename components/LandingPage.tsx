@@ -455,6 +455,7 @@ const BUILDER_STEP_COUNT = 6;
 export default function LandingPage() {
   const [path, setPath] = useState<PathDef["id"]>("event");
   const [way, setWay] = useState(0);
+  const [option, setOption] = useState<Record<PathDef["id"], number>>({ event: 0, brand: 0 });
 
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"intro" | "q" | "done">("intro");
@@ -866,27 +867,37 @@ export default function LandingPage() {
                       ))}
                     </div>
                     <div className="r5-panel__body">
-                      <div className="r5-panel__head">
-                        <span className="r5-eyebrow">{p.eyebrow}</span>
-                        <span className="r5-panel__kicker">{p.kicker}</span>
+                      <div className="r5-panel__top">
+                        <div className="r5-panel__head">
+                          <span className="r5-eyebrow">{p.eyebrow}</span>
+                          <span className="r5-panel__kicker">{p.kicker}</span>
+                        </div>
+                        <h3 className="r5-h3">{p.heading}</h3>
+                        <p className="r5-panel__intro">{p.body}</p>
                       </div>
-                      <h3 className="r5-h3">{p.heading}</h3>
-                      <p className="r5-panel__intro">{p.body}</p>
 
                       <div className="r5-panel__block">
                         <h4 className="r5-panel__subhead">{p.chooseTitle}</h4>
-                        <ul className="r5-options">
-                          {p.options.map((o) => (
-                            <li key={o.name} className="r5-option">
-                              <span className="r5-option__name">{o.name}</span>
-                              <span className="r5-option__body">{o.body}</span>
-                            </li>
+                        <div className="r5-chips">
+                          {p.options.map((o, i) => (
+                            <button
+                              key={o.name}
+                              type="button"
+                              className="r5-chip"
+                              aria-pressed={option[p.id] === i}
+                              onClick={() => setOption((prev) => ({ ...prev, [p.id]: i }))}
+                            >
+                              {o.name}
+                            </button>
                           ))}
-                        </ul>
+                        </div>
+                        <p key={option[p.id]} className="r5-chip-detail" aria-live="polite">
+                          {p.options[option[p.id]].body}
+                        </p>
                       </div>
 
                       <div className="r5-panel__block">
-                        <h4 className="r5-panel__subhead">{p.includesTitle}</h4>
+                        <h4 className="r5-panel__label">{p.includesTitle}</h4>
                         <ul className="r5-includes">
                           {p.includes.map((inc) => (
                             <li key={inc.item} className={inc.sub ? "r5-includes__wide" : undefined}>
@@ -906,19 +917,20 @@ export default function LandingPage() {
                         </ul>
                       </div>
 
-                      <p className="r5-panel__more">{p.more}</p>
-
-                      <div className="r5-panel__cta">
-                        <div className="r5-price">
-                          <span className="r5-price__label">Starting at</span>
-                          <span className="r5-price__value">{p.price}</span>
+                      <div className="r5-offer">
+                        <div className="r5-offer__row">
+                          <div className="r5-price">
+                            <span className="r5-price__label">Starting at</span>
+                            <span className="r5-price__value">{p.price}</span>
+                          </div>
+                          <button
+                            className="r5-btn r5-btn--orange"
+                            onClick={() => (p.cta === "builder" ? openBuilder() : openWizard())}
+                          >
+                            {p.ctaLabel} →
+                          </button>
                         </div>
-                        <button
-                          className="r5-btn r5-btn--dark"
-                          onClick={() => (p.cta === "builder" ? openBuilder() : openWizard())}
-                        >
-                          {p.ctaLabel} →
-                        </button>
+                        <p className="r5-offer__more">{p.more}</p>
                       </div>
                     </div>
                   </div>
