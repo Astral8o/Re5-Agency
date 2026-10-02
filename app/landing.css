@@ -157,7 +157,7 @@
   line-height: 1.55;
   background: var(--cream);
   color: var(--ink);
-  overflow-x: hidden;
+  overflow-x: clip; /* not hidden: hidden would break position: sticky */
 }
 
 .r5-dot, .r5-accent { color: var(--orange); }
@@ -365,7 +365,10 @@
   gap: clamp(32px, 5vw, 80px);
   align-items: start;
 }
-.r5-showup__aside { position: sticky; top: 120px; display: flex; flex-direction: column; gap: 40px; }
+.r5-showup__aside { display: flex; flex-direction: column; gap: 40px; }
+@media (min-width: 760px) {
+  .r5-showup__aside { position: sticky; top: 120px; }
+}
 .r5-showup__title { max-width: 10ch; }
 .r5-showup__tabs { display: flex; flex-direction: column; gap: 8px; }
 .r5-showup__tab {
@@ -444,15 +447,21 @@
 .r5-chip:hover { border-color: var(--ink); }
 .r5-chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--cream); }
 .r5-chip:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+.r5-chip-details { display: grid; }
 .r5-panel__body .r5-chip-detail {
-  min-height: calc(2 * 1.5em + 32px);
-  padding: 16px 20px;
+  grid-area: 1 / 1;
+  padding: 14px 18px;
   background: var(--sand);
   border-radius: 16px;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.5;
   color: var(--ink);
-  animation: re5fade .3s ease both;
+  visibility: hidden;
+}
+.r5-panel__body .r5-chip-detail.r5-is-active { visibility: visible; animation: re5fade .3s ease both; }
+@media (max-width: 600px) {
+  .r5-chip { height: 40px; padding: 0 14px; font-size: 14px; }
+  .r5-chips { gap: 6px; }
 }
 .r5-includes {
   margin: 0;
@@ -559,7 +568,9 @@
 }
 .r5-way__item.r5-is-active .r5-way__word { color: var(--cream); }
 .r5-way__note { max-width: 28em; }
-.r5-way__photo { position: sticky; top: 112px; }
+@media (min-width: 900px) {
+  .r5-way__photo { position: sticky; top: 112px; }
+}
 .r5-way__photo img { position: absolute; inset: 0; animation: re5fade .4s ease both; }
 .r5-way__tag {
   position: absolute;

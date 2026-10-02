@@ -891,9 +891,17 @@ export default function LandingPage() {
                             </button>
                           ))}
                         </div>
-                        <p key={option[p.id]} className="r5-chip-detail" aria-live="polite">
-                          {p.options[option[p.id]].body}
-                        </p>
+                        <div className="r5-chip-details" aria-live="polite">
+                          {p.options.map((o, i) => (
+                            <p
+                              key={o.name}
+                              className={`r5-chip-detail ${option[p.id] === i ? "r5-is-active" : ""}`}
+                              aria-hidden={option[p.id] !== i}
+                            >
+                              {o.body}
+                            </p>
+                          ))}
+                        </div>
                       </div>
 
                       <div className="r5-panel__block">
