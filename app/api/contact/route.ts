@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { offer, contact, email, phone, company, brief } = (body ?? {}) as Record<
+  const { offer, contact, email, phone, company, companyLabel, brief } = (body ?? {}) as Record<
     string,
     unknown
   >;
@@ -53,6 +53,10 @@ export async function POST(request: Request) {
     email: String(email).trim().slice(0, 200),
     phone: typeof phone === "string" ? phone.trim().slice(0, 60) : "",
     company: typeof company === "string" ? company.trim().slice(0, 200) : "",
+    companyLabel:
+      typeof companyLabel === "string" && companyLabel.trim()
+        ? companyLabel.trim().slice(0, 40)
+        : "Business",
   };
 
   const briefRows = Array.isArray(brief) ? (brief as BriefRow[]) : [];
@@ -79,7 +83,7 @@ export async function POST(request: Request) {
       }`,
       html: `
         <p><strong>Name:</strong> ${escapeHtml(fields.contact)}</p>
-        <p><strong>Business:</strong> ${escapeHtml(fields.company || "Not provided")}</p>
+        <p><strong>${escapeHtml(fields.companyLabel)}:</strong> ${escapeHtml(fields.company || "Not provided")}</p>
         <p><strong>Email:</strong> ${escapeHtml(fields.email)}</p>
         <p><strong>Phone / WhatsApp:</strong> ${escapeHtml(fields.phone || "Not provided")}</p>
         <table cellpadding="0" cellspacing="0">${briefHtml}</table>
