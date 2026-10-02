@@ -751,6 +751,19 @@
 }
 .r5-footer__base { border-top: 1px solid var(--ink-2); padding-top: 24px; font-size: 14px; color: var(--text-4); }
 
+/* 23+ alcohol policy note */
+.r5-age-note,
+.wizard-age-note {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--orange-text, #a3350a);
+}
+.r5-age-note { margin-top: 6px; color: var(--path-text); }
+.wizard-age-note { margin: 0; color: var(--accent-deep); }
+.wizard-choice-card .wizard-age-note { margin-top: 2px; }
+
 /* ---------- Request form on phones ---------- */
 @media (max-width: 600px) {
   .wizard-modal { height: 100dvh; bottom: auto; }

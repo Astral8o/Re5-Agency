@@ -54,8 +54,15 @@ const BRAND_GOALS = [
   "Branded RE5 Experiences",
 ];
 
+// Trinidad and Tobago policy: shown wherever alcohol is offered.
+const ALCOHOL_NOTE = "Alcoholic drinks are only served to guests 23 and over. No exceptions.";
+
 const EVENT_EXPERIENCES = [
-  { label: "Slushie", body: "Frozen flavours with toppings, with alcoholic options available for adult events." },
+  {
+    label: "Slushie",
+    body: "Frozen flavours with toppings, with alcoholic options available for adult events.",
+    note: ALCOHOL_NOTE,
+  },
   { label: "Popcorn", body: "Freshly popped and served with a selection of seasonings." },
   { label: "Cotton Candy", body: "Made fresh for your guests throughout the experience." },
   { label: "Candy & Sweets", body: "A selection of sweets presented and served from our Signature Cart." },
@@ -440,7 +447,7 @@ type PathDef = {
   heading: string;
   body: string;
   chooseTitle: React.ReactNode;
-  options: { name: string; body: string }[];
+  options: { name: string; body: string; note?: string }[];
   includesTitle: string;
   includes: { item: string; sub?: string[] }[];
   more: string;
@@ -457,7 +464,11 @@ const PATHS: PathDef[] = [
     body: "From weddings and birthdays to graduations and special celebrations, we create an experience that becomes part of the moment. Something your guests can walk up to, enjoy and share, designed around your event and served by us.",
     chooseTitle: "Choose your experience",
     options: [
-      { name: "Slushie", body: "Frozen flavours with toppings, with alcoholic options available for adult events." },
+      {
+        name: "Slushie",
+        body: "Frozen flavours with toppings, with alcoholic options available for adult events.",
+        note: ALCOHOL_NOTE,
+      },
       { name: "Popcorn", body: "Freshly popped and served with a selection of seasonings." },
       { name: "Cotton Candy", body: "Made fresh for your guests throughout the experience." },
       { name: "Candy & Sweets", body: "A selection of sweets presented and served from our Signature Cart." },
@@ -932,6 +943,7 @@ export default function LandingPage() {
                               aria-hidden={option[p.id] !== i}
                             >
                               {o.body}
+                              {o.note && <span className="r5-age-note">{o.note}</span>}
                             </p>
                           ))}
                         </div>
@@ -1305,6 +1317,7 @@ export default function LandingPage() {
                         >
                           <span className="wizard-choice-card-label">{c.label}</span>
                           <span className="wizard-choice-card-body">{c.body}</span>
+                          {"note" in c && <span className="wizard-age-note">{c.note}</span>}
                           <span className="wizard-choice-card-mark">{on ? "✓ Selected" : "Select"}</span>
                         </button>
                       );
@@ -1350,6 +1363,7 @@ export default function LandingPage() {
                   {(answers.slushieFor === "Adults" || answers.slushieFor === "Both") && (
                     <div className="wizard-subquestion">
                       <p className="wizard-hint">Would you like an alcoholic slushie option?</p>
+                      <p className="wizard-age-note">{ALCOHOL_NOTE}</p>
                       <div className="wizard-options">
                         {["Yes", "No", "Not sure yet"].map((o, i) => renderOption("alcohol", o, i))}
                       </div>
