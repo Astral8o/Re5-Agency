@@ -831,6 +831,7 @@ export default function LandingPage() {
                         aria-selected={selected}
                         tabIndex={selected ? 0 : -1}
                         className="r5-showup__tab"
+                        data-path={p.id}
                         onClick={() => setPath(p.id)}
                         onMouseEnter={() => setPath(p.id)}
                         onKeyDown={(e) => {
@@ -858,6 +859,7 @@ export default function LandingPage() {
                     id={`panel-${p.id}`}
                     aria-labelledby={`tab-${p.id}`}
                     className="r5-panel"
+                    data-path={p.id}
                   >
                     <div className="r5-panel__photos">
                       {p.images.map((img) => (
@@ -932,7 +934,7 @@ export default function LandingPage() {
                             <span className="r5-price__value">{p.price}</span>
                           </div>
                           <button
-                            className="r5-btn r5-btn--orange"
+                            className="r5-btn r5-btn--path"
                             onClick={() => (p.cta === "builder" ? openBuilder() : openWizard())}
                           >
                             {p.ctaLabel} →
