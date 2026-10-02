@@ -140,6 +140,48 @@ function validateWizardPage(id: WizardPageId, a: Answers): string {
   return "";
 }
 
+type Upload = { filename: string; type: string; content: string };
+
+// Vercel rejects request bodies over ~4.5 MB, so keep all attachments under this (base64 size).
+const MAX_UPLOAD_CHARS = 4_000_000;
+const UPLOAD_KEYS: Record<PathId, string[]> = { event: ["themeUpload"], brand: ["brandLogo", "brandMaterial"] };
+
+function readAsDataUrl(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result));
+    r.onerror = () => reject(r.error);
+    r.readAsDataURL(blob);
+  });
+}
+
+// Phone photos are often 5-10 MB; scale big images down so they fit in one request.
+async function prepareUpload(file: File): Promise<Upload> {
+  let blob: Blob = file;
+  let filename = file.name;
+  if (file.type.startsWith("image/") && file.type !== "image/svg+xml" && file.size > 900_000) {
+    // Some formats (e.g. HEIC outside Safari) can't be decoded; then send the original as-is.
+    const img = await createImageBitmap(file).catch(() => null);
+    if (!img) return readAsDataUrl(file).then((d) => ({ filename, type: file.type, content: d.slice(d.indexOf(",") + 1) }));
+    const scale = Math.min(1, 2000 / Math.max(img.width, img.height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(img.width * scale);
+    canvas.height = Math.round(img.height * scale);
+    canvas.getContext("2d")?.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const keepPng = file.type === "image/png";
+    blob = await new Promise<Blob>((resolve, reject) =>
+      canvas.toBlob(
+        (b) => (b ? resolve(b) : reject(new Error("resize failed"))),
+        keepPng ? "image/png" : "image/jpeg",
+        0.85
+      )
+    );
+    if (!keepPng) filename = filename.replace(/\.[^.]+$/, "") + ".jpg";
+  }
+  const dataUrl = await readAsDataUrl(blob);
+  return { filename, type: blob.type, content: dataUrl.slice(dataUrl.indexOf(",") + 1) };
+}
+
 function formatWizardDate(v: unknown): string {
   if (typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v)) {
     return new Date(`${v}T12:00`).toLocaleDateString("en-GB", {
@@ -495,6 +537,8 @@ export default function LandingPage() {
   const [answers, setAnswers] = useState<Answers>({});
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState("");
+  const [uploads, setUploads] = useState<Record<string, Upload>>({});
+  const [uploadErr, setUploadErr] = useState("");
 
   const contRef = useRef<HTMLButtonElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -544,6 +588,8 @@ export default function LandingPage() {
   // Accepts a path when opened from a panel; the plain CTAs pass a click event, which is ignored.
   const openWizard = useCallback((path?: unknown) => {
     setAnswers(path === "event" || path === "brand" ? { path } : {});
+    setUploads({});
+    setUploadErr("");
     setOpen(true);
     setMode("intro");
     setIdx(0);
@@ -569,11 +615,22 @@ export default function LandingPage() {
   }, []);
 
   const setWizardFile = useCallback(
-    (key: string, e: ChangeEvent<HTMLInputElement>) => {
+    async (key: string, e: ChangeEvent<HTMLInputElement>) => {
       const f = e.target.files?.[0];
-      if (!f) return;
-      setA(key, f.name);
       e.target.value = "";
+      if (!f) return;
+      setUploadErr("");
+      try {
+        const up = await prepareUpload(f);
+        if (up.content.length > MAX_UPLOAD_CHARS) {
+          setUploadErr("That file is too large to send. Please use one under 3 MB.");
+          return;
+        }
+        setUploads((prev) => ({ ...prev, [key]: up }));
+        setA(key, up.filename);
+      } catch {
+        setUploadErr("We couldn't read that file. Try a JPG, PNG or PDF.");
+      }
     },
     [setA]
   );
@@ -628,6 +685,13 @@ export default function LandingPage() {
       setErr(e);
       return;
     }
+    const attachments = UPLOAD_KEYS[isBrand(answers) ? "brand" : "event"]
+      .map((k) => uploads[k])
+      .filter(Boolean);
+    if (attachments.reduce((n, a) => n + a.content.length, 0) > MAX_UPLOAD_CHARS) {
+      setSendError("Your files are too large to send together. Remove one and try again.");
+      return;
+    }
     setSending(true);
     setSendError("");
     const brief = buildWizardBrief(answers);
@@ -643,6 +707,7 @@ export default function LandingPage() {
           company: answers.name,
           companyLabel: isBrand(answers) ? "Business / Brand" : "Celebrating",
           brief,
+          attachments,
         }),
       });
       if (!res.ok) throw new Error("failed");
@@ -653,13 +718,14 @@ export default function LandingPage() {
     } finally {
       setSending(false);
     }
-  }, [answers, visibleWizard, confetti]);
+  }, [answers, uploads, visibleWizard, confetti]);
 
   const finish = useCallback(() => {
     close();
     setMode("intro");
     setIdx(0);
     setAnswers({});
+    setUploads({});
   }, [close]);
 
   /* ---- render helpers ---- */
@@ -1332,7 +1398,12 @@ export default function LandingPage() {
                       : ([["themeUpload", "Have something you’d like us to see? (Optional)"]] as const)
                     ).map(([key, label]) => (
                       <label className="wizard-upload-row" key={key}>
-                        <input type="file" hidden onChange={(e) => setWizardFile(key, e)} />
+                        <input
+                          type="file"
+                          accept="image/*,.pdf"
+                          hidden
+                          onChange={(e) => setWizardFile(key, e)}
+                        />
                         <span className="wizard-upload-label">{label}</span>
                         <span className="wizard-upload-status">
                           <span className="wizard-upload-files">{String(answers[key] || "")}</span>
@@ -1343,6 +1414,7 @@ export default function LandingPage() {
                       </label>
                     ))}
                   </div>
+                  {uploadErr && <p className="wizard-error">{uploadErr}</p>}
                 </>
               )}
 

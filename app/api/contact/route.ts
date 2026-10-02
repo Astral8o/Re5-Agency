@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { offer, contact, email, phone, company, companyLabel, brief } = (body ?? {}) as Record<
+  const { offer, contact, email, phone, company, companyLabel, brief, attachments } = (body ?? {}) as Record<
     string,
     unknown
   >;
@@ -71,6 +71,22 @@ export async function POST(request: Request) {
     })
     .join("");
 
+  // Uploaded logos, theme pictures and brand material, sent as base64 from the form.
+  const files = (Array.isArray(attachments) ? attachments : [])
+    .slice(0, 3)
+    .filter(
+      (a): a is { filename: string; content: string } =>
+        !!a &&
+        typeof a.filename === "string" &&
+        typeof a.content === "string" &&
+        /^[A-Za-z0-9+/]+=*$/.test(a.content) &&
+        /\.(jpe?g|png|gif|webp|heic|svg|pdf)$/i.test(a.filename)
+    )
+    .map((a) => ({
+      filename: a.filename.replace(/[^\w.\- ]+/g, "_").slice(0, 120),
+      content: a.content, // Resend accepts base64 strings as-is
+    }));
+
   const resend = new Resend(apiKey);
 
   try {
@@ -78,6 +94,7 @@ export async function POST(request: Request) {
       from: fromEmail,
       to: toEmail,
       replyTo: fields.email,
+      attachments: files.length ? files : undefined,
       subject: `New Re5 booking request: ${fields.offer || "General enquiry"} for ${
         fields.company || fields.contact
       }`,
