@@ -74,6 +74,18 @@ const FLORAL_OPTS = ["Florals", "Balloons", "Not sure yet"];
 
 const SETTING_OPTS = ["Indoors", "Outdoors", "Not sure yet"];
 
+// Brand path: what the activation should achieve, so the quote is built around the outcome.
+const SUCCESS_OPTS = [
+  "More people trying the product",
+  "Sign-ups or leads",
+  "Sales on the day",
+  "Social content and followers",
+  "Feedback on the product",
+  "Getting the name out there",
+];
+const ACTION_OPTS = ["Taste or try", "Sign up", "Scan a QR code", "Follow or post", "Buy", "Share feedback"];
+const FOLLOWUP_OPTS = ["Yes, contact details", "Yes, feedback", "No", "Not sure yet"];
+
 const ADDON_OPTS: Record<PathId, string[]> = {
   event: ["Additional customization", "Personalized packaging", "Extra service time"],
   brand: [
@@ -111,11 +123,13 @@ const showsSlushieDetails = (a: Answers) =>
     ? list(a.goals).includes("Branded RE5 Experiences") && list(a.branded).includes("Slushies")
     : list(a.experiences).includes("Slushie");
 
-const WIZARD_PAGE_IDS = ["plan", "when", "experience", "details", "yours", "look", "extras", "connect"] as const;
+const WIZARD_PAGE_IDS = ["plan", "when", "experience", "goal", "details", "yours", "look", "extras", "connect"] as const;
 type WizardPageId = (typeof WIZARD_PAGE_IDS)[number];
 
 const visibleWizardPages = (a: Answers): WizardPageId[] =>
-  WIZARD_PAGE_IDS.filter((id) => id !== "details" || showsSlushieDetails(a));
+  WIZARD_PAGE_IDS.filter(
+    (id) => (id !== "details" || showsSlushieDetails(a)) && (id !== "goal" || isBrand(a))
+  );
 
 function validateWizardPage(id: WizardPageId, a: Answers): string {
   if (id === "plan") {
@@ -135,6 +149,7 @@ function validateWizardPage(id: WizardPageId, a: Answers): string {
         return "Pick which RE5 experience to brand.";
     } else if (!list(a.experiences).length) return "Pick at least one experience.";
   }
+  if (id === "goal" && !list(a.success).length) return "Pick at least one thing that would make this a success.";
   if (id === "details") {
     if (!a.slushieFor) return "Pick one to keep going.";
     if ((a.slushieFor === "Adults" || a.slushieFor === "Both") && !a.alcohol)
@@ -236,6 +251,10 @@ function buildWizardBrief(a: Answers) {
   if (brand) {
     push("Product / service", String(a.products || ""));
     if (list(a.goals).includes("Branded RE5 Experiences")) push("Branded experience", list(a.branded).join(", "));
+    push("Goal: success looks like", list(a.success).join(", "));
+    push("Goal: people should", list(a.actions).join(", "));
+    push("Goal: collect for follow-up", String(a.followup || ""));
+    push("Goal: measured by", String(a.measure || ""));
   } else {
     push("Experience", list(a.experiences).join(", "));
   }
@@ -1357,6 +1376,39 @@ export default function LandingPage() {
                       </div>
                     </div>
                   )}
+                </>
+              )}
+
+              {isQ && page === "goal" && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> The goal
+                  </span>
+                  <h2 className="wizard-question">What would make this a success?</h2>
+                  <p className="wizard-hint">Pick all that apply.</p>
+                  <div className="wizard-options">
+                    {SUCCESS_OPTS.map((o, i) => renderOption("success", o, i, true))}
+                  </div>
+                  <div className="wizard-subquestion">
+                    <p className="wizard-hint">What should people do when they come over? (Optional)</p>
+                    <div className="wizard-options">
+                      {ACTION_OPTS.map((o, i) => renderOption("actions", o, i, true))}
+                    </div>
+                  </div>
+                  <div className="wizard-subquestion">
+                    <p className="wizard-hint">Do you need us to collect anything for follow-up?</p>
+                    <div className="wizard-options">
+                      {FOLLOWUP_OPTS.map((o, i) => renderOption("followup", o, i))}
+                    </div>
+                  </div>
+                  <label className="wizard-extra-field">
+                    <span>How will you measure it? (Optional)</span>
+                    <input
+                      value={String(answers.measure || "")}
+                      onChange={(e) => setA("measure", e.target.value)}
+                      placeholder="e.g. samples handed out, sign-ups, QR scans, or not sure yet"
+                    />
+                  </label>
                 </>
               )}
 
