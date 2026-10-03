@@ -72,6 +72,8 @@ const BRANDED_EXPERIENCES = ["Slushies", "Popcorn", "Cotton Candy", "Sweets"];
 
 const FLORAL_OPTS = ["Florals", "Balloons", "Not sure yet"];
 
+const SETTING_OPTS = ["Indoors", "Outdoors", "Not sure yet"];
+
 const ADDON_OPTS: Record<PathId, string[]> = {
   event: ["Additional customization", "Personalized packaging", "Extra service time"],
   brand: [
@@ -228,6 +230,7 @@ function buildWizardBrief(a: Answers) {
   }
   push("Date", formatWizardDate(a.eventDate));
   push("Location", [a.venue, a.venueStatus].filter(Boolean).join(" · "));
+  push("Indoors / outdoors", String(a.setting || ""));
   push(brand ? "Expected reach" : "Guests", a.guestCount ? String(a.guestCount) : "");
 
   if (brand) {
@@ -1280,6 +1283,12 @@ export default function LandingPage() {
                   <div className="wizard-subquestion">
                     <div className="wizard-options">
                       {["Location confirmed", "Still deciding"].map((o, i) => renderOption("venueStatus", o, i))}
+                    </div>
+                  </div>
+                  <div className="wizard-subquestion">
+                    <p className="wizard-hint">Will it be indoors or outdoors?</p>
+                    <div className="wizard-options">
+                      {SETTING_OPTS.map((o, i) => renderOption("setting", o, i))}
                     </div>
                   </div>
                   <label className="wizard-extra-field">
