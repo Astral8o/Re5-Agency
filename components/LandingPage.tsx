@@ -472,6 +472,9 @@ type PathDef = {
   options: { name: string; body: string; note?: string }[];
   includesTitle: string;
   includes: { item: string; sub?: string[] }[];
+  // At-a-glance version of `includes` for the homepage; the full list lives in the request form.
+  snapshot: { value: string; label: string }[];
+  snapshotPlus: string;
   more: string;
   images: { src: string; alt: string; pos: string }[];
 };
@@ -507,6 +510,13 @@ const PATHS: PathDef[] = [
       { item: "3 hours of service" },
       { item: "Setup and breakdown" },
     ],
+    snapshot: [
+      { value: "1", label: "Signature Cart" },
+      { value: "2", label: "Custom signs" },
+      { value: "1", label: "Trained attendant" },
+      { value: "3 hrs", label: "of service" },
+    ],
+    snapshotPlus: "Plus florals or balloons, serving essentials, setup and breakdown.",
     more: "Want to make it even more yours? Additional customization, personalized packaging and extra service time can be added to your experience.",
     images: [
       { src: IMG.cocktail, alt: "Bartender serving a slushie at a wedding", pos: "50% 30%" },
@@ -549,6 +559,13 @@ const PATHS: PathDef[] = [
       { item: "4 hours of service" },
       { item: "Setup and breakdown" },
     ],
+    snapshot: [
+      { value: "1", label: "Signature Cart" },
+      { value: "2", label: "Custom signs" },
+      { value: "2", label: "Trained attendants" },
+      { value: "4 hrs", label: "of service" },
+    ],
+    snapshotPlus: "Plus a product or sample display, setup and breakdown.",
     more: "Need more? Additional branding, custom packaging, additional attendants, extended service time and other campaign elements can be added based on what you're creating.",
     images: [
       { src: IMG.popcorn, alt: "Branded popcorn cart in a mall", pos: "50% 45%" },
@@ -972,24 +989,22 @@ export default function LandingPage() {
                       </div>
 
                       <div className="r5-panel__block">
-                        <h4 className="r5-panel__label">{p.includesTitle}</h4>
-                        <ul className="r5-includes">
-                          {p.includes.map((inc) => (
-                            <li key={inc.item} className={inc.sub ? "r5-includes__wide" : undefined}>
-                              <CheckIcon />
-                              <span>
-                                {inc.item}
-                                {inc.sub && (
-                                  <ul className="r5-includes__sub">
-                                    {inc.sub.map((s) => (
-                                      <li key={s}>{s}</li>
-                                    ))}
-                                  </ul>
-                                )}
-                              </span>
+                        <h4 className="r5-panel__label">What you get</h4>
+                        <ul className="r5-snapshot">
+                          {p.snapshot.map((t) => (
+                            <li key={t.label} className="r5-snapshot__tile">
+                              <span className="r5-snapshot__value">{t.value}</span>
+                              <span className="r5-snapshot__label">{t.label}</span>
                             </li>
                           ))}
                         </ul>
+                        <p className="r5-snapshot__plus">{p.snapshotPlus}</p>
+                        <button type="button" className="r5-snapshot__more" onClick={() => openWizard(p.id)}>
+                          <span>
+                            <strong>And more!</strong> Let&rsquo;s chat to make your experience yours.
+                          </span>
+                          <span aria-hidden="true">→</span>
+                        </button>
                       </div>
 
                       <div className="r5-offer">
@@ -1350,6 +1365,7 @@ export default function LandingPage() {
                       );
                     })}
                   </div>
+                  <WizardIncludes path={isBrand(answers) ? "brand" : "event"} />
                 </>
               )}
 
@@ -1375,6 +1391,7 @@ export default function LandingPage() {
                       </div>
                     </div>
                   )}
+                  <WizardIncludes path={isBrand(answers) ? "brand" : "event"} />
                 </>
               )}
 
@@ -1645,5 +1662,36 @@ export default function LandingPage() {
         </div>
       )}
     </>
+  );
+}
+
+/* ---------------------------------------------------------------- */
+/* Sub components                                                     */
+/* ---------------------------------------------------------------- */
+
+// Full "includes" list, shown in the request form while people choose.
+function WizardIncludes({ path }: { path: PathDef["id"] }) {
+  const p = PATHS.find((x) => x.id === path)!;
+  return (
+    <div className="wizard-includes" data-path={path}>
+      <span className="wizard-includes-title">{p.includesTitle}</span>
+      <ul>
+        {p.includes.map((inc) => (
+          <li key={inc.item}>
+            <CheckIcon />
+            <span>
+              {inc.item}
+              {inc.sub && (
+                <ul className="wizard-includes-sub">
+                  {inc.sub.map((s) => (
+                    <li key={s}>{s}</li>
+                  ))}
+                </ul>
+              )}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
