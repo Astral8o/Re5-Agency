@@ -474,7 +474,6 @@ type PathDef = {
   includes: { item: string; sub?: string[] }[];
   // At-a-glance version of `includes` for the homepage; the full list lives in the request form.
   snapshot: { value: string; label: string }[];
-  snapshotPlus: string;
   images: { src: string; alt: string; pos: string }[];
 };
 
@@ -515,7 +514,6 @@ const PATHS: PathDef[] = [
       { value: "1", label: "Trained attendant" },
       { value: "3 hrs", label: "of service" },
     ],
-    snapshotPlus: "Plus florals or balloons, serving essentials, setup and breakdown.",
     images: [
       { src: IMG.cocktail, alt: "Bartender serving a slushie at a wedding", pos: "50% 30%" },
       { src: IMG.kids, alt: "Kids' birthday slushie cart", pos: "40% 50%" },
@@ -563,7 +561,6 @@ const PATHS: PathDef[] = [
       { value: "2", label: "Trained attendants" },
       { value: "4 hrs", label: "of service" },
     ],
-    snapshotPlus: "Plus a product or sample display, setup and breakdown.",
     images: [
       { src: IMG.popcorn, alt: "Branded popcorn cart in a mall", pos: "50% 45%" },
       { src: IMG.boxes, alt: "Branded popcorn boxes", pos: "60% 65%" },
@@ -998,7 +995,6 @@ export default function LandingPage() {
                             </li>
                           ))}
                         </ul>
-                        <p className="r5-snapshot__plus">{p.snapshotPlus}</p>
                         <button type="button" className="r5-snapshot__more" onClick={() => openWizard(p.id)}>
                           <span>
                             <strong>And more!</strong> Let&rsquo;s chat to make your experience yours.
