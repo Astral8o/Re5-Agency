@@ -753,7 +753,7 @@
   cursor: pointer;
   transition: border-color .2s, background .2s;
 }
-.r5-snapshot__more strong { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 20px; margin-right: 4px; }
+.r5-snapshot__more strong { font-weight: 800; margin-right: 4px; }
 .r5-snapshot__more:hover { border-color: var(--ink); background: rgba(23, 20, 15, 0.03); }
 @media (max-width: 600px) {
   .r5-snapshot { grid-template-columns: repeat(2, minmax(0, 1fr)); }
