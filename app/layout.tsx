@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Modak, Schibsted_Grotesk } from "next/font/google";
+import { Instrument_Serif, Modak, Schibsted_Grotesk } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -9,6 +9,15 @@ const modak = Modak({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-display",
+  display: "swap",
+});
+
+// Elegant italic accent paired with Modak (display) and Schibsted Grotesk (body).
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-serif",
   display: "swap",
 });
 
@@ -40,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${modak.variable} ${schibstedGrotesk.variable}`}
+      className={`${modak.variable} ${schibstedGrotesk.variable} ${instrumentSerif.variable}`}
     >
       <body>
         {children}

@@ -855,13 +855,11 @@ export default function LandingPage() {
                   )}
                 </span>
               </span>
-              <span className="r5-hero__line r5-hero__line--bottom">
-                AN <span className="r5-hero__break">EXPERIENCE.</span>
-              </span>
+              <span className="r5-hero__serif">an experience.</span>
             </h1>
             <div className="r5-hero__body">
               <p className="r5-hero__lead">Mobile experiences for events, celebrations and brands.</p>
-              <a href="#popups" className="r5-btn r5-btn--orange r5-hero__cta">
+              <a href="#popups" className="r5-btn r5-btn--cream r5-hero__cta">
                 See what we offer <span aria-hidden="true">↓</span>
               </a>
             </div>
@@ -882,7 +880,7 @@ export default function LandingPage() {
           <section id="popups" className="r5-section r5-section--cream">
             <div className="r5-container r5-showup">
               <div className="r5-showup__aside">
-                <h2 className="r5-h2 r5-showup__title">How do you want to show up?</h2>
+                <h2 className="r5-h2 r5-showup__title">How do you want to <span className="r5-accent">show up?</span></h2>
                 <div role="tablist" aria-label="How do you want to show up?" className="r5-showup__tabs">
                   {PATHS.map((p, i) => {
                     const selected = path === p.id;
@@ -995,7 +993,7 @@ export default function LandingPage() {
                       <div className="r5-offer">
                         <p className="r5-offer__more">{p.more}</p>
                         <button
-                          className="r5-btn r5-btn--path"
+                          className="r5-btn r5-btn--cream"
                           onClick={() => openWizard(p.id)}
                         >
                           Request a Quote →
@@ -1048,8 +1046,7 @@ export default function LandingPage() {
                         >
                           <span className="r5-way__your">Your</span>
                           <span className="r5-way__word">
-                            {w.word}
-                            <span className="r5-accent">.</span>
+                            {w.word}.
                           </span>
                         </button>
                       </li>
@@ -1080,7 +1077,7 @@ export default function LandingPage() {
             <div className="r5-container r5-how">
               <div className="r5-how__head">
                 <h2 className="r5-h2">
-                  How it works<span className="r5-accent">.</span>
+                  How it <span className="r5-accent">works.</span>
                 </h2>
                 <div className="r5-how__intro">
                   <p className="r5-body-soft">
@@ -1117,7 +1114,7 @@ export default function LandingPage() {
 
           <section className="r5-section r5-section--cream r5-else">
             <div className="r5-else__inner">
-              <h2 className="r5-h2 r5-balance">Have something else in mind?</h2>
+              <h2 className="r5-h2 r5-balance">Have something else <span className="r5-accent">in mind?</span></h2>
               <div className="r5-else__copy">
                 <p className="r5-else__lead">Have an idea we haven&rsquo;t mentioned? Tell us.</p>
                 <p className="r5-body-soft r5-else__sub">
@@ -1135,7 +1132,7 @@ export default function LandingPage() {
             <div className="r5-final__shade" />
             <div className="r5-final__inner">
               <h2 className="r5-final__title">
-                Make your moment <span className="r5-final__accent">show up.</span>
+                Make your moment <span className="r5-accent">show up.</span>
               </h2>
               <div className="r5-final__body">
                 <p className="r5-final__lead">
