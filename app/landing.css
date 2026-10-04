@@ -777,6 +777,32 @@
   .r5-snapshot { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
+/* Request form opened from a panel: Event/Brand already chosen */
+.wizard-path-picked {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+  padding: 10px 10px 10px 18px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 700;
+  font-size: 15px;
+}
+.wizard-path-picked button {
+  padding: 6px 14px;
+  border: 1px solid rgba(243, 239, 231, 0.3);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--paper);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.wizard-path-picked button:hover { border-color: var(--paper); }
+
 /* Full includes list inside the request form */
 .wizard-includes {
   margin-top: clamp(18px, 3vh, 28px);

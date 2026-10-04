@@ -590,6 +590,8 @@ export default function LandingPage() {
   const [answers, setAnswers] = useState<Answers>({});
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState("");
+  // True when the form was opened from a panel, so Event/Brand is already known.
+  const [pathPicked, setPathPicked] = useState(false);
   const [uploads, setUploads] = useState<Record<string, Upload>>({});
   const [uploadErr, setUploadErr] = useState("");
 
@@ -641,6 +643,7 @@ export default function LandingPage() {
   // Accepts a path when opened from a panel; the plain CTAs pass a click event, which is ignored.
   const openWizard = useCallback((path?: unknown) => {
     setAnswers(path === "event" || path === "brand" ? { path } : {});
+    setPathPicked(path === "event" || path === "brand");
     setUploads({});
     setUploadErr("");
     setOpen(true);
@@ -1239,6 +1242,14 @@ export default function LandingPage() {
                     <StarIcon className="wizard-tag-star" /> The plan
                   </span>
                   <h2 className="wizard-question">How do you want to show up?</h2>
+                  {pathPicked && answers.path ? (
+                    <div className="wizard-path-picked">
+                      <span>✓ {PATH_OPTS.find((p) => p.id === answers.path)?.label}</span>
+                      <button type="button" onClick={() => setPathPicked(false)}>
+                        Change
+                      </button>
+                    </div>
+                  ) : (
                   <div className="wizard-choice-cards">
                     {PATH_OPTS.map((p) => (
                       <button
@@ -1257,6 +1268,7 @@ export default function LandingPage() {
                       </button>
                     ))}
                   </div>
+                  )}
 
                   {answers.path === "event" && (
                     <div className="wizard-subquestion">
