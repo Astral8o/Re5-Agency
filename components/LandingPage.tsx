@@ -326,9 +326,10 @@ function ArrowCircle({ dark }: { dark?: boolean }) {
   return <span className={`arrow-circle ${dark ? "arrow-circle-dark" : ""}`}>&rarr;</span>;
 }
 
-type StepIconName = "idea" | "look" | "taste" | "people" | "setup" | "local";
+type StepIconName = "connect" | "idea" | "look" | "moment" | "buzz" | "local";
 
 const STEP_ICON_PATHS: Record<StepIconName, React.ReactNode> = {
+  connect: <path d="M4 5h16v11H9l-5 4V5z" />,
   idea: (
     <>
       <path d="M9 18h6M10 21h4" />
@@ -343,25 +344,11 @@ const STEP_ICON_PATHS: Record<StepIconName, React.ReactNode> = {
       <circle cx="14.5" cy="7" r="1" />
     </>
   ),
-  taste: (
+  moment: <path d="M12 2.5c.8 5.4 2.3 7.2 8 9.5-5.7 1.6-7.2 3.5-8 9.5-.8-6-2.3-7.9-8-9.5 5.7-2.3 7.2-4.1 8-9.5z" />,
+  buzz: (
     <>
-      <path d="M6 8h12l-1.5 12.2a1 1 0 0 1-1 .8h-7a1 1 0 0 1-1-.8L6 8z" />
-      <path d="M4.5 8h15M12 8l3-6h3" />
-    </>
-  ),
-  people: (
-    <>
-      <circle cx="9" cy="8" r="3" />
-      <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" />
-      <circle cx="17" cy="9" r="2.5" />
-      <path d="M16.5 14.2c2.6.4 4.5 2.7 4.5 5.8" />
-    </>
-  ),
-  setup: (
-    <>
-      <path d="M2.5 4h2.2l2.5 10.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 7H5.5" />
-      <circle cx="9" cy="19" r="1.5" />
-      <circle cx="17" cy="19" r="1.5" />
+      <path d="M3 8a2 2 0 0 1 2-2h2.5L9 4h6l1.5 2H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8z" />
+      <circle cx="12" cy="13" r="3.5" />
     </>
   ),
   local: <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />,
@@ -393,41 +380,39 @@ function CheckIcon() {
   );
 }
 
-const PILLARS = [
+// "The RE5 Model": five things that guide every experience.
+const MODEL = [
   {
     n: "01",
-    title: "The Idea",
-    icon: "idea" as StepIconName,
-    body: "We shape the idea with you, thinking about the moment, the people and what you want them to experience.",
+    title: "The Connect",
+    icon: "connect" as StepIconName,
+    body: "We start with you. Your event, your brand and what you want people to experience.",
   },
   {
     n: "02",
-    title: "The Look",
-    icon: "look" as StepIconName,
-    body: "From the cart to the signage and everything around it, we bring the look together around your event, idea or brand.",
+    title: "The Idea",
+    icon: "idea" as StepIconName,
+    body: "We shape the concept and figure out what could make your moment stand out.",
   },
   {
     n: "03",
-    title: "The Taste",
-    icon: "taste" as StepIconName,
-    body: "From drinks and treats to something created for your moment, we work with you to bring the right tastes into your experience.",
+    title: "The Look",
+    icon: "look" as StepIconName,
+    body: "From the cart to the signage and styling, we create a look that belongs to you.",
   },
   {
     n: "04",
-    title: "The People",
-    icon: "people" as StepIconName,
-    body: "From serving and mixing to sampling and interacting with guests, we bring in the right people for your experience.",
+    title: "The Moment",
+    icon: "moment" as StepIconName,
+    body: "The part people get to experience, whether they\u2019re tasting, trying, discovering or simply enjoying something together.",
   },
   {
     n: "05",
-    title: "The Setup",
-    icon: "setup" as StepIconName,
-    body: "We bring everything together, get it there, set it up and make sure it's ready for your moment.",
+    title: "The Buzz",
+    icon: "buzz" as StepIconName,
+    body: "The photos, posts, conversations and memories that keep the moment going.",
   },
 ];
-
-const LOCAL_NOTE =
-  "Part of our mission is to bring local businesses into the experiences we create. Depending on the experience, we collaborate with small businesses, caterers and makers across Trinidad & Tobago, bringing their tastes to your moment while creating more opportunities for local businesses to grow.";
 
 const IMG = {
   toast: "/images/re5/slushie-group-toast.webp",
@@ -448,11 +433,35 @@ const STRIP_PHOTOS = [
 const MARQUEE_WORDS = ["Experiences", "Stand Out", "Make A Moment", "Make It Pop"];
 
 const CUSTOM_WORDS = [
+  { word: "colours", src: IMG.kids, pos: "45% 60%" },
   { word: "branding", src: IMG.boxes, pos: "50% 60%" },
-  { word: "colours", src: IMG.toast, pos: "50% 40%" },
+  { word: "signage", src: IMG.popcorn, pos: "50% 45%" },
   { word: "menu", src: IMG.cocktail, pos: "50% 55%" },
-  { word: "signage", src: IMG.kids, pos: "45% 70%" },
-  { word: "experience", src: IMG.popcorn, pos: "50% 50%" },
+  { word: "moment", src: IMG.toast, pos: "50% 40%" },
+];
+
+// "Start with an experience": each card opens the request form with that experience picked.
+const EXPERIENCES = [
+  {
+    name: "Slushie",
+    body: "Frozen, fun and made for the moment. Choose your flavours, styling and finishing touches.",
+    preset: { experiences: ["Slushie"], branded: ["Slushies"] },
+  },
+  {
+    name: "Popcorn",
+    body: "A familiar favourite made part of the experience with flavours, styling and details designed around your event.",
+    preset: { experiences: ["Popcorn"], branded: ["Popcorn"] },
+  },
+  {
+    name: "Cotton Candy",
+    body: "Made fresh, served with a little fun and styled to fit the moment.",
+    preset: { experiences: ["Cotton Candy"], branded: ["Cotton Candy"] },
+  },
+  {
+    name: "Candy & Sweets",
+    body: "A colourful experience guests can enjoy, choose from and make their own.",
+    preset: { experiences: ["Candy & Sweets"], branded: ["Sweets"] },
+  },
 ];
 
 const WHATSAPP_URL = "https://wa.me/18687177720";
@@ -465,15 +474,11 @@ type PathDef = {
   id: "event" | "brand";
   n: string;
   eyebrow: string;
-  kicker: string;
   heading: string;
   body: string;
-  chooseTitle: React.ReactNode;
-  options: { name: string; body: string; note?: string }[];
+  cta: string;
   includesTitle: string;
   includes: { item: string; sub?: string[] }[];
-  // At-a-glance version of `includes` for the homepage; the full list lives in the request form.
-  snapshot: { value: string; label: string }[];
   images: { src: string; alt: string; pos: string }[];
 };
 
@@ -482,20 +487,9 @@ const PATHS: PathDef[] = [
     id: "event",
     n: "01",
     eyebrow: "For Your Event",
-    kicker: "The Signature Experience",
-    heading: "Give your guests something more to enjoy.",
-    body: "From weddings and birthdays to graduations and special celebrations, we create an experience that becomes part of the moment. Something your guests can walk up to, enjoy and share, designed around your event and served by us.",
-    chooseTitle: "Choose your experience",
-    options: [
-      {
-        name: "Slushie",
-        body: "Frozen flavours with toppings, with alcoholic options available for adult events.",
-        note: ALCOHOL_NOTE,
-      },
-      { name: "Popcorn", body: "Freshly popped and served with a selection of seasonings." },
-      { name: "Cotton Candy", body: "Made fresh for your guests throughout the experience." },
-      { name: "Candy & Sweets", body: "A selection of sweets presented and served from our Signature Cart." },
-    ],
+    heading: "Give your guests something to enjoy, experience and talk about.",
+    body: "From weddings and birthdays to celebrations and special moments, we create mobile experiences designed around your event.",
+    cta: "Explore Event Experiences",
     includesTitle: "Your Signature Experience includes",
     includes: [
       { item: "RE5 Signature Cart" },
@@ -508,12 +502,6 @@ const PATHS: PathDef[] = [
       { item: "3 hours of service" },
       { item: "Setup and breakdown" },
     ],
-    snapshot: [
-      { value: "1", label: "Signature Cart" },
-      { value: "2", label: "Custom signs" },
-      { value: "1", label: "Trained attendant" },
-      { value: "3 hrs", label: "of service" },
-    ],
     images: [
       { src: IMG.cocktail, alt: "Bartender serving a slushie at a wedding", pos: "50% 30%" },
       { src: IMG.kids, alt: "Kids' birthday slushie cart", pos: "40% 50%" },
@@ -523,22 +511,9 @@ const PATHS: PathDef[] = [
     id: "brand",
     n: "02",
     eyebrow: "For Your Brand",
-    kicker: "The Brand Experience",
-    heading: "Give people a reason to come over.",
-    body: "Whether you're launching something new, putting your product into people's hands or creating a different way for customers to interact with your brand, we create a space that brings your brand and the people you want to reach together.",
-    chooseTitle: (
-      <>
-        Choose how you <span className="r5-accent">show up</span>
-      </>
-    ),
-    options: [
-      { name: "Product Sampling", body: "Put your product directly into people's hands." },
-      { name: "Product Showcases", body: "Give people a place to discover and interact with what you offer." },
-      { name: "Product Launches", body: "Bring something new directly to the people you want to reach." },
-      { name: "Gifting & Giveaways", body: "Turn giving something away into part of the experience." },
-      { name: "Sign-ups & Service Promotions", body: "Create a place for discovery, conversations and action." },
-      { name: "Branded RE5 Experiences", body: "Make Slushies, Popcorn, Cotton Candy or Sweets part of your campaign." },
-    ],
+    heading: "Give people a reason to stop, take part and remember you.",
+    body: "From launches and activations to corporate events and pop-ups, we create experiences around your brand, campaign and the people you want to reach.",
+    cta: "Explore Brand Experiences",
     includesTitle: "Your Brand Experience includes",
     includes: [
       { item: "RE5 Signature Cart" },
@@ -555,12 +530,6 @@ const PATHS: PathDef[] = [
       { item: "4 hours of service" },
       { item: "Setup and breakdown" },
     ],
-    snapshot: [
-      { value: "1", label: "Signature Cart" },
-      { value: "2", label: "Custom signs" },
-      { value: "2", label: "Trained attendants" },
-      { value: "4 hrs", label: "of service" },
-    ],
     images: [
       { src: IMG.popcorn, alt: "Branded popcorn cart in a mall", pos: "50% 45%" },
       { src: IMG.boxes, alt: "Branded popcorn boxes", pos: "60% 65%" },
@@ -575,7 +544,6 @@ const PATHS: PathDef[] = [
 export default function LandingPage() {
   const [path, setPath] = useState<PathDef["id"]>("event");
   const [way, setWay] = useState(0);
-  const [option, setOption] = useState<Record<PathDef["id"], number>>({ event: 0, brand: 0 });
 
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"intro" | "q" | "done">("intro");
@@ -635,8 +603,8 @@ export default function LandingPage() {
   const visibleWizard = useMemo(() => visibleWizardPages(answers), [answers]);
 
   // Accepts a path when opened from a panel; the plain CTAs pass a click event, which is ignored.
-  const openWizard = useCallback((path?: unknown) => {
-    setAnswers(path === "event" || path === "brand" ? { path } : {});
+  const openWizard = useCallback((path?: unknown, preset?: Answers) => {
+    setAnswers({ ...(path === "event" || path === "brand" ? { path } : {}), ...preset });
     setPathPicked(path === "event" || path === "brand");
     setUploads({});
     setUploadErr("");
@@ -831,8 +799,8 @@ export default function LandingPage() {
             Re5<span className="r5-dot">.</span>
           </a>
           <nav className="r5-nav__links">
-            <a href="#popups" className="r5-nav__link">Experiences</a>
-            <a href="#how" className="r5-nav__link">How It Works</a>
+            <a href="#experiences" className="r5-nav__link">Experiences</a>
+            <a href="#model" className="r5-nav__link">The RE5 Model</a>
             <a
               href={WHATSAPP_URL}
               target="_blank"
@@ -874,9 +842,11 @@ export default function LandingPage() {
               </span>
             </h1>
             <div className="r5-hero__body">
-              <p className="r5-hero__lead">Mobile experiences for events, celebrations and brands.</p>
-              <a href="#popups" className="r5-btn r5-btn--orange r5-hero__cta">
-                See what we offer <span aria-hidden="true">↓</span>
+              <p className="r5-hero__lead">
+                Mobile experiences made for events, celebrations and brands across Trinidad &amp; Tobago.
+              </p>
+              <a href="#experiences" className="r5-btn r5-btn--orange r5-hero__cta">
+                See the Experiences <span aria-hidden="true">↓</span>
               </a>
             </div>
           </section>
@@ -948,60 +918,12 @@ export default function LandingPage() {
                     </div>
                     <div className="r5-panel__body">
                       <div className="r5-panel__top">
-                        <div className="r5-panel__head">
-                          <span className="r5-eyebrow">{p.eyebrow}</span>
-                          <span className="r5-panel__kicker">{p.kicker}</span>
-                        </div>
+                        <span className="r5-eyebrow">{p.eyebrow}</span>
                         <h3 className="r5-h3">{p.heading}</h3>
                         <p className="r5-panel__intro">{p.body}</p>
                       </div>
-
-                      <div className="r5-panel__block">
-                        <h4 className="r5-panel__subhead">{p.chooseTitle}</h4>
-                        <div className="r5-chips">
-                          {p.options.map((o, i) => (
-                            <button
-                              key={o.name}
-                              type="button"
-                              className="r5-chip"
-                              aria-pressed={option[p.id] === i}
-                              onClick={() => setOption((prev) => ({ ...prev, [p.id]: i }))}
-                            >
-                              {o.name}
-                            </button>
-                          ))}
-                        </div>
-                        <div className="r5-chip-details" aria-live="polite">
-                          {p.options.map((o, i) => (
-                            <p
-                              key={o.name}
-                              className={`r5-chip-detail ${option[p.id] === i ? "r5-is-active" : ""}`}
-                              aria-hidden={option[p.id] !== i}
-                            >
-                              {o.body}
-                              {o.note && <span className="r5-age-note">{o.note}</span>}
-                            </p>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="r5-panel__block">
-                        <h4 className="r5-panel__label">What you get</h4>
-                        <ul className="r5-snapshot">
-                          {p.snapshot.map((t) => (
-                            <li key={t.label} className="r5-snapshot__tile">
-                              <span className="r5-snapshot__value">{t.value}</span>
-                              <span className="r5-snapshot__label">{t.label}</span>
-                            </li>
-                          ))}
-                        </ul>
-                        <p className="r5-snapshot__more">
-                          <strong>And more!</strong> Let&rsquo;s chat to make your experience yours.
-                        </p>
-                      </div>
-
                       <button className="r5-btn r5-btn--dark r5-quote" onClick={() => openWizard(p.id)}>
-                        Request a Quote →
+                        {p.cta} →
                       </button>
                     </div>
                   </div>
@@ -1010,109 +932,23 @@ export default function LandingPage() {
             </div>
           </section>
 
-          <section className="r5-section r5-section--ink">
-            <div className="r5-container r5-yourway">
-              <div className="r5-signature">
-                <div className="r5-photo r5-photo--tall">
-                  <img
-                    src={IMG.cocktail}
-                    alt="Re5 signature mobile cart at a wedding"
-                    loading="lazy"
-                    style={{ objectPosition: "50% 62%" }}
-                  />
-                </div>
-                <div className="r5-signature__body">
-                  <h2 className="r5-h2">
-                    Our signature. <span className="r5-accent">Your experience.</span>
-                  </h2>
-                  <p className="r5-muted">
-                    Our signature mobile carts are where it starts. From there, we work with you to
-                    build the experience around your event, idea or brand, from the styling and
-                    signage to the tastes and people that bring it to life.
-                  </p>
-                </div>
-              </div>
-              <div className="r5-way">
-                <div className="r5-way__main">
-                  <h2 className="r5-h2">
-                    Your experience. <span className="r5-accent">Your way.</span>
-                  </h2>
-                  <ul className="r5-way__list">
-                    {CUSTOM_WORDS.map((w, i) => (
-                      <li key={w.word}>
-                        <button
-                          type="button"
-                          className={`r5-way__item ${i === way ? "r5-is-active" : ""}`}
-                          aria-pressed={i === way}
-                          onMouseEnter={() => setWay(i)}
-                          onFocus={() => setWay(i)}
-                          onClick={() => setWay(i)}
-                        >
-                          <span className="r5-way__your">Your</span>
-                          <span className="r5-way__word">
-                            {w.word}.
-                          </span>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="r5-muted r5-way__note">
-                    We work with you to bring every detail together around the experience you have
-                    in mind.
-                  </p>
-                </div>
-                <div className="r5-photo r5-photo--tall r5-way__photo">
-                  <img
-                    key={CUSTOM_WORDS[way].src}
-                    src={CUSTOM_WORDS[way].src}
-                    alt={`Your ${CUSTOM_WORDS[way].word}`}
-                    loading="lazy"
-                    style={{ objectPosition: CUSTOM_WORDS[way].pos }}
-                  />
-                  <div className="r5-way__tag" aria-live="polite">
-                    Your {CUSTOM_WORDS[way].word}.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section id="how" className="r5-section r5-section--sand">
-            <div className="r5-container r5-how">
-              <div className="r5-how__head">
-                <h2 className="r5-h2">
-                  How it <span className="r5-accent">works.</span>
-                </h2>
-                <div className="r5-how__intro">
-                  <p className="r5-body-soft">
-                    It starts with a conversation. We get to know your idea, your moment and how
-                    you want people to experience it. Then we work with you to bring it to life.
-                  </p>
-                  <button className="r5-btn r5-btn--dark" onClick={openWizard}>
-                    Let&rsquo;s create it together →
-                  </button>
-                </div>
-              </div>
-              <ol className="r5-steps">
-                {PILLARS.map((p) => (
-                  <li key={p.n} className="r5-step">
-                    <div className="r5-step__top">
-                      <span className="r5-step__icon">
-                        <StepIcon name={p.icon} />
-                      </span>
-                      <span className="r5-step__num">{p.n}</span>
-                    </div>
-                    <h3 className="r5-step__title">{p.title}</h3>
-                    <p className="r5-step__body">{p.body}</p>
+          <section id="experiences" className="r5-section r5-section--sand">
+            <div className="r5-container r5-xp">
+              <h2 className="r5-h2">
+                Start with an <span className="r5-accent">experience.</span>
+              </h2>
+              <ul className="r5-xp__grid">
+                {EXPERIENCES.map((x, i) => (
+                  <li key={x.name} className="r5-xp__card">
+                    <span className="r5-xp__num">{String(i + 1).padStart(2, "0")}</span>
+                    <h3 className="r5-xp__name">{x.name}</h3>
+                    <p className="r5-xp__body">{x.body}</p>
+                    <button className="r5-xp__btn" onClick={() => openWizard(undefined, x.preset)}>
+                      Explore <span aria-hidden="true">→</span>
+                    </button>
                   </li>
                 ))}
-              </ol>
-              <div className="r5-local">
-                <span className="r5-local__icon">
-                  <StepIcon name="local" />
-                </span>
-                <p>{LOCAL_NOTE}</p>
-              </div>
+              </ul>
             </div>
           </section>
 
@@ -1120,14 +956,90 @@ export default function LandingPage() {
             <div className="r5-else__inner">
               <h2 className="r5-h2 r5-balance">Have something else <span className="r5-accent">in mind?</span></h2>
               <div className="r5-else__copy">
-                <p className="r5-else__lead">Have an idea we haven&rsquo;t mentioned? Tell us.</p>
+                <p className="r5-else__lead">The experience doesn&rsquo;t have to start with our menu.</p>
                 <p className="r5-body-soft r5-else__sub">
-                  We love seeing where an idea can go and finding a way to make it show up.
+                  Tell us what you&rsquo;re imagining and let&rsquo;s see what we can create.
                 </p>
               </div>
               <button className="r5-btn r5-btn--dark r5-else__btn" onClick={openWizard}>
-                Tell us your idea →
+                Let&rsquo;s Chat →
               </button>
+            </div>
+          </section>
+
+          <section className="r5-section r5-section--ink">
+            <div className="r5-container r5-way">
+              <div className="r5-way__main">
+                <h2 className="r5-h2">
+                  Our signature. <span className="r5-accent">Your experience.</span>
+                </h2>
+                <div className="r5-stack-16">
+                  <p className="r5-muted">Our Signature Cart is where it starts.</p>
+                  <p className="r5-muted">From there, we shape everything around your event, idea or brand.</p>
+                </div>
+                <ul className="r5-way__list">
+                  {CUSTOM_WORDS.map((w, i) => (
+                    <li key={w.word}>
+                      <button
+                        type="button"
+                        className={`r5-way__item ${i === way ? "r5-is-active" : ""}`}
+                        aria-pressed={i === way}
+                        onMouseEnter={() => setWay(i)}
+                        onFocus={() => setWay(i)}
+                        onClick={() => setWay(i)}
+                      >
+                        <span className="r5-way__your">Your</span>
+                        <span className="r5-way__word">{w.word}.</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <p className="r5-way__note">
+                  <span className="r5-accent">Made to feel like yours.</span>
+                </p>
+              </div>
+              <div className="r5-photo r5-photo--tall r5-way__photo">
+                <img
+                  key={CUSTOM_WORDS[way].src}
+                  src={CUSTOM_WORDS[way].src}
+                  alt={`Your ${CUSTOM_WORDS[way].word}`}
+                  loading="lazy"
+                  style={{ objectPosition: CUSTOM_WORDS[way].pos }}
+                />
+                <div className="r5-way__tag" aria-live="polite">
+                  Your {CUSTOM_WORDS[way].word}.
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="model" className="r5-section r5-section--sand">
+            <div className="r5-container r5-model">
+              <div className="r5-model__head">
+                <h2 className="r5-h2">
+                  The RE5 <span className="r5-accent">Model</span>
+                </h2>
+                <p className="r5-body-soft">Five things guide every experience we create.</p>
+              </div>
+              <ModelCycle />
+            </div>
+          </section>
+
+          <section className="r5-section r5-section--cream">
+            <div className="r5-container r5-made">
+              <h2 className="r5-h2">
+                Made here. <span className="r5-accent">Together.</span>
+              </h2>
+              <div className="r5-made__copy">
+                <p className="r5-made__lead">Every experience doesn&rsquo;t require the same thing.</p>
+                <p className="r5-body-soft">
+                  Depending on what we&rsquo;re creating, we work with local makers, caterers, suppliers and
+                  businesses across Trinidad &amp; Tobago to bring the right pieces together.
+                </p>
+                <p className="r5-body-soft">
+                  That gives us room to create around your idea instead of making your idea fit into a box.
+                </p>
+              </div>
             </div>
           </section>
 
@@ -1139,12 +1051,16 @@ export default function LandingPage() {
                 Make your moment <span className="r5-accent">show up.</span>
               </h2>
               <div className="r5-final__body">
-                <p className="r5-final__lead">
-                  Your event. Your brand. Your idea. Let&rsquo;s create an experience people want
-                  to be part of.
+                <p className="r5-final__lines">
+                  Your event.
+                  <br />
+                  Your brand.
+                  <br />
+                  Your idea.
                 </p>
+                <p className="r5-final__lead">Let&rsquo;s create something people want to be part of.</p>
                 <button className="r5-btn r5-btn--orange r5-btn--on-photo" onClick={openWizard}>
-                  Create Your Experience →
+                  Let&rsquo;s Chat →
                 </button>
               </div>
             </div>
@@ -1162,11 +1078,11 @@ export default function LandingPage() {
               </div>
               <div className="r5-footer__col">
                 <span className="r5-footer__label">Explore</span>
-                <a href="#popups">Experiences</a>
+                <a href="#experiences">Experiences</a>
                 <button className="r5-footer__link" onClick={openWizard}>
                   Create Your Experience
                 </button>
-                <a href="#how">How It Works</a>
+                <a href="#model">The RE5 Model</a>
               </div>
               <div className="r5-footer__col">
                 <span className="r5-footer__label">Say hello</span>
@@ -1688,6 +1604,65 @@ function WizardIncludes({ path }: { path: PathDef["id"] }) {
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+// "The RE5 Model" as a cycle: five steps around a ring, the selected one explained in the centre.
+// Advances on its own until someone interacts (and not at all with reduced motion).
+function ModelCycle() {
+  const [active, setActive] = useState(0);
+  const [auto, setAuto] = useState(true);
+  useEffect(() => {
+    if (!auto || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t = window.setInterval(() => setActive((i) => (i + 1) % MODEL.length), 4000);
+    return () => window.clearInterval(t);
+  }, [auto]);
+  const pick = (i: number) => {
+    setAuto(false);
+    setActive(i);
+  };
+  const step = MODEL[active];
+  return (
+    <div className="r5-cycle">
+      <svg className="r5-cycle__ring" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="40" />
+        {MODEL.map((m, i) => {
+          const deg = -90 + (i + 0.5) * (360 / MODEL.length);
+          const rad = (deg * Math.PI) / 180;
+          return (
+            <path
+              key={m.title}
+              d="M -1.4 -1.8 L 1.2 0 L -1.4 1.8"
+              transform={`translate(${50 + 40 * Math.cos(rad)} ${50 + 40 * Math.sin(rad)}) rotate(${deg + 90})`}
+            />
+          );
+        })}
+      </svg>
+      {MODEL.map((m, i) => {
+        const angle = (-90 + i * (360 / MODEL.length)) * (Math.PI / 180);
+        return (
+          <button
+            key={m.title}
+            type="button"
+            className={`r5-cycle__node ${i === active ? "r5-is-active" : ""}`}
+            style={{ left: `${50 + 40 * Math.cos(angle)}%`, top: `${50 + 40 * Math.sin(angle)}%` }}
+            aria-pressed={i === active}
+            onClick={() => pick(i)}
+            onMouseEnter={() => pick(i)}
+          >
+            <span className="r5-cycle__icon">
+              <StepIcon name={m.icon} />
+            </span>
+            <span className="r5-cycle__label">{m.title}</span>
+          </button>
+        );
+      })}
+      <div className="r5-cycle__center" aria-live="polite">
+        <span className="r5-cycle__num">{step.n}</span>
+        <h3 className="r5-cycle__title">{step.title}</h3>
+        <p className="r5-cycle__body">{step.body}</p>
+      </div>
     </div>
   );
 }
