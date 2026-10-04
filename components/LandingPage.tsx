@@ -859,7 +859,7 @@ export default function LandingPage() {
             </h1>
             <div className="r5-hero__body">
               <p className="r5-hero__lead">Mobile experiences for events, celebrations and brands.</p>
-              <a href="#popups" className="r5-btn r5-btn--cream r5-hero__cta">
+              <a href="#popups" className="r5-btn r5-btn--orange r5-hero__cta">
                 See what we offer <span aria-hidden="true">↓</span>
               </a>
             </div>
