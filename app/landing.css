@@ -496,24 +496,7 @@
   background: var(--path-soft);
   color: var(--path-text);
 }
-.r5-offer {
-  margin-top: 8px;
-  padding: 24px;
-  border-radius: var(--radius);
-  background: var(--ink);
-  color: var(--cream);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px 32px;
-}
-.r5-panel__body .r5-offer__more {
-  flex: 1 1 260px;
-  font-size: 15px;
-  line-height: 1.5;
-  color: var(--muted);
-}
+.r5-quote { width: 100%; justify-content: center; }
 
 /* ---------- Our signature / Your way ---------- */
 .r5-yourway { display: flex; flex-direction: column; gap: var(--section-y); }

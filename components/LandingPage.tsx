@@ -475,7 +475,6 @@ type PathDef = {
   // At-a-glance version of `includes` for the homepage; the full list lives in the request form.
   snapshot: { value: string; label: string }[];
   snapshotPlus: string;
-  more: string;
   images: { src: string; alt: string; pos: string }[];
 };
 
@@ -517,7 +516,6 @@ const PATHS: PathDef[] = [
       { value: "3 hrs", label: "of service" },
     ],
     snapshotPlus: "Plus florals or balloons, serving essentials, setup and breakdown.",
-    more: "Want to make it even more yours? Additional customization, personalized packaging and extra service time can be added to your experience.",
     images: [
       { src: IMG.cocktail, alt: "Bartender serving a slushie at a wedding", pos: "50% 30%" },
       { src: IMG.kids, alt: "Kids' birthday slushie cart", pos: "40% 50%" },
@@ -566,7 +564,6 @@ const PATHS: PathDef[] = [
       { value: "4 hrs", label: "of service" },
     ],
     snapshotPlus: "Plus a product or sample display, setup and breakdown.",
-    more: "Need more? Additional branding, custom packaging, additional attendants, extended service time and other campaign elements can be added based on what you're creating.",
     images: [
       { src: IMG.popcorn, alt: "Branded popcorn cart in a mall", pos: "50% 45%" },
       { src: IMG.boxes, alt: "Branded popcorn boxes", pos: "60% 65%" },
@@ -1010,15 +1007,9 @@ export default function LandingPage() {
                         </button>
                       </div>
 
-                      <div className="r5-offer">
-                        <p className="r5-offer__more">{p.more}</p>
-                        <button
-                          className="r5-btn r5-btn--cream"
-                          onClick={() => openWizard(p.id)}
-                        >
-                          Request a Quote →
-                        </button>
-                      </div>
+                      <button className="r5-btn r5-btn--dark r5-quote" onClick={() => openWizard(p.id)}>
+                        Request a Quote →
+                      </button>
                     </div>
                   </div>
                 ))}
