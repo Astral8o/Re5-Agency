@@ -855,7 +855,9 @@ export default function LandingPage() {
                   )}
                 </span>
               </span>
-              <span className="r5-hero__serif">an experience.</span>
+              <span className="r5-hero__line r5-hero__line--bottom">
+                AN <span className="r5-hero__break">EXPERIENCE.</span>
+              </span>
             </h1>
             <div className="r5-hero__body">
               <p className="r5-hero__lead">Mobile experiences for events, celebrations and brands.</p>

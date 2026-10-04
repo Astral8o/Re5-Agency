@@ -317,22 +317,11 @@
   text-shadow: 0 0.04em 0.2em rgba(23, 20, 15, 0.35);
 }
 .r5-hero__line--top { font-size: clamp(80px, 16vw, 232px); margin-bottom: -0.3em; }
-.r5-hero__serif {
-  position: relative;
-  z-index: 2;
-  padding: 0 16px;
-  margin-top: -0.12em;
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(56px, 12vw, 184px);
-  line-height: 0.95;
-  letter-spacing: -0.02em;
-  color: var(--cream);
-}
+.r5-hero__line--bottom { font-size: clamp(40px, 10.5vw, 160px); margin-top: -0.3em; }
 @media (max-width: 600px) {
   .r5-hero__line--top { font-size: 22vw; }
-  .r5-hero__serif { font-size: 17vw; }
+  .r5-hero__line--bottom { font-size: 15vw; }
+  .r5-hero__break { display: block; }
 }
 .r5-hero__strip { display: block; width: 100%; overflow: hidden; }
 .r5-strip-card {
