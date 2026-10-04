@@ -736,25 +736,14 @@
 }
 .r5-snapshot__value { font-family: var(--display); font-size: 40px; line-height: 0.8; color: var(--ink); }
 .r5-snapshot__label { font-size: 14px; font-weight: 600; line-height: 1.3; color: var(--text-2); }
-.r5-snapshot__more {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  width: 100%;
+.r5-panel__body .r5-snapshot__more {
   padding: 14px 18px;
   border: 1.5px dashed var(--rule);
   border-radius: 16px;
-  background: transparent;
   color: var(--ink);
-  font-family: inherit;
   font-size: 15px;
-  text-align: left;
-  cursor: pointer;
-  transition: border-color .2s, background .2s;
 }
 .r5-snapshot__more strong { font-weight: 800; margin-right: 4px; }
-.r5-snapshot__more:hover { border-color: var(--ink); background: rgba(23, 20, 15, 0.03); }
 @media (max-width: 600px) {
   .r5-snapshot { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

@@ -995,12 +995,9 @@ export default function LandingPage() {
                             </li>
                           ))}
                         </ul>
-                        <button type="button" className="r5-snapshot__more" onClick={() => openWizard(p.id)}>
-                          <span>
-                            <strong>And more!</strong> Let&rsquo;s chat to make your experience yours.
-                          </span>
-                          <span aria-hidden="true">→</span>
-                        </button>
+                        <p className="r5-snapshot__more">
+                          <strong>And more!</strong> Let&rsquo;s chat to make your experience yours.
+                        </p>
                       </div>
 
                       <button className="r5-btn r5-btn--dark r5-quote" onClick={() => openWizard(p.id)}>
