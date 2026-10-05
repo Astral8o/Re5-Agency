@@ -434,7 +434,7 @@ const MARQUEE_WORDS = ["Experiences", "Stand Out", "Make A Moment", "Make It Pop
 
 const CUSTOM_WORDS = [
   { word: "colours", src: IMG.kids, pos: "45% 60%" },
-  { word: "branding", src: IMG.boxes, pos: "50% 60%" },
+  { word: "style", src: IMG.boxes, pos: "50% 60%" },
   { word: "signage", src: IMG.popcorn, pos: "50% 45%" },
   { word: "menu", src: IMG.cocktail, pos: "50% 55%" },
   { word: "moment", src: IMG.toast, pos: "50% 40%" },
@@ -956,7 +956,7 @@ export default function LandingPage() {
             <div className="r5-else__inner">
               <h2 className="r5-h2 r5-balance">Have something else <span className="r5-accent">in mind?</span></h2>
               <div className="r5-else__copy">
-                <p className="r5-else__lead">The experience doesn&rsquo;t have to start with our menu.</p>
+                <p className="r5-else__lead">Your experience doesn&rsquo;t have to start with our menu.</p>
                 <p className="r5-body-soft r5-else__sub">
                   Tell us what you&rsquo;re imagining and let&rsquo;s see what we can create.
                 </p>
@@ -1019,7 +1019,7 @@ export default function LandingPage() {
                 <h2 className="r5-h2">
                   The RE5 <span className="r5-accent">Model</span>
                 </h2>
-                <p className="r5-body-soft">Five things guide every experience we create.</p>
+                <p className="r5-body-soft">Five things shape every experience we create.</p>
               </div>
               <ModelCycle />
             </div>
@@ -1031,13 +1031,10 @@ export default function LandingPage() {
                 Made here. <span className="r5-accent">Together.</span>
               </h2>
               <div className="r5-made__copy">
-                <p className="r5-made__lead">Every experience doesn&rsquo;t require the same thing.</p>
+                <p className="r5-made__lead">Every experience calls for something unique.</p>
                 <p className="r5-body-soft">
-                  Depending on what we&rsquo;re creating, we work with local makers, caterers, suppliers and
-                  businesses across Trinidad &amp; Tobago to bring the right pieces together.
-                </p>
-                <p className="r5-body-soft">
-                  That gives us room to create around your idea instead of making your idea fit into a box.
+                  When the idea calls for it, we collaborate with local makers, caterers and businesses across
+                  Trinidad &amp; Tobago to bring it together.
                 </p>
               </div>
             </div>
