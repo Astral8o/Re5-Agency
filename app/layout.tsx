@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Modak, Schibsted_Grotesk } from "next/font/google";
+import { Gloock, Modak, Schibsted_Grotesk } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -12,11 +12,10 @@ const modak = Modak({
   display: "swap",
 });
 
-// Elegant italic accent paired with Modak (display) and Schibsted Grotesk (body).
-const instrumentSerif = Instrument_Serif({
+// Elegant high-contrast serif accent, paired with Modak (display) and Schibsted Grotesk (body).
+const gloock = Gloock({
   subsets: ["latin"],
   weight: "400",
-  style: ["normal", "italic"],
   variable: "--font-serif",
   display: "swap",
 });
@@ -49,7 +48,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${modak.variable} ${schibstedGrotesk.variable} ${instrumentSerif.variable}`}
+      className={`${modak.variable} ${schibstedGrotesk.variable} ${gloock.variable}`}
     >
       <body>
         {children}

@@ -162,14 +162,14 @@
 }
 
 .r5-dot { color: var(--orange); }
-/* Elegant contrast: the accent half of a headline switches to an italic serif, not a colour. */
+/* Elegant contrast: the accent half of a headline switches to a high-contrast serif, not a colour. */
 .r5-accent {
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
   font-weight: 400;
   letter-spacing: -0.01em;
 }
-.r5-h2 .r5-accent, .r5-final__title .r5-accent { font-size: 1.08em; line-height: 0.9; }
+.r5-h2 .r5-accent, .r5-final__title .r5-accent { font-size: 0.86em; line-height: 0.95; letter-spacing: -0.02em; }
 .r5-muted { color: var(--muted); }
 .r5-body-soft { color: var(--text-2); }
 .r5-balance { text-wrap: balance; }
@@ -359,7 +359,7 @@
 
 /* ---------- Marquee ---------- */
 .r5-marquee { background: var(--ink); color: var(--cream); overflow: hidden; padding: 20px 0; border-top: 1px solid var(--ink-2); border-bottom: 1px solid var(--ink-2); }
-.r5-roll--marquee { white-space: nowrap; font-family: var(--serif); font-style: italic; font-size: 44px; line-height: 1; }
+.r5-roll--marquee { white-space: nowrap; font-family: var(--serif); font-size: 40px; line-height: 1; }
 .r5-marquee__item { display: inline-flex; align-items: center; gap: 32px; padding-right: 32px; }
 .r5-marquee__item::after {
   content: "";
