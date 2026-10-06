@@ -977,9 +977,9 @@ export default function LandingPage() {
                   together.
                 </p>
               </div>
-              <button className="r5-btn r5-btn--dark r5-else__btn" onClick={openWizard}>
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener" className="r5-btn r5-btn--dark r5-else__btn">
                 Let&rsquo;s Chat →
-              </button>
+              </a>
             </div>
           </section>
 
@@ -1153,9 +1153,9 @@ export default function LandingPage() {
                   Tell us what you&rsquo;re celebrating, launching or imagining, and let&rsquo;s see what we can
                   create around it.
                 </p>
-                <button className="r5-btn r5-btn--orange r5-btn--on-photo" onClick={openWizard}>
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener" className="r5-btn r5-btn--orange r5-btn--on-photo">
                   Let&rsquo;s Chat →
-                </button>
+                </a>
               </div>
             </div>
           </section>
@@ -1182,9 +1182,9 @@ export default function LandingPage() {
                 <button className="r5-footer__link" onClick={openWizard}>
                   Create Your Experience
                 </button>
-                <button className="r5-footer__link" onClick={openWizard}>
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener">
                   Let&rsquo;s Chat
-                </button>
+                </a>
               </div>
               <div className="r5-footer__col">
                 <span className="r5-footer__label">Say hello</span>
