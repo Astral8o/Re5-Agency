@@ -392,7 +392,7 @@ const MODEL = [
     n: "02",
     title: "Idea",
     icon: "idea" as StepIconName,
-    body: "What could we create for them?",
+    body: "What could we create that they\u2019d want to be part of?",
   },
   {
     n: "03",
@@ -410,7 +410,7 @@ const MODEL = [
     n: "05",
     title: "Buzz",
     icon: "buzz" as StepIconName,
-    body: "Give them something worth talking about afterwards.",
+    body: "Give them something worth remembering, sharing and talking about.",
   },
 ];
 
