@@ -386,36 +386,31 @@ const MODEL = [
     n: "01",
     title: "Connect",
     icon: "connect" as StepIconName,
-    q: "Who is this for?",
-    body: ["We start with the people, the occasion and what you want the experience to do."],
+    body: "Who is this for, and what matters to them?",
   },
   {
     n: "02",
     title: "Idea",
     icon: "idea" as StepIconName,
-    q: "What could we create?",
-    body: ["We turn the occasion, audience or brand into an idea people can actually take part in."],
+    body: "What could we create for them?",
   },
   {
     n: "03",
     title: "Look",
     icon: "look" as StepIconName,
-    q: "Now we make it yours.",
-    body: ["From the cart to the signage, styling and details, we create a look that belongs to your event or brand."],
+    body: "We shape the styling, signage and details around you.",
   },
   {
     n: "04",
     title: "Moment",
     icon: "moment" as StepIconName,
-    q: "This is where it comes to life.",
-    body: ["People taste it. Try it. Enjoy it. Interact with it.", "They\u2019re part of the experience now."],
+    body: "We bring it to life and give people something to be part of.",
   },
   {
     n: "05",
     title: "Buzz",
     icon: "buzz" as StepIconName,
-    q: "A good moment doesn\u2019t always end when the event does.",
-    body: ["Give people something worth remembering, sharing and talking about."],
+    body: "Give them something worth talking about afterwards.",
   },
 ];
 
@@ -445,38 +440,26 @@ const CUSTOM_WORDS = [
   { word: "moment", src: IMG.toast, pos: "50% 40%" },
 ];
 
-// "Don't just show up": the kinds of brand experiences, shown as tiles.
-const BRAND_WAYS = [
-  "A product to taste.",
-  "Something new to try.",
-  "A launch to introduce.",
-  "A pop-up people can step into.",
-];
-
 // "Start with an experience": each card opens the request form with that experience picked.
 const EXPERIENCES = [
   {
     name: "Slushie",
-    tagline: "Frozen, fun and made for your moment.",
-    body: "Choose your flavours, finishing touches and styling, then let your guests sip, mix and enjoy.",
+    body: "Frozen, fun and made for your moment. Choose your flavours, styling and finishing touches.",
     preset: { experiences: ["Slushie"], branded: ["Slushies"] },
   },
   {
     name: "Popcorn",
-    tagline: "A classic, with a little more personality.",
-    body: "Fresh popcorn, fun flavours and a setup styled to feel right at home at your event.",
+    body: "A familiar favourite with flavours and styling made for your event.",
     preset: { experiences: ["Popcorn"], branded: ["Popcorn"] },
   },
   {
     name: "Cotton Candy",
-    tagline: "A little fun, made right in front of you.",
-    body: "Freshly spun and styled for the occasion, giving your guests something to watch, enjoy and, of course, eat.",
+    body: "Freshly spun, fun to watch and even better to eat.",
     preset: { experiences: ["Cotton Candy"], branded: ["Cotton Candy"] },
   },
   {
     name: "Candy & Sweets",
-    tagline: "Pick. Mix. Make it yours.",
-    body: "A colourful experience where guests can choose their favourites and create a little something of their own.",
+    body: "Pick, mix and make it yours.",
     preset: { experiences: ["Candy & Sweets"], branded: ["Sweets"] },
   },
 ];
@@ -856,10 +839,9 @@ export default function LandingPage() {
               </span>
             </h1>
             <div className="r5-hero__body">
-              <p className="r5-hero__lead">Give people something to taste, try, enjoy and talk about.</p>
+              <p className="r5-hero__lead">Give people something to be part of.</p>
               <p className="r5-hero__sub">
-                We create mobile experiences for events, celebrations and brands across Trinidad &amp; Tobago,
-                made to pop up wherever the moment takes us.
+                We create mobile experiences for events, celebrations and brands across Trinidad &amp; Tobago.
               </p>
               <a href="#experiences" className="r5-btn r5-btn--orange r5-hero__cta">
                 See the Experiences <span aria-hidden="true">↓</span>
@@ -886,10 +868,6 @@ export default function LandingPage() {
                   What do you want people to <span className="r5-accent">experience?</span>
                 </h2>
                 <div className="r5-stack-16">
-                  <p className="r5-body-soft">
-                    Whether you&rsquo;re planning a celebration or putting your brand in front of people, it
-                    starts with the same thing:
-                  </p>
                   <p className="r5-split__kicker">
                     <span className="r5-accent">Give them something to be part of.</span>
                   </p>
@@ -929,7 +907,7 @@ export default function LandingPage() {
                     RE5 creates mobile experiences for weddings, birthdays, celebrations and events. Start with one of
                     ours or tell us what you have in mind.
                   </p>
-                  <p className="r5-body-soft">We&rsquo;ll shape the details around your moment.</p>
+                  <p className="r5-body-soft">We&rsquo;ll make it feel like it belongs there.</p>
                 </div>
                 <a href="#experiences" className="r5-btn r5-btn--dark">
                   Explore Event Experiences →
@@ -948,7 +926,6 @@ export default function LandingPage() {
                   <li key={x.name} className="r5-xp__card">
                     <span className="r5-xp__num">{String(i + 1).padStart(2, "0")}</span>
                     <h3 className="r5-xp__name">{x.name}</h3>
-                    <p className="r5-xp__tagline">{x.tagline}</p>
                     <p className="r5-xp__body">{x.body}</p>
                     <button className="r5-xp__btn" onClick={() => openWizard(undefined, x.preset)}>
                       Explore <span aria-hidden="true">→</span>
@@ -990,10 +967,8 @@ export default function LandingPage() {
                   Our signature. <span className="r5-accent">Made yours.</span>
                 </h2>
                 <div className="r5-stack-16">
-                  <p className="r5-muted">Our Signature Cart is where it starts.</p>
-                  <p className="r5-muted">
-                    From there, we shape the colours, styling, signage and little details around you.
-                  </p>
+                  <p className="r5-muted">The Signature Cart is one way we bring your experience to life.</p>
+                  <p className="r5-muted">From there, we make it yours.</p>
                 </div>
                 <ul className="r5-way__list">
                   {CUSTOM_WORDS.map((w, i) => (
@@ -1047,9 +1022,7 @@ export default function LandingPage() {
                     <br />
                     A shelf can display it.
                   </p>
-                  <p className="r5-body-soft">
-                    But sometimes people need to taste it, try it, touch it or talk about it to really get it.
-                  </p>
+                  <p className="r5-body-soft">Sometimes people need to experience a product to understand why it&rsquo;s for them.</p>
                   <p className="r5-feature__lead">That&rsquo;s where we come in.</p>
                   <p className="r5-body-soft">
                     RE5 creates mobile brand experiences that bring your product into the real world and closer to
@@ -1079,13 +1052,8 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="r5-where__side">
-                <ul className="r5-where__ways">
-                  {BRAND_WAYS.map((w) => (
-                    <li key={w}>{w}</li>
-                  ))}
-                </ul>
                 <p className="r5-where__close">
-                  You bring the product. <span className="r5-accent">We create a way for people to experience it.</span>
+                  You bring the product. <span className="r5-accent">We&rsquo;ll find a way for people to experience it.</span>
                 </p>
                 <button className="r5-btn r5-btn--orange" onClick={() => openWizard("brand")}>
                   Let&rsquo;s Talk About Your Brand →
@@ -1765,18 +1733,12 @@ function ModelCycle() {
         <span className="r5-cycle__num">{step.n}</span>
         <h3 className="r5-cycle__title">{step.title}</h3>
         <div className="r5-cycle__detail">
-          <p className="r5-cycle__q">{step.q}</p>
-          {step.body.map((b) => (
-            <p key={b} className="r5-cycle__body">{b}</p>
-          ))}
+          <p className="r5-cycle__body">{step.body}</p>
         </div>
       </div>
     </div>
       <div className="r5-cycle__below" aria-hidden="true">
-        <p className="r5-cycle__q">{step.q}</p>
-        {step.body.map((b) => (
-          <p key={b} className="r5-cycle__body">{b}</p>
-        ))}
+        <p className="r5-cycle__body">{step.body}</p>
       </div>
     </div>
   );
