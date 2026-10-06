@@ -516,7 +516,6 @@
   align-items: center;
 }
 .r5-split__head { display: flex; flex-direction: column; gap: 24px; max-width: 30em; }
-.r5-split__kicker { font-size: clamp(26px, 2.6vw, 34px); line-height: 1.1; color: var(--ink); }
 .r5-split__cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px; }
 .r5 .r5-split__card {
   display: flex;

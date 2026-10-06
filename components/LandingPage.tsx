@@ -867,11 +867,6 @@ export default function LandingPage() {
                 <h2 className="r5-h2">
                   What do you want people to <span className="r5-accent">experience?</span>
                 </h2>
-                <div className="r5-stack-16">
-                  <p className="r5-split__kicker">
-                    <span className="r5-accent">Give them something to be part of.</span>
-                  </p>
-                </div>
               </div>
               <div className="r5-split__cards">
                 {PATHS.map((p) => (
