@@ -25,77 +25,40 @@ type FieldConfig = {
 
 /* ---------------------------------------------------------------- */
 /* Request form config                                                */
-/* One form, two paths that mirror "How do you want to show up?"      */
+/* Two paths: a playful one for events and private celebrations, and  */
+/* a strategic one for brands (brand, audience, campaign first).       */
 /* ---------------------------------------------------------------- */
 
 type PathId = "event" | "brand";
 
 const PATH_OPTS: { id: PathId; label: string; body: string }[] = [
-  { id: "event", label: "For Your Event", body: "Weddings, birthdays, graduations and special celebrations." },
-  { id: "brand", label: "For Your Brand", body: "Sampling, showcases, launches, giveaways and promotions." },
+  { id: "event", label: "Event or Private Celebration", body: "Birthdays, weddings, baby showers and celebrations." },
+  { id: "brand", label: "Brand Experience", body: "Launches, campaigns and ways to put your product in people's hands." },
 ];
 
-const EVENT_OCCASIONS = [
-  "Wedding",
-  "Birthday",
-  "Baby shower",
-  "Graduation",
-  "Private celebration",
-  "Corporate event",
-  "Other",
-];
-
-const BRAND_GOALS = [
-  "Product Sampling",
-  "Product Showcases",
-  "Product Launches",
-  "Gifting & Giveaways",
-  "Sign-ups & Service Promotions",
-  "Branded RE5 Experiences",
-];
-
-// Trinidad and Tobago policy: shown wherever alcohol is offered.
-const ALCOHOL_NOTE = "Alcoholic drinks are only served to guests 23 and over. No exceptions.";
-
-// The current offer is the Frozen Experience only.
+// The current offer is the Frozen Experience.
 const FROZEN = "The Frozen Experience";
-const EVENT_EXPERIENCES = [
-  {
-    label: FROZEN,
-    body: "Cold, fun and made for your moment. Choose your flavours, styling and finishing touches.",
-    note: ALCOHOL_NOTE,
-  },
+
+const EVENT_TYPES = ["Birthday", "Wedding", "Baby Shower", "Corporate Celebration", "Other"];
+
+const NOT_SURE = "I’m not sure yet";
+// Event flavours for the Frozen Experience.
+const FLAVOURS = [
+  "Guava",
+  "Passion Fruit",
+  "Watermelon",
+  "Blue Raspberry",
+  "Strawberry Cherry",
+  "Cherry",
+  "Black Cherry",
+  "Pink Lemonade",
 ];
-
-const FLORAL_OPTS = ["Florals", "Balloons", "Not sure yet"];
-
-const SETTING_OPTS = ["Indoors", "Outdoors", "Not sure yet"];
-
-// Brand path: what the activation should achieve, so the quote is built around the outcome.
-const SUCCESS_OPTS = [
-  "More people trying the product",
-  "Sign-ups or leads",
-  "Sales on the day",
-  "Social content and followers",
-  "Feedback on the product",
-  "Getting the name out there",
-];
-const ACTION_OPTS = ["Taste or try", "Sign up", "Scan a QR code", "Follow or post", "Buy", "Share feedback"];
-const FOLLOWUP_OPTS = ["Yes, contact details", "Yes, feedback", "No", "Not sure yet"];
-
-const ADDON_OPTS: Record<PathId, string[]> = {
-  event: ["Additional customization", "Personalized packaging", "Extra service time"],
-  brand: [
-    "Additional branding",
-    "Custom packaging",
-    "Additional attendants",
-    "Extended service time",
-    "Other campaign elements",
-  ],
-};
+const TOPPING_OPTS = ["Yes, I’d like toppings", "Keep it simple", NOT_SURE];
+const FROZEN_INTEREST_OPTS = ["Yes", "Maybe, let’s explore it", "I have another idea"];
+const CONTACT_PREF_OPTS = ["WhatsApp", "Phone", "Email"];
 
 const CONTACT_FIELDS: FieldConfig[] = [
-  { key: "contact", label: "Your name *", ph: "Full name" },
+  { key: "contact", label: "Name *", ph: "Full name" },
   { key: "email", label: "Email *", ph: "you@email.com", type: "email" },
   { key: "phone", label: "Phone / WhatsApp", ph: "+1 868", type: "tel" },
 ];
@@ -103,103 +66,38 @@ const CONTACT_FIELDS: FieldConfig[] = [
 const list = (v: unknown): string[] => (Array.isArray(v) ? (v as string[]) : []);
 const isBrand = (a: Answers) => a.path === "brand";
 
-// The name we ask for depends on the path, and for events on the occasion.
-function nameQuestion(a: Answers): { label: string; ph: string; hint: string } {
-  if (isBrand(a)) return { label: "Business / Brand name *", ph: "Your business or brand", hint: "" };
-  if (a.occasion === "Corporate event")
-    return { label: "Company or event name *", ph: "e.g. Year End Party", hint: "" };
-  return {
-    label: "Who are we celebrating? *",
-    ph: "e.g. Sarah & James, Baby Maya, Zoe's 7th",
-    hint: "The name or names we'll build your experience around.",
-  };
-}
+const EVENT_PAGES = ["plan", "details", "yours", "connect"] as const;
+const BRAND_PAGES = ["brand", "audience", "idea", "frozen", "connect"] as const;
+type WizardPageId = (typeof EVENT_PAGES)[number] | (typeof BRAND_PAGES)[number];
 
-const showsSlushieDetails = (a: Answers) =>
-  isBrand(a) ? list(a.goals).includes("Branded RE5 Experiences") : true;
+const visibleWizardPages = (a: Answers): readonly WizardPageId[] => (isBrand(a) ? BRAND_PAGES : EVENT_PAGES);
 
-const WIZARD_PAGE_IDS = ["plan", "when", "experience", "goal", "details", "yours", "look", "extras", "connect"] as const;
-type WizardPageId = (typeof WIZARD_PAGE_IDS)[number];
-
-const visibleWizardPages = (a: Answers): WizardPageId[] =>
-  WIZARD_PAGE_IDS.filter(
-    (id) => (id !== "details" || showsSlushieDetails(a)) && (id !== "goal" || isBrand(a))
-  );
+const filled = (v: unknown) => !!String(v ?? "").trim();
 
 function validateWizardPage(id: WizardPageId, a: Answers): string {
   if (id === "plan") {
-    if (!a.path) return "Pick For Your Event or For Your Brand to keep going.";
-    if (isBrand(a)) {
-      if (!list(a.goals).length) return "Pick at least one way to show up.";
-    } else {
-      if (!a.occasion) return "Pick the occasion to keep going.";
-      if (a.occasion === "Other" && !String(a.occasionOther || "").trim())
-        return "Tell us what you're celebrating.";
-    }
+    if (!a.planning) return "Pick what you're planning to keep going.";
+    if (a.planning === "Other" && !filled(a.planningOther)) return "Tell us what you're planning.";
   }
-  if (id === "experience") {
-    if (isBrand(a)) {
-      if (!String(a.products || "").trim()) return "Tell us what you're putting in people's hands.";
-    } else if (!list(a.experiences).length) return "Pick at least one experience.";
+  if (id === "yours") {
+    if (!list(a.flavours).length) return "Pick a flavour, or choose “I’m not sure yet”.";
+    if (!a.toppings) return "Let us know about toppings.";
   }
-  if (id === "goal" && !list(a.success).length) return "Pick at least one thing that would make this a success.";
-  if (id === "details") {
-    if (!a.slushieFor) return "Pick one to keep going.";
-    if ((a.slushieFor === "Adults" || a.slushieFor === "Both") && !a.alcohol)
-      return "Let us know about the alcoholic option.";
+  if (id === "brand") {
+    if (!filled(a.brandName)) return "Add your brand or company.";
+    if (!filled(a.promoting)) return "Tell us what you're promoting or launching.";
   }
-  if (id === "yours" && !String(a.name || "").trim())
-    return isBrand(a) ? "Add your business or brand name." : "Tell us who we're celebrating.";
+  if (id === "audience" && !filled(a.audience)) return "Tell us who you want to reach.";
+  if (id === "idea" && !filled(a.idea)) return "Tell us a little about what you'd like people to experience.";
+  if (id === "frozen" && !a.frozenInterest) return "Pick one to keep going.";
   if (id === "connect") {
     if (!a.contactPref) return "Pick how you'd like us to contact you.";
-    if (!a.contact || !a.email) return "Add your name and email so we can reply.";
+    if (!filled(a.contact) || !filled(a.email)) return "Add your name and email so we can reply.";
     if (!/^\S+@\S+\.\S+$/.test(String(a.email))) return "That email looks incomplete.";
-    if ((a.contactPref === "WhatsApp" || a.contactPref === "Phone") && !String(a.phone || "").trim())
+    if ((a.contactPref === "WhatsApp" || a.contactPref === "Phone") && !filled(a.phone))
       return `Add your number so we can reach you on ${a.contactPref}.`;
   }
   return "";
-}
-
-type Upload = { filename: string; type: string; content: string };
-
-// Vercel rejects request bodies over ~4.5 MB, so keep all attachments under this (base64 size).
-const MAX_UPLOAD_CHARS = 4_000_000;
-const UPLOAD_KEYS: Record<PathId, string[]> = { event: ["themeUpload"], brand: ["brandLogo", "brandMaterial"] };
-
-function readAsDataUrl(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const r = new FileReader();
-    r.onload = () => resolve(String(r.result));
-    r.onerror = () => reject(r.error);
-    r.readAsDataURL(blob);
-  });
-}
-
-// Phone photos are often 5-10 MB; scale big images down so they fit in one request.
-async function prepareUpload(file: File): Promise<Upload> {
-  let blob: Blob = file;
-  let filename = file.name;
-  if (file.type.startsWith("image/") && file.type !== "image/svg+xml" && file.size > 900_000) {
-    // Some formats (e.g. HEIC outside Safari) can't be decoded; then send the original as-is.
-    const img = await createImageBitmap(file).catch(() => null);
-    if (!img) return readAsDataUrl(file).then((d) => ({ filename, type: file.type, content: d.slice(d.indexOf(",") + 1) }));
-    const scale = Math.min(1, 2000 / Math.max(img.width, img.height));
-    const canvas = document.createElement("canvas");
-    canvas.width = Math.round(img.width * scale);
-    canvas.height = Math.round(img.height * scale);
-    canvas.getContext("2d")?.drawImage(img, 0, 0, canvas.width, canvas.height);
-    const keepPng = file.type === "image/png";
-    blob = await new Promise<Blob>((resolve, reject) =>
-      canvas.toBlob(
-        (b) => (b ? resolve(b) : reject(new Error("resize failed"))),
-        keepPng ? "image/png" : "image/jpeg",
-        0.85
-      )
-    );
-    if (!keepPng) filename = filename.replace(/\.[^.]+$/, "") + ".jpg";
-  }
-  const dataUrl = await readAsDataUrl(blob);
-  return { filename, type: blob.type, content: dataUrl.slice(dataUrl.indexOf(",") + 1) };
 }
 
 function formatWizardDate(v: unknown): string {
@@ -214,10 +112,10 @@ function formatWizardDate(v: unknown): string {
   return "";
 }
 
-// Short label used in the email subject line, e.g. "Wedding" or "Brand: Product Sampling".
+// Short label used in the email subject line, e.g. "Birthday" or "Brand experience".
 function wizardOffer(a: Answers): string {
-  if (isBrand(a)) return `Brand: ${list(a.goals).join(", ")}`;
-  return a.occasion === "Other" ? String(a.occasionOther || "Event") : String(a.occasion || "Event");
+  if (isBrand(a)) return "Brand experience";
+  return a.planning === "Other" ? String(a.planningOther || "Event") : String(a.planning || "Event");
 }
 
 function buildWizardBrief(a: Answers) {
@@ -226,63 +124,28 @@ function buildWizardBrief(a: Answers) {
   const push = (tag: string, answer: string) => {
     rows.push({ n: String(n++).padStart(2, "0"), tag, answer: answer || "Not answered" });
   };
-  const brand = isBrand(a);
 
-  push("Request", brand ? "The Brand Experience" : "The Signature Experience");
-  if (brand) {
-    push("Business / Brand", String(a.name || ""));
-    push("How they want to show up", list(a.goals).join(", "));
+  if (isBrand(a)) {
+    push("Request", "Brand Experience");
+    push("Brand / Company", String(a.brandName || ""));
+    push("Promoting / launching", String(a.promoting || ""));
+    push("Date or campaign period", String(a.campaignPeriod || ""));
+    push("Location", String(a.brandLocation || ""));
+    push("Who they want to reach", String(a.audience || ""));
+    push("What people should experience", String(a.idea || ""));
+    push("Interested in a Frozen Experience?", String(a.frozenInterest || ""));
   } else {
-    push(a.occasion === "Corporate event" ? "Company / Event" : "Celebrating", String(a.name || ""));
-    push("Occasion", wizardOffer(a));
+    push("Request", `Event or Private Celebration (${FROZEN})`);
+    push("Planning", wizardOffer(a));
+    push("Date", formatWizardDate(a.eventDate));
+    push("Location", String(a.venue || ""));
+    push("Guests", a.guestCount ? String(a.guestCount) : "");
+    push("Flavours", list(a.flavours).join(", "));
+    push("Toppings", String(a.toppings || ""));
+    push("Look / theme", String(a.theme || ""));
+    push("Anything else", String(a.notes || ""));
   }
-  push("Date", formatWizardDate(a.eventDate));
-  push("Location", [a.venue, a.venueStatus].filter(Boolean).join(" · "));
-  push("Indoors / outdoors", String(a.setting || ""));
-  push(brand ? "Expected reach" : "Guests", a.guestCount ? String(a.guestCount) : "");
-
-  if (brand) {
-    push("Product / service", String(a.products || ""));
-    if (list(a.goals).includes("Branded RE5 Experiences")) push("Branded experience", FROZEN);
-    push("Goal: success looks like", list(a.success).join(", "));
-    push("Goal: people should", list(a.actions).join(", "));
-    push("Goal: collect for follow-up", String(a.followup || ""));
-    push("Goal: measured by", String(a.measure || ""));
-  } else {
-    push("Experience", list(a.experiences).join(", "));
-  }
-
-  if (showsSlushieDetails(a)) {
-    const alcoholNote =
-      a.slushieFor === "Adults" || a.slushieFor === "Both" ? ` · Alcohol: ${a.alcohol || ""}` : "";
-    push("Drink details", `${a.slushieFor || ""}${alcoholNote}`);
-  }
-
-  if (brand) {
-    push(
-      "Branding",
-      [
-        a.brandColours ? `Colours: ${a.brandColours}` : "",
-        a.brandLogo ? `Logo: ${a.brandLogo}` : "",
-        a.brandMaterial ? `Material: ${a.brandMaterial}` : "",
-      ]
-        .filter(Boolean)
-        .join(" · ")
-    );
-    push("Message sign", String(a.signText || ""));
-  } else {
-    push("Small sign", String(a.signText || ""));
-    push("Florals or balloons", String(a.florals || ""));
-    push(
-      "Theme / colours",
-      [a.themeNote, a.themeUpload ? `Uploaded: ${a.themeUpload}` : ""].filter(Boolean).join(" · ")
-    );
-  }
-
-  push("Add-ons", list(a.addons).join(", ") || "None");
-  push("Anything else", String(a.notes || ""));
   push("Preferred contact", String(a.contactPref || ""));
-
   return rows;
 }
 
@@ -361,14 +224,6 @@ function StepIcon({ name }: { name: StepIconName }) {
       aria-hidden="true"
     >
       {STEP_ICON_PATHS[name]}
-    </svg>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="r5-check" aria-hidden="true">
-      <path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -521,10 +376,6 @@ export default function LandingPage() {
   const [answers, setAnswers] = useState<Answers>({});
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState("");
-  // True when the form was opened from a panel, so Event/Brand is already known.
-  const [pathPicked, setPathPicked] = useState(false);
-  const [uploads, setUploads] = useState<Record<string, Upload>>({});
-  const [uploadErr, setUploadErr] = useState("");
 
   const contRef = useRef<HTMLButtonElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -571,14 +422,13 @@ export default function LandingPage() {
 
   const visibleWizard = useMemo(() => visibleWizardPages(answers), [answers]);
 
-  // Accepts a path when opened from a panel; the plain CTAs pass a click event, which is ignored.
+  // Accepts a path when opened from an Event/Brand button (then the form starts on that
+  // path's first question); the plain CTAs pass a click event, which is ignored.
   const openWizard = useCallback((path?: unknown, preset?: Answers) => {
-    setAnswers({ experiences: [FROZEN], ...(path === "event" || path === "brand" ? { path } : {}), ...preset });
-    setPathPicked(path === "event" || path === "brand");
-    setUploads({});
-    setUploadErr("");
+    const known = path === "event" || path === "brand";
+    setAnswers({ ...(known ? { path } : {}), ...preset });
     setOpen(true);
-    setMode("intro");
+    setMode(known ? "q" : "intro");
     setIdx(0);
     setErr("");
     setSendError("");
@@ -601,32 +451,37 @@ export default function LandingPage() {
     setErr("");
   }, []);
 
-  const setWizardFile = useCallback(
-    async (key: string, e: ChangeEvent<HTMLInputElement>) => {
-      const f = e.target.files?.[0];
-      e.target.value = "";
-      if (!f) return;
-      setUploadErr("");
-      try {
-        const up = await prepareUpload(f);
-        if (up.content.length > MAX_UPLOAD_CHARS) {
-          setUploadErr("That file is too large to send. Please use one under 3 MB.");
-          return;
-        }
-        setUploads((prev) => ({ ...prev, [key]: up }));
-        setA(key, up.filename);
-      } catch {
-        setUploadErr("We couldn't read that file. Try a JPG, PNG or PDF.");
-      }
-    },
-    [setA]
-  );
+  // Flavours: picking "I'm not sure yet" clears the others, and picking a flavour clears it.
+  const toggleFlavour = useCallback((value: string) => {
+    setAnswers((prev) => {
+      const cur = list(prev.flavours);
+      const nextList =
+        value === NOT_SURE
+          ? cur.includes(NOT_SURE) ? [] : [NOT_SURE]
+          : cur.includes(value)
+            ? cur.filter((v) => v !== value)
+            : [...cur.filter((v) => v !== NOT_SURE), value];
+      return { ...prev, flavours: nextList };
+    });
+    setErr("");
+  }, []);
 
-  const startQuestions = useCallback(() => {
+  const choosePath = useCallback((id: PathId) => {
+    setAnswers((prev) => ({ ...prev, path: id }));
     setMode("q");
     setIdx(0);
     setErr("");
   }, []);
+
+  const startQuestions = useCallback(() => {
+    if (!answers.path) {
+      setErr("Pick where you'd like to start.");
+      return;
+    }
+    setMode("q");
+    setIdx(0);
+    setErr("");
+  }, [answers.path]);
 
   const next = useCallback(() => {
     const page = visibleWizard[Math.min(idx, visibleWizard.length - 1)];
@@ -672,13 +527,6 @@ export default function LandingPage() {
       setErr(e);
       return;
     }
-    const attachments = UPLOAD_KEYS[isBrand(answers) ? "brand" : "event"]
-      .map((k) => uploads[k])
-      .filter(Boolean);
-    if (attachments.reduce((n, a) => n + a.content.length, 0) > MAX_UPLOAD_CHARS) {
-      setSendError("Your files are too large to send together. Remove one and try again.");
-      return;
-    }
     setSending(true);
     setSendError("");
     const brief = buildWizardBrief(answers);
@@ -691,10 +539,9 @@ export default function LandingPage() {
           contact: answers.contact,
           email: answers.email,
           phone: answers.phone,
-          company: answers.name,
-          companyLabel: isBrand(answers) ? "Business / Brand" : "Celebrating",
+          company: isBrand(answers) ? answers.brandName : undefined,
+          companyLabel: "Brand / Company",
           brief,
-          attachments,
         }),
       });
       if (!res.ok) throw new Error("failed");
@@ -705,14 +552,13 @@ export default function LandingPage() {
     } finally {
       setSending(false);
     }
-  }, [answers, uploads, visibleWizard, confetti]);
+  }, [answers, visibleWizard, confetti]);
 
   const finish = useCallback(() => {
     close();
     setMode("intro");
     setIdx(0);
     setAnswers({});
-    setUploads({});
   }, [close]);
 
   /* ---- render helpers ---- */
@@ -1142,32 +988,12 @@ export default function LandingPage() {
                     We&rsquo;ll ask a few questions about your event or brand so we can
                     understand the experience you want to create.
                   </p>
-                </>
-              )}
-
-              {isQ && page === "plan" && (
-                <>
-                  <span className="wizard-tag">
-                    <StarIcon className="wizard-tag-star" /> The plan
-                  </span>
-                  <h2 className="wizard-question">How do you want to show up?</h2>
-                  {pathPicked && answers.path ? (
-                    <div className="wizard-path-picked">
-                      <span>✓ {PATH_OPTS.find((p) => p.id === answers.path)?.label}</span>
-                      <button type="button" onClick={() => setPathPicked(false)}>
-                        Change
-                      </button>
-                    </div>
-                  ) : (
                   <div className="wizard-choice-cards">
                     {PATH_OPTS.map((p) => (
                       <button
                         key={p.id}
                         className={`wizard-choice-card ${answers.path === p.id ? "wizard-choice-card-active" : ""}`}
-                        onClick={(e) => {
-                          setA("path", p.id);
-                          revealNext(e.currentTarget);
-                        }}
+                        onClick={() => choosePath(p.id as PathId)}
                       >
                         <span className="wizard-choice-card-label">{p.label}</span>
                         <span className="wizard-choice-card-body">{p.body}</span>
@@ -1177,48 +1003,49 @@ export default function LandingPage() {
                       </button>
                     ))}
                   </div>
-                  )}
-
-                  {answers.path === "event" && (
-                    <div className="wizard-subquestion">
-                      <p className="wizard-hint">What&rsquo;s the occasion?</p>
-                      <div className="wizard-options">
-                        {EVENT_OCCASIONS.map((o, i) => renderOption("occasion", o, i))}
-                      </div>
-                      {answers.occasion === "Other" && (
-                        <label className="wizard-extra-field">
-                          <span>Tell us what you&rsquo;re celebrating</span>
-                          <input
-                            value={String(answers.occasionOther || "")}
-                            onChange={(e) => setA("occasionOther", e.target.value)}
-                            placeholder="e.g. anniversary, gender reveal, engagement"
-                          />
-                        </label>
-                      )}
-                    </div>
-                  )}
-
-                  {answers.path === "brand" && (
-                    <div className="wizard-subquestion">
-                      <p className="wizard-hint">Choose how you show up. Pick all that apply.</p>
-                      <div className="wizard-options">
-                        {BRAND_GOALS.map((o, i) => renderOption("goals", o, i, true))}
-                      </div>
-                    </div>
-                  )}
-
                 </>
               )}
 
-              {isQ && page === "when" && (
+              {isQ && (page === "plan" || page === "brand") && (
+                <div className="wizard-path-picked">
+                  <span>✓ {PATH_OPTS.find((p) => p.id === answers.path)?.label}</span>
+                  <button type="button" onClick={() => setMode("intro")}>
+                    Change
+                  </button>
+                </div>
+              )}
+
+              {isQ && page === "plan" && (
                 <>
                   <span className="wizard-tag">
                     <StarIcon className="wizard-tag-star" /> The plan
                   </span>
-                  <h2 className="wizard-question">When and where?</h2>
+                  <h2 className="wizard-question">What are you planning?</h2>
+                  <div className="wizard-options">
+                    {EVENT_TYPES.map((o, i) => renderOption("planning", o, i))}
+                  </div>
+                  {answers.planning === "Other" && (
+                    <label className="wizard-extra-field">
+                      <span>Tell us what you&rsquo;re planning</span>
+                      <input
+                        value={String(answers.planningOther || "")}
+                        onChange={(e) => setA("planningOther", e.target.value)}
+                        placeholder="e.g. anniversary, gender reveal, engagement"
+                      />
+                    </label>
+                  )}
+                </>
+              )}
+
+              {isQ && page === "details" && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> The details
+                  </span>
+                  <h2 className="wizard-question">Tell us about your event.</h2>
                   <div className="wizard-fields">
                     <label className="wizard-field">
-                      <span>When is it happening?</span>
+                      <span>Event date</span>
                       <input
                         type="date"
                         value={String(answers.eventDate || "")}
@@ -1226,139 +1053,24 @@ export default function LandingPage() {
                       />
                     </label>
                     <label className="wizard-field">
-                      <span>Where is it happening?</span>
+                      <span>Event location</span>
                       <input
                         value={String(answers.venue || "")}
                         onChange={(e) => setA("venue", e.target.value)}
-                        placeholder={answers.path === "brand" ? "Mall, store, office or event" : "Venue / Location"}
+                        placeholder="Venue / Location"
+                      />
+                    </label>
+                    <label className="wizard-field">
+                      <span>Estimated number of guests</span>
+                      <input
+                        type="number"
+                        min="0"
+                        value={String(answers.guestCount || "")}
+                        onChange={(e) => setA("guestCount", e.target.value)}
+                        placeholder="Number"
                       />
                     </label>
                   </div>
-                  <div className="wizard-subquestion">
-                    <div className="wizard-options">
-                      {["Location confirmed", "Still deciding"].map((o, i) => renderOption("venueStatus", o, i))}
-                    </div>
-                  </div>
-                  <div className="wizard-subquestion">
-                    <p className="wizard-hint">Will it be indoors or outdoors?</p>
-                    <div className="wizard-options">
-                      {SETTING_OPTS.map((o, i) => renderOption("setting", o, i))}
-                    </div>
-                  </div>
-                  <label className="wizard-extra-field">
-                    <span>
-                      {answers.path === "brand"
-                        ? "Roughly how many people do you want to reach?"
-                        : "How many guests are you expecting?"}
-                    </span>
-                    <input
-                      type="number"
-                      min="0"
-                      value={String(answers.guestCount || "")}
-                      onChange={(e) => setA("guestCount", e.target.value)}
-                      placeholder="Number"
-                    />
-                  </label>
-                </>
-              )}
-
-              {isQ && page === "experience" && !isBrand(answers) && (
-                <>
-                  <span className="wizard-tag">
-                    <StarIcon className="wizard-tag-star" /> The experience
-                  </span>
-                  <h2 className="wizard-question">Your experience.</h2>
-                  <p className="wizard-hint">Our current specialty is frozen drink experiences.</p>
-                  <div className="wizard-choice-cards">
-                    {EVENT_EXPERIENCES.map((c) => {
-                      const on = list(answers.experiences).includes(c.label);
-                      return (
-                        <button
-                          key={c.label}
-                          className={`wizard-choice-card ${on ? "wizard-choice-card-active" : ""}`}
-                          onClick={() => toggleA("experiences", c.label)}
-                        >
-                          <span className="wizard-choice-card-label">{c.label}</span>
-                          <span className="wizard-choice-card-body">{c.body}</span>
-                          {"note" in c && <span className="wizard-age-note">{c.note}</span>}
-                          <span className="wizard-choice-card-mark">{on ? "✓ Selected" : "Select"}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <WizardIncludes path={isBrand(answers) ? "brand" : "event"} />
-                </>
-              )}
-
-              {isQ && page === "experience" && isBrand(answers) && (
-                <>
-                  <span className="wizard-tag">
-                    <StarIcon className="wizard-tag-star" /> The experience
-                  </span>
-                  <h2 className="wizard-question">What are you putting in people&rsquo;s hands?</h2>
-                  <p className="wizard-hint">Tell us about the product, service or idea we&rsquo;re bringing to people.</p>
-                  <textarea
-                    className="wizard-textarea"
-                    rows={3}
-                    placeholder="e.g. our new iced coffee, a phone plan sign-up, a skincare launch"
-                    value={String(answers.products || "")}
-                    onChange={(e) => setA("products", e.target.value)}
-                  />
-                  <WizardIncludes path={isBrand(answers) ? "brand" : "event"} />
-                </>
-              )}
-
-              {isQ && page === "goal" && (
-                <>
-                  <span className="wizard-tag">
-                    <StarIcon className="wizard-tag-star" /> The goal
-                  </span>
-                  <h2 className="wizard-question">What would make this a success?</h2>
-                  <p className="wizard-hint">Pick all that apply.</p>
-                  <div className="wizard-options">
-                    {SUCCESS_OPTS.map((o, i) => renderOption("success", o, i, true))}
-                  </div>
-                  <div className="wizard-subquestion">
-                    <p className="wizard-hint">What should people do when they come over? (Optional)</p>
-                    <div className="wizard-options">
-                      {ACTION_OPTS.map((o, i) => renderOption("actions", o, i, true))}
-                    </div>
-                  </div>
-                  <div className="wizard-subquestion">
-                    <p className="wizard-hint">Do you need us to collect anything for follow-up?</p>
-                    <div className="wizard-options">
-                      {FOLLOWUP_OPTS.map((o, i) => renderOption("followup", o, i))}
-                    </div>
-                  </div>
-                  <label className="wizard-extra-field">
-                    <span>How will you measure it? (Optional)</span>
-                    <input
-                      value={String(answers.measure || "")}
-                      onChange={(e) => setA("measure", e.target.value)}
-                      placeholder="e.g. samples handed out, sign-ups, QR scans, or not sure yet"
-                    />
-                  </label>
-                </>
-              )}
-
-              {isQ && page === "details" && (
-                <>
-                  <span className="wizard-tag">
-                    <StarIcon className="wizard-tag-star" /> The drinks
-                  </span>
-                  <h2 className="wizard-question">Who are the drinks for?</h2>
-                  <div className="wizard-options">
-                    {["Children", "Adults", "Both"].map((o, i) => renderOption("slushieFor", o, i))}
-                  </div>
-                  {(answers.slushieFor === "Adults" || answers.slushieFor === "Both") && (
-                    <div className="wizard-subquestion">
-                      <p className="wizard-hint">Would you like an alcoholic option?</p>
-                      <p className="wizard-age-note">{ALCOHOL_NOTE}</p>
-                      <div className="wizard-options">
-                        {["Yes", "No", "Not sure yet"].map((o, i) => renderOption("alcohol", o, i))}
-                      </div>
-                    </div>
-                  )}
                 </>
               )}
 
@@ -1368,125 +1080,122 @@ export default function LandingPage() {
                     <StarIcon className="wizard-tag-star" /> Make it yours
                   </span>
                   <h2 className="wizard-question">Make it yours.</h2>
-                  <div className="wizard-fields">
-                    <label className="wizard-field">
-                      <span>{nameQuestion(answers).label}</span>
-                      <input
-                        value={String(answers.name || "")}
-                        onChange={(e) => setA("name", e.target.value)}
-                        placeholder={nameQuestion(answers).ph}
-                      />
-                    </label>
-                  </div>
-                  {nameQuestion(answers).hint && <p className="wizard-hint">{nameQuestion(answers).hint}</p>}
-
-                  <label className="wizard-extra-field">
-                    <span>
-                      {isBrand(answers)
-                        ? "What should your message sign say? (Optional)"
-                        : "What should your small sign say? (Optional)"}
-                    </span>
-                    <input
-                      value={String(answers.signText || "")}
-                      onChange={(e) => setA("signText", e.target.value)}
-                      placeholder={
-                        isBrand(answers)
-                          ? "e.g. Try it free today"
-                          : "Your names, a message or your menu"
-                      }
-                    />
-                  </label>
-
-                </>
-              )}
-
-              {isQ && page === "look" && (
-                <>
-                  <span className="wizard-tag">
-                    <StarIcon className="wizard-tag-star" /> The look
-                  </span>
-                  <h2 className="wizard-question">{isBrand(answers) ? "Your branding." : "The finishing touches."}</h2>
-                  {isBrand(answers) && (
-                    <div className="wizard-fields">
-                      <label className="wizard-field">
-                        <span>Brand colours</span>
-                        <input
-                          value={String(answers.brandColours || "")}
-                          onChange={(e) => setA("brandColours", e.target.value)}
-                          placeholder="e.g. navy and gold"
-                        />
-                      </label>
+                  <p className="wizard-hint">Personalise your Frozen Experience.</p>
+                  <div className="wizard-subquestion">
+                    <p className="wizard-hint">What flavours do you have in mind?</p>
+                    <div className="wizard-options">
+                      {[...FLAVOURS, NOT_SURE].map((f, i) => {
+                        const on = list(answers.flavours).includes(f);
+                        return (
+                          <button
+                            key={f}
+                            className={`wizard-option ${on ? "wizard-option-active" : ""}`}
+                            onClick={() => toggleFlavour(f)}
+                          >
+                            <span className="wizard-option-mark">{on ? "✓" : String.fromCharCode(65 + i)}</span>
+                            {f}
+                          </button>
+                        );
+                      })}
                     </div>
-                  )}
-                  {!isBrand(answers) && (
-                    <>
-                      <div className="wizard-subquestion">
-                        <p className="wizard-hint">Florals or balloons?</p>
-                        <div className="wizard-options">
-                          {FLORAL_OPTS.map((o, i) => renderOption("florals", o, i))}
-                        </div>
-                      </div>
-                      <label className="wizard-extra-field">
-                        <span>Do you have a theme or colours? (Optional)</span>
-                        <input
-                          value={String(answers.themeNote || "")}
-                          onChange={(e) => setA("themeNote", e.target.value)}
-                          placeholder="e.g. sage and gold"
-                        />
-                      </label>
-                    </>
-                  )}
-
-                  <div className="wizard-uploads">
-                    {(isBrand(answers)
-                      ? ([
-                          ["brandLogo", "Upload your logo"],
-                          ["brandMaterial", "Have brand material you’d like us to see? (Optional)"],
-                        ] as const)
-                      : ([["themeUpload", "Have something you’d like us to see? (Optional)"]] as const)
-                    ).map(([key, label]) => (
-                      <label className="wizard-upload-row" key={key}>
-                        <input
-                          type="file"
-                          accept="image/*,.pdf"
-                          hidden
-                          onChange={(e) => setWizardFile(key, e)}
-                        />
-                        <span className="wizard-upload-label">{label}</span>
-                        <span className="wizard-upload-status">
-                          <span className="wizard-upload-files">{String(answers[key] || "")}</span>
-                          <span className={`wizard-upload-btn ${answers[key] ? "wizard-upload-btn-filled" : ""}`}>
-                            {answers[key] ? "Replace" : "Upload"}
-                          </span>
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                  {uploadErr && <p className="wizard-error">{uploadErr}</p>}
-                </>
-              )}
-
-              {isQ && page === "extras" && (
-                <>
-                  <span className="wizard-tag">
-                    <StarIcon className="wizard-tag-star" /> Last thing
-                  </span>
-                  <h2 className="wizard-question">
-                    {isBrand(answers) ? "Need more?" : "Want to make it even more yours?"}
-                  </h2>
-                  <p className="wizard-hint">Add anything you&rsquo;d like included. (Optional)</p>
-                  <div className="wizard-options">
-                    {ADDON_OPTS[isBrand(answers) ? "brand" : "event"].map((o, i) => renderOption("addons", o, i, true))}
                   </div>
                   <div className="wizard-subquestion">
-                    <p className="wizard-hint">Anything else we should know? (Optional)</p>
+                    <p className="wizard-hint">Want to make it a little more fun?</p>
+                    <div className="wizard-options">
+                      {TOPPING_OPTS.map((o, i) => renderOption("toppings", o, i))}
+                    </div>
+                  </div>
+                  <div className="wizard-subquestion">
+                    <p className="wizard-hint">Tell us a little about the look or theme.</p>
+                    <textarea
+                      className="wizard-textarea"
+                      rows={3}
+                      value={String(answers.theme || "")}
+                      onChange={(e) => setA("theme", e.target.value)}
+                      placeholder="Colours, theme, occasion or anything you’d like us to know…"
+                    />
+                  </div>
+                  <div className="wizard-subquestion">
+                    <p className="wizard-hint">Anything else?</p>
                     <textarea
                       className="wizard-textarea"
                       rows={3}
                       value={String(answers.notes || "")}
                       onChange={(e) => setA("notes", e.target.value)}
-                      placeholder="Tell us anything else that would help."
+                      placeholder="Tell us anything else you’re imagining for the experience."
                     />
+                  </div>
+                </>
+              )}
+
+              {isQ && page === "brand" && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> Your brand
+                  </span>
+                  <h2 className="wizard-question">Tell us about your brand.</h2>
+                  <div className="wizard-fields">
+                    {(
+                      [
+                        ["brandName", "Brand / Company *", "Brand or company name"],
+                        ["promoting", "What are you promoting or launching? *", "Product, service, campaign or launch"],
+                        ["campaignPeriod", "Preferred date or campaign period", "e.g. March 2027 or a weekend in May"],
+                        ["brandLocation", "Location, if known", "Mall, store, office or event"],
+                      ] as const
+                    ).map(([key, label, ph]) => (
+                      <label key={key} className="wizard-field">
+                        <span>{label}</span>
+                        <input
+                          value={String(answers[key] || "")}
+                          onChange={(e) => setA(key, e.target.value)}
+                          placeholder={ph}
+                        />
+                      </label>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {isQ && page === "audience" && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> Your audience
+                  </span>
+                  <h2 className="wizard-question">Who do you want to reach?</h2>
+                  <textarea
+                    className="wizard-textarea"
+                    rows={3}
+                    value={String(answers.audience || "")}
+                    onChange={(e) => setA("audience", e.target.value)}
+                    placeholder="Tell us about the people you want to reach."
+                  />
+                </>
+              )}
+
+              {isQ && page === "idea" && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> The experience
+                  </span>
+                  <h2 className="wizard-question">What do you want people to experience?</h2>
+                  <textarea
+                    className="wizard-textarea"
+                    rows={4}
+                    value={String(answers.idea || "")}
+                    onChange={(e) => setA("idea", e.target.value)}
+                    placeholder="Tell us about your product, campaign or idea and what you’d like people to experience."
+                  />
+                </>
+              )}
+
+              {isQ && page === "frozen" && (
+                <>
+                  <span className="wizard-tag">
+                    <StarIcon className="wizard-tag-star" /> The Frozen Experience
+                  </span>
+                  <h2 className="wizard-question">Interested in exploring a Frozen Experience?</h2>
+                  <div className="wizard-options">
+                    {FROZEN_INTEREST_OPTS.map((o, i) => renderOption("frozenInterest", o, i))}
                   </div>
                 </>
               )}
@@ -1494,29 +1203,29 @@ export default function LandingPage() {
               {isQ && page === "connect" && (
                 <>
                   <span className="wizard-tag">
-                    <StarIcon className="wizard-tag-star" /> Let&rsquo;s connect
+                    <StarIcon className="wizard-tag-star" /> Let&rsquo;s talk
                   </span>
-                  <h2 className="wizard-question">Let&rsquo;s connect.</h2>
+                  <h2 className="wizard-question">Let&rsquo;s talk.</h2>
                   <div>
                     <p className="wizard-hint">How would you prefer us to contact you?</p>
                     <div className="wizard-options">
-                      {["WhatsApp", "Phone", "Email"].map((o, i) => renderOption("contactPref", o, i))}
+                      {CONTACT_PREF_OPTS.map((o, i) => renderOption("contactPref", o, i))}
                     </div>
                   </div>
                   <div className="wizard-subquestion">
                     <div className="wizard-fields">
-                    {CONTACT_FIELDS.map((f) => (
-                      <label key={f.key} className="wizard-field">
-                        <span>{f.label}</span>
-                        <input
-                          type={f.type || "text"}
-                          value={String(answers[f.key] || "")}
-                          onChange={(e) => setA(f.key, e.target.value)}
-                          placeholder={f.ph}
-                        />
-                      </label>
-                    ))}
-                  </div>
+                      {CONTACT_FIELDS.map((f) => (
+                        <label key={f.key} className="wizard-field">
+                          <span>{f.label}</span>
+                          <input
+                            type={f.type || "text"}
+                            value={String(answers[f.key] || "")}
+                            onChange={(e) => setA(f.key, e.target.value)}
+                            placeholder={f.ph}
+                          />
+                        </label>
+                      ))}
+                    </div>
                   </div>
                 </>
               )}
@@ -1524,12 +1233,11 @@ export default function LandingPage() {
               {isDone && (
                 <div className="wizard-done">
                   <h2>
-                    We&rsquo;ve got <span className="wizard-review-brand">it.</span>
+                    Thanks for <span className="wizard-review-brand">reaching out.</span>
                   </h2>
                   <p>
-                    Thanks for telling us what you have in mind. We&rsquo;ll review your
-                    request and get in touch to talk through your experience and the next
-                    steps.
+                    We&rsquo;ll take a look at what you have in mind and get in touch to
+                    talk through the experience.
                   </p>
                   <button className="btn btn-ink" onClick={finish}>
                     Show up differently. <ArrowCircle />
@@ -1543,6 +1251,7 @@ export default function LandingPage() {
             <div className="wizard-footer">
               <span />
               <div className="wizard-footer-right">
+                {err && <span className="wizard-error">{err}</span>}
                 <button ref={contRef} className="wizard-continue" onClick={startQuestions}>
                   Let&rsquo;s start <span className="arrow-circle arrow-circle-dark">&rarr;</span>
                 </button>
@@ -1561,7 +1270,7 @@ export default function LandingPage() {
                 )}
                 {isLastPage ? (
                   <button ref={contRef} className="wizard-continue" onClick={submit} disabled={sending}>
-                    {sending ? "Sending…" : "Send my request"}{" "}
+                    {sending ? "Sending…" : "Start the conversation"}{" "}
                     <span className="arrow-circle arrow-circle-dark">&rarr;</span>
                   </button>
                 ) : (
@@ -1581,33 +1290,6 @@ export default function LandingPage() {
 /* ---------------------------------------------------------------- */
 /* Sub components                                                     */
 /* ---------------------------------------------------------------- */
-
-// Full "includes" list, shown in the request form while people choose.
-function WizardIncludes({ path }: { path: PathDef["id"] }) {
-  const p = PATHS.find((x) => x.id === path)!;
-  return (
-    <div className="wizard-includes" data-path={path}>
-      <span className="wizard-includes-title">{p.includesTitle}</span>
-      <ul>
-        {p.includes.map((inc) => (
-          <li key={inc.item}>
-            <CheckIcon />
-            <span>
-              {inc.item}
-              {inc.sub && (
-                <ul className="wizard-includes-sub">
-                  {inc.sub.map((s) => (
-                    <li key={s}>{s}</li>
-                  ))}
-                </ul>
-              )}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
 
 // "The RE5 Model" as a cycle: five steps around a ring, the selected one explained in the centre.
 // Advances on its own until someone interacts (and not at all with reduced motion).
