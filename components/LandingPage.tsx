@@ -440,29 +440,8 @@ const CUSTOM_WORDS = [
   { word: "moment", src: IMG.toast, pos: "50% 40%" },
 ];
 
-// "Start with an experience": each card opens the request form with that experience picked.
-const EXPERIENCES = [
-  {
-    name: "Slushie",
-    body: "Frozen, fun and made for your moment. Choose your flavours, styling and finishing touches.",
-    preset: { experiences: ["Slushie"], branded: ["Slushies"] },
-  },
-  {
-    name: "Popcorn",
-    body: "A familiar favourite with flavours and styling made for your event.",
-    preset: { experiences: ["Popcorn"], branded: ["Popcorn"] },
-  },
-  {
-    name: "Cotton Candy",
-    body: "Freshly spun, fun to watch and even better to eat.",
-    preset: { experiences: ["Cotton Candy"], branded: ["Cotton Candy"] },
-  },
-  {
-    name: "Candy & Sweets",
-    body: "Pick, mix and make it yours.",
-    preset: { experiences: ["Candy & Sweets"], branded: ["Sweets"] },
-  },
-];
+// "Explore the Frozen Experience" opens the request form with the frozen option already picked.
+const FROZEN_PRESET = { experiences: ["Slushie"], branded: ["Slushies"] };
 
 const WHATSAPP_URL = "https://wa.me/18687177720";
 
@@ -912,46 +891,35 @@ export default function LandingPage() {
           </section>
 
           <section id="experiences" className="r5-section r5-section--cream">
-            <div className="r5-container r5-xp">
-              <h2 className="r5-h2">
-                Start with an <span className="r5-accent">experience.</span>
-              </h2>
-              <ul className="r5-xp__grid">
-                {EXPERIENCES.map((x, i) => (
-                  <li key={x.name} className="r5-xp__card">
-                    <span className="r5-xp__num">{String(i + 1).padStart(2, "0")}</span>
-                    <h3 className="r5-xp__name">{x.name}</h3>
-                    <p className="r5-xp__body">{x.body}</p>
-                    <button className="r5-xp__btn" onClick={() => openWizard(undefined, x.preset)}>
-                      Explore <span aria-hidden="true">→</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-
-          <section className="r5-section r5-section--sand r5-else">
-            <div className="r5-else__inner">
-              <h2 className="r5-h2 r5-balance">Got something else <span className="r5-accent">in mind?</span></h2>
-              <div className="r5-else__copy">
-                <p className="r5-else__lead">It doesn&rsquo;t have to be on our menu.</p>
-                <p className="r5-body-soft">
-                  Maybe you&rsquo;ve seen an idea you love.
-                  <br />
-                  Maybe there&rsquo;s a food or drink you want to turn into an experience.
-                  <br />
-                  Or maybe you just know how you want the moment to feel.
-                </p>
-                <p className="r5-else__lead">Tell us.</p>
-                <p className="r5-body-soft r5-else__sub">
-                  If it fits what we do, we&rsquo;ll figure out the right way, and the right people, to bring it
-                  together.
-                </p>
+            <div className="r5-container r5-feature r5-feature--flip">
+              <div className="r5-photo r5-photo--tall">
+                <img
+                  src={IMG.toast}
+                  alt="Guests toasting with frozen drinks"
+                  loading="lazy"
+                  style={{ objectPosition: "50% 40%" }}
+                />
               </div>
-              <a href={WHATSAPP_URL} target="_blank" rel="noopener" className="r5-btn r5-btn--dark r5-else__btn">
-                Let&rsquo;s Chat →
-              </a>
+              <div className="r5-feature__body">
+                <span className="r5-eyebrow">The Frozen Experience</span>
+                <h2 className="r5-h2">
+                  Start with something <span className="r5-accent">frozen.</span>
+                </h2>
+                <div className="r5-stack-16">
+                  <p className="r5-feature__lead">Cold, fun and made for your moment.</p>
+                  <p className="r5-body-soft">
+                    Choose your flavours, make it yours and give your guests something they can taste, enjoy and be
+                    part of.
+                  </p>
+                  <p className="r5-body-soft">
+                    From the drink to the cups, signage and finishing touches, we shape the experience around your
+                    event.
+                  </p>
+                </div>
+                <button className="r5-btn r5-btn--dark" onClick={() => openWizard(undefined, FROZEN_PRESET)}>
+                  Explore the Frozen Experience →
+                </button>
+              </div>
             </div>
           </section>
 
@@ -1041,14 +1009,16 @@ export default function LandingPage() {
                   <p className="r5-muted">It starts with a simple question:</p>
                   <p className="r5-where__q">Who do you want to reach?</p>
                   <p className="r5-muted">
-                    From there, we think about where those people already are, what would get them involved and
-                    what kind of experience would make sense for your brand.
+                    From there, we think about where those people already are, what would get them involved and how
+                    the experience can fit into what your brand is already doing.
                   </p>
                 </div>
               </div>
               <div className="r5-where__side">
                 <p className="r5-where__close">
-                  You bring the product. <span className="r5-accent">We&rsquo;ll find a way for people to experience it.</span>
+                  Our current specialty is frozen drink experiences. For beverage brands, that could mean exploring a
+                  frozen version of your product. For other brands, it could mean creating something inspired by your
+                  campaign.
                 </p>
                 <button className="r5-btn r5-btn--orange" onClick={() => openWizard("brand")}>
                   Let&rsquo;s Talk About Your Brand →
@@ -1076,25 +1046,6 @@ export default function LandingPage() {
                 </div>
               </div>
               <ModelCycle />
-            </div>
-          </section>
-
-          <section className="r5-section r5-section--cream">
-            <div className="r5-container r5-made">
-              <h2 className="r5-h2">
-                Made here. <span className="r5-accent">Together.</span>
-              </h2>
-              <div className="r5-made__copy">
-                <p className="r5-made__lead">Some ideas need the right people.</p>
-                <p className="r5-body-soft">
-                  When your idea calls for something specialized, we collaborate with local makers, bartenders,
-                  caterers and businesses across Trinidad &amp; Tobago who know their craft.
-                </p>
-                <p className="r5-body-soft">We bring the right pieces together around one experience.</p>
-                <p className="r5-made__close">
-                  <span className="r5-accent">One idea. The right people. Made together.</span>
-                </p>
-              </div>
             </div>
           </section>
 
