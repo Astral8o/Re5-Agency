@@ -266,24 +266,26 @@ const IMG = {
   toast: "/images/re5/slushie-group-toast.webp",
   kids: "/images/re5/slushie-sweets-kids.webp",
   cocktail: "/images/re5/signature-slushie-cocktail.webp",
-  popcorn: "/images/re5/hero-popcorn-serving.webp",
-  boxes: "/images/re5/popcorn-boxes.webp",
+  spritz: "/images/re5/frozen-spritz-brand-cart.webp",
+  hand: "/images/re5/frozen-slushie-in-hand.webp",
+  wedding: "/images/re5/wedding-frozen-cart.webp",
 };
 
 const STRIP_PHOTOS = [
-  { src: IMG.popcorn, pos: "50% 50%" },
+  { src: IMG.spritz, pos: "60% 50%" },
   { src: IMG.kids, pos: "50% 50%" },
+  { src: IMG.wedding, pos: "50% 40%" },
   { src: IMG.cocktail, pos: "50% 28%" },
   { src: IMG.toast, pos: "50% 40%" },
-  { src: IMG.boxes, pos: "50% 60%" },
+  { src: IMG.hand, pos: "50% 50%" },
 ];
 
 const MARQUEE_WORDS = ["Experience It", "Make A Moment", "Make It Yours", "Show Up"];
 
 const CUSTOM_WORDS = [
   { word: "colours", src: IMG.kids, pos: "45% 60%" },
-  { word: "style", src: IMG.boxes, pos: "50% 60%" },
-  { word: "signage", src: IMG.popcorn, pos: "50% 45%" },
+  { word: "style", src: IMG.hand, pos: "50% 50%" },
+  { word: "signage", src: IMG.wedding, pos: "50% 70%" },
   { word: "menu", src: IMG.cocktail, pos: "50% 55%" },
   { word: "moment", src: IMG.toast, pos: "50% 40%" },
 ];
@@ -355,8 +357,8 @@ const PATHS: PathDef[] = [
       { item: "Setup and breakdown" },
     ],
     images: [
-      { src: IMG.popcorn, alt: "Branded popcorn cart in a mall", pos: "50% 45%" },
-      { src: IMG.boxes, alt: "Branded popcorn boxes", pos: "60% 65%" },
+      { src: IMG.spritz, alt: "Branded frozen spritz cart at an outdoor event", pos: "65% 50%" },
+      { src: IMG.hand, alt: "Frozen drink in a branded cup", pos: "50% 50%" },
     ],
   },
 ];
@@ -811,7 +813,7 @@ export default function LandingPage() {
           <section id="brand" className="r5-section r5-section--cream">
             <div className="r5-container r5-feature r5-feature--flip">
               <div className="r5-photo r5-photo--tall">
-                <img src={IMG.popcorn} alt="Branded popcorn cart in a mall" loading="lazy" style={{ objectPosition: "50% 45%" }} />
+                <img src={IMG.spritz} alt="Branded frozen spritz cart at an outdoor event" loading="lazy" style={{ objectPosition: "65% 50%" }} />
               </div>
               <div className="r5-feature__body">
                 <span className="r5-eyebrow">For Your Brand</span>
