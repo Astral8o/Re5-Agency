@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Gloock, Modak, Schibsted_Grotesk } from "next/font/google";
+import { DM_Sans, Modak } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -12,15 +12,8 @@ const modak = Modak({
   display: "swap",
 });
 
-// Elegant high-contrast serif accent, paired with Modak (display) and Schibsted Grotesk (body).
-const gloock = Gloock({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-serif",
-  display: "swap",
-});
-
-const schibstedGrotesk = Schibsted_Grotesk({
+// Workhorse font for everything that is not a Modak display moment.
+const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: "variable",
   variable: "--font-sans",
@@ -48,7 +41,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${modak.variable} ${schibstedGrotesk.variable} ${gloock.variable}`}
+      className={`${modak.variable} ${dmSans.variable}`}
     >
       <body>
         {children}

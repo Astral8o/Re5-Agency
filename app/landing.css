@@ -24,7 +24,7 @@
   border: 0;
   border-radius: 999px;
   text-align: left;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -81,7 +81,7 @@
   padding: 0;
   cursor: pointer;
   font-family: inherit;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -138,13 +138,13 @@
 
   --display: var(--font-display), cursive;
   --body: var(--font-sans), system-ui, sans-serif;
-  --serif: var(--font-serif), Georgia, serif;
 
   --radius: 24px;
   --section-y: clamp(96px, 12vw, 160px);
   --gutter: clamp(24px, 5vw, 64px);
   --max: 1280px;
   --h2: clamp(56px, 6.5vw, 88px);
+  line-height: 1.6;
 }
 
 .r5 :where(a) { color: inherit; }
@@ -162,14 +162,8 @@
 }
 
 .r5-dot { color: var(--orange); }
-/* Elegant contrast: the accent half of a headline switches to a high-contrast serif, not a colour. */
-.r5-accent {
-  font-family: var(--serif);
-  font-style: normal;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-}
-.r5-h2 .r5-accent, .r5-final__title .r5-accent { font-size: 0.86em; line-height: 0.95; letter-spacing: -0.02em; }
+/* Accent half of a headline: same font as the rest of the line (Modak or DM Sans). */
+.r5-accent { font: inherit; letter-spacing: inherit; }
 .r5-muted { color: var(--muted); }
 .r5-body-soft { color: var(--text-2); }
 .r5-balance { text-wrap: balance; }
@@ -181,13 +175,27 @@
 .r5-section--ink { background: var(--ink); color: var(--cream); }
 .r5-section--sand { background: var(--sand); color: var(--ink); }
 
+/* Supporting headings: DM Sans Bold. Modak only on the headings marked --modak. */
 .r5-h2 {
   margin: 0;
+  font-weight: 700;
+  font-size: clamp(36px, 4.2vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.r5-h2--modak,
+.r5-h2__modak {
   font-family: var(--display);
   font-weight: 400;
   font-size: var(--h2);
-  line-height: 0.8;
+  line-height: 0.85;
+  letter-spacing: 0;
 }
+/* Brand headline split across both fonts. */
+.r5-h2--split { display: flex; flex-direction: column; gap: 14px; }
+.r5-h2__lead { font-weight: 500; font-size: clamp(24px, 2.4vw, 32px); line-height: 1.2; letter-spacing: -0.01em; }
+.r5-h2__modak { display: block; font-size: clamp(48px, 5.4vw, 76px); text-wrap: balance; }
 .r5-h3 {
   margin: 0;
   font-size: clamp(32px, 3vw, 40px);
@@ -198,8 +206,8 @@
 }
 .r5-eyebrow {
   font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--orange-text);
 }
@@ -214,7 +222,7 @@
   display: inline-flex;
   align-items: center;
   border-radius: 999px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 16px;
   white-space: nowrap;
   transition: background .2s, color .2s, border-color .2s;
@@ -355,11 +363,11 @@
   text-wrap: balance;
 }
 .r5-hero__cta { gap: 12px; }
-.r5-hero__sub { font-size: 17px; line-height: 1.55; color: var(--muted); max-width: 34em; text-wrap: balance; }
+.r5-hero__sub { font-size: 17px; line-height: 1.6; color: var(--muted); max-width: 34em; text-wrap: balance; }
 
 /* ---------- Marquee ---------- */
 .r5-marquee { background: var(--ink); color: var(--cream); overflow: hidden; padding: 20px 0; border-top: 1px solid var(--ink-2); border-bottom: 1px solid var(--ink-2); }
-.r5-roll--marquee { white-space: nowrap; font-family: var(--serif); font-size: 40px; line-height: 1; }
+.r5-roll--marquee { white-space: nowrap; font-family: var(--display); font-size: 40px; line-height: 1; }
 .r5-marquee__item { display: inline-flex; align-items: center; gap: 32px; padding-right: 32px; }
 .r5-marquee__item::after {
   content: "";
@@ -404,11 +412,12 @@
 .r5-showup__tab:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
 .r5-showup__num {
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  letter-spacing: 0.08em;
 }
 .r5-showup__num::before { content: ""; width: 10px; height: 10px; border-radius: 999px; background: var(--path); }
 .r5-showup__label { flex: 1; font-family: var(--display); font-size: clamp(32px, 3.5vw, 48px); line-height: 0.9; }
@@ -488,7 +497,7 @@
   transition: color .2s;
 }
 .r5-way__item.r5-is-active .r5-way__word { color: var(--cream); }
-.r5-way__note { font-size: clamp(24px, 2.4vw, 32px); line-height: 1.1; color: var(--cream); }
+.r5-way__note { font-size: clamp(24px, 2.4vw, 32px); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; color: var(--cream); }
 @media (min-width: 900px) {
   .r5-way__photo { position: sticky; top: 112px; }
 }
@@ -530,7 +539,7 @@
 .r5 .r5-split__card:hover { color: var(--ink); transform: translateY(-4px); box-shadow: 0 16px 32px -20px rgba(23, 20, 15, 0.45); }
 .r5-split__photo { aspect-ratio: 4 / 3; border-radius: 16px; margin-bottom: 6px; }
 .r5-split__card .r5-showup__num { padding: 0 8px; }
-.r5-split__title { padding: 0 8px; font-family: var(--display); font-size: clamp(30px, 2.8vw, 38px); line-height: 0.9; }
+.r5-split__title { padding: 0 8px; font-weight: 700; font-size: clamp(24px, 2.2vw, 30px); line-height: 1.1; letter-spacing: -0.01em; }
 .r5-split__line { padding: 0 8px; font-size: 15px; line-height: 1.45; color: var(--text-2); }
 
 /* ---------- For Your Event / For Your Brand features ---------- */
@@ -586,7 +595,7 @@
 }
 .r5-model__head { display: flex; flex-direction: column; gap: 20px; max-width: 26em; }
 .r5-model__lead { font-size: clamp(20px, 2vw, 24px); font-weight: 700; line-height: 1.3; }
-.r5-model__q { font-size: clamp(24px, 2.4vw, 30px); line-height: 1.15; color: var(--ink); }
+.r5-model__q { font-size: clamp(24px, 2.4vw, 30px); font-weight: 700; line-height: 1.15; letter-spacing: -0.01em; color: var(--ink); }
 .r5-cycle-wrap { width: 100%; }
 .r5-cycle__detail { display: flex; flex-direction: column; gap: 6px; }
 .r5-cycle__q { font-size: 15px; font-weight: 700; line-height: 1.35; text-wrap: balance; }
@@ -634,7 +643,7 @@
   top: calc(100% + 6px);
   white-space: nowrap;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-2);
 }
 .r5-cycle__node.r5-is-active .r5-cycle__label { color: var(--ink); }
@@ -648,8 +657,8 @@
   gap: 10px;
   text-align: center;
 }
-.r5-cycle__num { font-size: 13px; font-weight: 700; color: var(--text-4); }
-.r5-cycle__title { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(30px, 3.4vw, 44px); line-height: 0.85; }
+.r5-cycle__num { font-size: 13px; font-weight: 500; letter-spacing: 0.08em; color: var(--text-4); }
+.r5-cycle__title { margin: 0; font-weight: 500; font-size: clamp(30px, 3.4vw, 44px); line-height: 1; letter-spacing: -0.01em; }
 .r5-cycle__body { font-size: 15px; line-height: 1.45; color: var(--text-2); text-wrap: balance; }
 @media (max-width: 600px) {
   .r5-cycle__icon { width: 48px; height: 48px; }
@@ -734,8 +743,8 @@
 }
 .r5-footer__label {
   font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-4);
   margin-bottom: 8px;
@@ -753,8 +762,8 @@
   display: block;
   margin-bottom: 12px;
   font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--stone-soft);
 }
@@ -981,7 +990,7 @@
 .wizard-path-picked button {
   font: inherit;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 5px 12px;
@@ -996,9 +1005,9 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 14px;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 12px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent);
 }
@@ -1011,10 +1020,10 @@
 .wizard-question {
   margin: 0;
   max-width: 20ch;
-  font-weight: 900;
+  font-weight: 700;
   font-size: clamp(34px, 4.4vw, 66px);
   line-height: 0.95;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
 }
 
@@ -1032,9 +1041,9 @@
 
 .wizard-extra-field span {
   display: block;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 12px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 8px;
   color: var(--stone-soft);
@@ -1175,9 +1184,9 @@
 
 .wizard-choice-card-mark {
   margin-top: 4px;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 12px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--stone-soft);
 }
@@ -1212,9 +1221,9 @@
 
 .wizard-field span {
   display: block;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 12px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 8px;
   color: var(--stone-soft);
@@ -1312,7 +1321,7 @@
   border: 2px solid rgba(23, 20, 15, 0.2);
   background: var(--paper);
   cursor: pointer;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 13px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1345,7 +1354,7 @@
   background: var(--ink);
   color: var(--paper);
   cursor: pointer;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -1357,11 +1366,7 @@
 /* ---------------------------------------------------------------- */
 
 .wizard-review-brand {
-  font-family: var(--font-display), cursive;
-  font-weight: 400;
-  letter-spacing: 0;
   color: var(--accent);
-  text-transform: none;
 }
 
 .wizard-review-list {
@@ -1380,9 +1385,9 @@
 
 .wizard-review-tag {
   flex: 0 0 200px;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 12px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--stone-soft);
 }
@@ -1409,10 +1414,10 @@
 
 .wizard-done h2 {
   margin: 0;
-  font-weight: 900;
+  font-weight: 700;
   font-size: clamp(50px, 8.6vw, 150px);
   line-height: 0.88;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.03em;
   text-transform: uppercase;
 }
 

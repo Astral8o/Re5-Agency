@@ -637,7 +637,7 @@ export default function LandingPage() {
         <main>
           <section className="r5-hero">
             <h1 className="r5-hero__title">
-              <span className="r5-hero__line r5-hero__line--top">MAKE IT</span>
+              <span className="r5-hero__line r5-hero__line--top">Make it</span>
               <span className="r5-hero__strip" aria-hidden="true">
                 <span className="r5-roll r5-roll--strip">
                   {[0, 1].map((r) =>
@@ -655,7 +655,7 @@ export default function LandingPage() {
                 </span>
               </span>
               <span className="r5-hero__line r5-hero__line--bottom">
-                AN <span className="r5-hero__break">EXPERIENCE.</span>
+                an <span className="r5-hero__break">experience.</span>
               </span>
             </h1>
             <div className="r5-hero__body">
@@ -712,7 +712,7 @@ export default function LandingPage() {
               </div>
               <div className="r5-feature__body">
                 <span className="r5-eyebrow">For Your Event</span>
-                <h2 className="r5-h2">
+                <h2 className="r5-h2 r5-h2--modak">
                   Give them something to <span className="r5-accent">experience.</span>
                 </h2>
                 <div className="r5-stack-16">
@@ -817,8 +817,9 @@ export default function LandingPage() {
               </div>
               <div className="r5-feature__body">
                 <span className="r5-eyebrow">For Your Brand</span>
-                <h2 className="r5-h2">
-                  People can see your product. <span className="r5-accent">But have they experienced it?</span>
+                <h2 className="r5-h2 r5-h2--split">
+                  <span className="r5-h2__lead">People can see your product.</span>{" "}
+                  <span className="r5-h2__modak">But have they experienced it?</span>
                 </h2>
                 <div className="r5-stack-16">
                   <p className="r5-feature__lead">
