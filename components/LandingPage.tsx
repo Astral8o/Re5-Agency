@@ -887,10 +887,10 @@ export default function LandingPage() {
             <div className="r5-container r5-feature r5-feature--flip">
               <div className="r5-photo r5-photo--tall">
                 <img
-                  src={IMG.toast}
-                  alt="Guests toasting with frozen drinks"
+                  src={IMG.cocktail}
+                  alt="Bartender serving a frozen drink at a slushie bar"
                   loading="lazy"
-                  style={{ objectPosition: "50% 40%" }}
+                  style={{ objectPosition: "50% 35%" }}
                 />
               </div>
               <div className="r5-feature__body">
