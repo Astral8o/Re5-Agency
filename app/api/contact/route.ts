@@ -12,7 +12,30 @@ function escapeHtml(value: string) {
 
 type BriefRow = { n?: unknown; tag?: unknown; answer?: unknown };
 
+// Spam filter, layer 3: at most 5 requests per visitor every 10 minutes. Kept in memory,
+// so it's per server instance; the honeypot and timing checks below catch most bots anyway.
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const RATE_MAX = 5;
+const recent = new Map<string, number[]>();
+
+function rateLimited(ip: string) {
+  const now = Date.now();
+  const hits = (recent.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  hits.push(now);
+  recent.set(ip, hits);
+  if (recent.size > 5000) recent.clear();
+  return hits.length > RATE_MAX;
+}
+
 export async function POST(request: Request) {
+  const ip = (request.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";
+  if (rateLimited(ip)) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again later, or reach us on WhatsApp." },
+      { status: 429 }
+    );
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -20,12 +43,23 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { offer, contact, email, phone, company, companyLabel, brief, attachments } = (body ?? {}) as Record<
+  const { offer, contact, email, phone, company, companyLabel, brief, website, elapsed } = (body ?? {}) as Record<
     string,
     unknown
   >;
 
-  if (typeof contact !== "string" || !contact.trim() || typeof email !== "string" || !email.trim()) {
+  // Spam filter, layers 1 and 2: the hidden "website" field is only ever filled by bots, and
+  // nobody finishes the form in under 4 seconds. Pretend it worked so bots don't adapt.
+  if ((typeof website === "string" && website.trim()) || (typeof elapsed === "number" && elapsed < 4000)) {
+    return NextResponse.json({ ok: true });
+  }
+
+  if (
+    typeof contact !== "string" ||
+    !contact.trim() ||
+    typeof email !== "string" ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
+  ) {
     return NextResponse.json(
       { error: "Name and email are required." },
       { status: 400 }
@@ -61,33 +95,17 @@ export async function POST(request: Request) {
         : "Business",
   };
 
-  const briefRows = Array.isArray(brief) ? (brief as BriefRow[]) : [];
+  const briefRows = Array.isArray(brief) ? (brief as BriefRow[]).slice(0, 30) : [];
   const briefHtml = briefRows
     .map((row) => {
-      const n = typeof row.n === "string" ? row.n : "";
-      const tag = typeof row.tag === "string" ? row.tag : "";
-      const answer = typeof row.answer === "string" ? row.answer : "";
+      const n = typeof row.n === "string" ? row.n.slice(0, 4) : "";
+      const tag = typeof row.tag === "string" ? row.tag.slice(0, 80) : "";
+      const answer = typeof row.answer === "string" ? row.answer.slice(0, 2000) : "";
       return `<tr><td style="padding:6px 12px 6px 0;color:#6b6358;white-space:nowrap">${escapeHtml(
         n
       )} ${escapeHtml(tag)}</td><td style="padding:6px 0">${escapeHtml(answer)}</td></tr>`;
     })
     .join("");
-
-  // Uploaded logos, theme pictures and brand material, sent as base64 from the form.
-  const files = (Array.isArray(attachments) ? attachments : [])
-    .slice(0, 3)
-    .filter(
-      (a): a is { filename: string; content: string } =>
-        !!a &&
-        typeof a.filename === "string" &&
-        typeof a.content === "string" &&
-        /^[A-Za-z0-9+/]+=*$/.test(a.content) &&
-        /\.(jpe?g|png|gif|webp|heic|svg|pdf)$/i.test(a.filename)
-    )
-    .map((a) => ({
-      filename: a.filename.replace(/[^\w.\- ]+/g, "_").slice(0, 120),
-      content: a.content, // Resend accepts base64 strings as-is
-    }));
 
   const resend = new Resend(apiKey);
 
@@ -96,7 +114,6 @@ export async function POST(request: Request) {
       from: fromEmail,
       to: toEmail,
       replyTo: fields.email,
-      attachments: files.length ? files : undefined,
       subject: `New Re5 booking request: ${fields.offer || "General enquiry"} for ${
         fields.company || fields.contact
       }`,

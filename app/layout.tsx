@@ -20,18 +20,28 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+const TITLE = "Re5 | Make it an experience.";
+const DESCRIPTION =
+  "Mobile frozen drink experiences for events, celebrations and brands across Trinidad & Tobago. Tell us what you have in mind.";
+
+// The share image (WhatsApp, Instagram, iMessage) comes from app/opengraph-image.jpg.
 export const metadata: Metadata = {
-  title: "Re5 | Roll up. Experience it.",
-  description:
-    "We create mobile experiences designed around your brand, event or celebration. Across Trinidad and Tobago.",
+  title: TITLE,
+  description: DESCRIPTION,
   metadataBase: new URL("https://www.re5agency.com"),
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "Re5 | Roll up. Experience it.",
-    description:
-      "Mobile experiences for brands, events and celebrations across Trinidad and Tobago.",
+    title: TITLE,
+    description: DESCRIPTION,
     url: "https://www.re5agency.com",
     siteName: "Re5",
+    locale: "en_TT",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
   },
 };
 

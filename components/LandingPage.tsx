@@ -262,6 +262,42 @@ const MODEL = [
   },
 ];
 
+// Short answers; most of the detail is worked out together in the consultation.
+const FAQS = [
+  {
+    q: "How does booking work?",
+    a: "Tell us what you have in mind through the booking form or on WhatsApp. We’ll get in touch to set up a consultation and talk through your date, guests, flavours and the look you want.",
+  },
+  {
+    q: "How much does it cost?",
+    a: "Every experience is shaped around your event or brand, so there’s no one-size price. Once we understand what you have in mind, we’ll put together a quote for you.",
+  },
+  {
+    q: "Where do you set up?",
+    a: "We bring the experience to you, across Trinidad & Tobago. Share your venue and we’ll talk through the details.",
+  },
+  {
+    q: "What flavours can we choose?",
+    a: "Guava, Passion Fruit, Watermelon, Blue Raspberry, Strawberry Cherry, Cherry, Black Cherry and Pink Lemonade. Not sure yet? We’ll help you choose during the consultation.",
+  },
+  {
+    q: "Can you match my theme or brand?",
+    a: "Yes. From the cups to the signage and finishing touches, we make the experience feel like it belongs to your event or brand.",
+  },
+  {
+    q: "What do you need from the venue?",
+    a: "We’ll confirm the space and setup needs with you during the consultation, so everything is ready on the day.",
+  },
+  {
+    q: "How far in advance should I reach out?",
+    a: "As early as you can. Send us your date and we’ll let you know if we’re available.",
+  },
+  {
+    q: "Do you work with brands and businesses?",
+    a: "Yes. We create mobile brand experiences for launches, campaigns and promotions that put your product in people’s hands.",
+  },
+];
+
 const IMG = {
   toast: "/images/re5/slushie-group-toast.webp",
   kids: "/images/re5/slushie-sweets-kids.webp",
@@ -270,6 +306,21 @@ const IMG = {
   hand: "/images/re5/frozen-slushie-in-hand.webp",
   wedding: "/images/re5/wedding-frozen-cart.webp",
 };
+
+// Original widths. Each photo also has -480 and -800 copies so phones don't download full size.
+const IMG_WIDTH: Record<string, number> = {
+  [IMG.toast]: 1122,
+  [IMG.kids]: 1200,
+  [IMG.cocktail]: 900,
+  [IMG.spritz]: 1374,
+  [IMG.hand]: 1374,
+  [IMG.wedding]: 1122,
+};
+const srcSet = (src: string) => {
+  const base = src.replace(/\.webp$/, "");
+  return `${base}-480.webp 480w, ${base}-800.webp 800w, ${src} ${IMG_WIDTH[src]}w`;
+};
+const SIZES_FEATURE = "(max-width: 900px) 92vw, 50vw";
 
 const STRIP_PHOTOS = [
   { src: IMG.spritz, pos: "60% 50%" },
@@ -382,6 +433,9 @@ export default function LandingPage() {
   const contRef = useRef<HTMLButtonElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  // Spam filter: bots fill the hidden "website" field and submit within seconds of opening.
+  const honeypotRef = useRef<HTMLInputElement | null>(null);
+  const openedAtRef = useRef(0);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -429,6 +483,7 @@ export default function LandingPage() {
   const openWizard = useCallback((path?: unknown, preset?: Answers) => {
     const known = path === "event" || path === "brand";
     setAnswers({ ...(known ? { path } : {}), ...preset });
+    openedAtRef.current = Date.now();
     setOpen(true);
     setMode(known ? "q" : "intro");
     setIdx(0);
@@ -544,6 +599,8 @@ export default function LandingPage() {
           company: isBrand(answers) ? answers.brandName : undefined,
           companyLabel: "Brand / Company",
           brief,
+          website: honeypotRef.current?.value ?? "",
+          elapsed: Date.now() - openedAtRef.current,
         }),
       });
       if (!res.ok) throw new Error("failed");
@@ -643,11 +700,15 @@ export default function LandingPage() {
                   {[0, 1].map((r) =>
                     STRIP_PHOTOS.map((p, i) => (
                       <span key={`${r}-${i}`} className="r5-strip-card">
+                        {/* Only the first two load straight away, so the headline font isn't kept waiting. */}
                         <img
                           src={p.src}
+                          srcSet={srcSet(p.src)}
+                          sizes="(max-width: 600px) 300px, 480px"
                           alt=""
                           style={{ objectPosition: p.pos }}
-                          fetchPriority={r === 0 && i < 3 ? "high" : undefined}
+                          loading={r === 0 && i < 2 ? undefined : "lazy"}
+                          fetchPriority={r === 0 && i < 2 ? "high" : "low"}
                         />
                       </span>
                     ))
@@ -692,7 +753,14 @@ export default function LandingPage() {
                 {PATHS.map((p) => (
                   <a key={p.id} href={`#${p.id}`} className="r5-split__card" data-path={p.id}>
                     <div className="r5-photo r5-split__photo">
-                      <img src={p.images[0].src} alt={p.images[0].alt} loading="lazy" style={{ objectPosition: p.images[0].pos }} />
+                      <img
+                        src={p.images[0].src}
+                        srcSet={srcSet(p.images[0].src)}
+                        sizes="(max-width: 900px) 92vw, 320px"
+                        alt={p.images[0].alt}
+                        loading="lazy"
+                        style={{ objectPosition: p.images[0].pos }}
+                      />
                     </div>
                     <span className="r5-showup__num">{p.n}</span>
                     <span className="r5-split__title">
@@ -708,7 +776,14 @@ export default function LandingPage() {
           <section id="event" className="r5-section r5-section--sand">
             <div className="r5-container r5-feature">
               <div className="r5-photo r5-photo--tall">
-                <img src={IMG.kids} alt="Kids' birthday slushie cart" loading="lazy" style={{ objectPosition: "45% 55%" }} />
+                <img
+                  src={IMG.kids}
+                  srcSet={srcSet(IMG.kids)}
+                  sizes={SIZES_FEATURE}
+                  alt="Kids' birthday slushie cart"
+                  loading="lazy"
+                  style={{ objectPosition: "45% 55%" }}
+                />
               </div>
               <div className="r5-feature__body">
                 <span className="r5-eyebrow">For Your Event</span>
@@ -736,6 +811,8 @@ export default function LandingPage() {
               <div className="r5-photo r5-photo--tall">
                 <img
                   src={IMG.cocktail}
+                  srcSet={srcSet(IMG.cocktail)}
+                  sizes={SIZES_FEATURE}
                   alt="Bartender serving a frozen drink at a slushie bar"
                   loading="lazy"
                   style={{ objectPosition: "50% 35%" }}
@@ -799,6 +876,8 @@ export default function LandingPage() {
                 <img
                   key={CUSTOM_WORDS[way].src}
                   src={CUSTOM_WORDS[way].src}
+                  srcSet={srcSet(CUSTOM_WORDS[way].src)}
+                  sizes={SIZES_FEATURE}
                   alt={`Your ${CUSTOM_WORDS[way].word}`}
                   loading="lazy"
                   style={{ objectPosition: CUSTOM_WORDS[way].pos }}
@@ -813,7 +892,14 @@ export default function LandingPage() {
           <section id="brand" className="r5-section r5-section--cream">
             <div className="r5-container r5-feature r5-feature--flip">
               <div className="r5-photo r5-photo--tall">
-                <img src={IMG.spritz} alt="Branded frozen spritz cart at an outdoor event" loading="lazy" style={{ objectPosition: "65% 50%" }} />
+                <img
+                  src={IMG.spritz}
+                  srcSet={srcSet(IMG.spritz)}
+                  sizes={SIZES_FEATURE}
+                  alt="Branded frozen spritz cart at an outdoor event"
+                  loading="lazy"
+                  style={{ objectPosition: "65% 50%" }}
+                />
               </div>
               <div className="r5-feature__body">
                 <span className="r5-eyebrow">For Your Brand</span>
@@ -891,8 +977,32 @@ export default function LandingPage() {
             </div>
           </section>
 
+          <section id="faq" className="r5-section r5-section--cream">
+            <div className="r5-container r5-faq">
+              <div className="r5-faq__head">
+                <span className="r5-eyebrow">FAQ</span>
+                <h2 className="r5-h2">Questions? We&rsquo;ve got you.</h2>
+                <p className="r5-body-soft">
+                  Most of the details are worked out together in your consultation. Here are a few things people
+                  usually ask first.
+                </p>
+              </div>
+              <div className="r5-faq__list">
+                {FAQS.map((f) => (
+                  <details key={f.q} className="r5-faq__item">
+                    <summary className="r5-faq__q">
+                      {f.q}
+                      <span className="r5-faq__icon" aria-hidden="true" />
+                    </summary>
+                    <p className="r5-faq__a">{f.a}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </section>
+
           <section className="r5-final">
-            <img src={IMG.toast} alt="" loading="lazy" className="r5-final__bg" />
+            <img src={IMG.toast} srcSet={srcSet(IMG.toast)} sizes="100vw" alt="" loading="lazy" className="r5-final__bg" />
             <div className="r5-final__shade" />
             <div className="r5-final__inner">
               <h2 className="r5-final__title">
@@ -932,6 +1042,7 @@ export default function LandingPage() {
                 <a href="#event">For Your Event</a>
                 <a href="#brand">For Your Brand</a>
                 <a href="#model">The RE5 Model</a>
+                <a href="#faq">FAQ</a>
               </div>
               <div className="r5-footer__col">
                 <span className="r5-footer__label">Create</span>
@@ -947,9 +1058,13 @@ export default function LandingPage() {
                 <a href={WHATSAPP_URL} target="_blank" rel="noopener">
                   WhatsApp
                 </a>
+                <span>Serving all of Trinidad &amp; Tobago</span>
               </div>
             </div>
-            <div className="r5-footer__base">Made in Trinidad &amp; Tobago.</div>
+            <div className="r5-footer__base">
+              <span>&copy; {new Date().getFullYear()} Re5. Made in Trinidad &amp; Tobago.</span>
+              <a href="/privacy">Privacy Policy</a>
+            </div>
           </div>
         </footer>
       </div>
@@ -1217,6 +1332,16 @@ export default function LandingPage() {
                   </div>
                   <div className="wizard-subquestion">
                     <div className="wizard-fields">
+                      <input
+                        ref={honeypotRef}
+                        type="text"
+                        name="website"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        aria-hidden="true"
+                        className="wizard-hp"
+                        defaultValue=""
+                      />
                       {CONTACT_FIELDS.map((f) => (
                         <label key={f.key} className="wizard-field">
                           <span>{f.label}</span>
@@ -1230,6 +1355,13 @@ export default function LandingPage() {
                       ))}
                     </div>
                   </div>
+                  <p className="wizard-privacy">
+                    We only use these details to reply to your enquiry. See our{" "}
+                    <a href="/privacy" target="_blank" rel="noopener">
+                      privacy policy
+                    </a>
+                    .
+                  </p>
                 </>
               )}
 
@@ -1335,6 +1467,7 @@ function ModelCycle() {
             className={`r5-cycle__node ${i === active ? "r5-is-active" : ""}`}
             style={{ left: `${50 + 40 * Math.cos(angle)}%`, top: `${50 + 40 * Math.sin(angle)}%` }}
             aria-pressed={i === active}
+            aria-label={m.title}
             onClick={() => pick(i)}
             onMouseEnter={() => pick(i)}
           >

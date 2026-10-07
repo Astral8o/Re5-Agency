@@ -196,6 +196,8 @@
 .r5-h2--split { display: flex; flex-direction: column; gap: 14px; }
 .r5-h2__lead { font-weight: 500; font-size: clamp(24px, 2.4vw, 32px); line-height: 1.2; letter-spacing: -0.01em; }
 .r5-h2__modak { display: block; font-size: clamp(48px, 5.4vw, 76px); text-wrap: balance; }
+/* Phones: small enough that "experienced it?" stays on one line. */
+@media (max-width: 600px) { .r5-h2__modak { font-size: 11vw; } }
 .r5-h3 {
   margin: 0;
   font-size: clamp(32px, 3vw, 40px);
@@ -493,7 +495,7 @@
   font-family: var(--display);
   font-size: clamp(40px, 4.5vw, 56px);
   line-height: 0.9;
-  color: var(--text-2);
+  color: #736A5E; /* faded but still 3.4:1 on ink, enough for large text */
   transition: color .2s;
 }
 .r5-way__item.r5-is-active .r5-way__word { color: var(--cream); }
@@ -749,7 +751,9 @@
   color: var(--text-4);
   margin-bottom: 8px;
 }
-.r5-footer__base { border-top: 1px solid var(--ink-2); padding-top: 24px; font-size: 14px; color: var(--text-4); }
+.r5-footer__base { border-top: 1px solid var(--ink-2); padding-top: 24px; font-size: 14px; color: var(--text-4); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
+.r5-footer__base a { color: var(--text-4); text-decoration: underline; text-underline-offset: 3px; }
+.r5-footer__base a:hover { color: var(--orange); }
 
 /* Full includes list inside the request form */
 .wizard-includes {
@@ -1435,3 +1439,49 @@
   padding: 0 28px;
   font-size: 14px;
 }
+
+/* ---------- FAQ ---------- */
+.r5-faq { display: grid; gap: 48px 96px; }
+@media (min-width: 900px) { .r5-faq { grid-template-columns: 5fr 7fr; align-items: start; } }
+.r5-faq__head { display: flex; flex-direction: column; gap: 20px; }
+@media (min-width: 900px) { .r5-faq__head { position: sticky; top: 120px; } }
+.r5-faq__list { border-top: 1px solid rgba(23, 20, 15, 0.15); }
+.r5-faq__item { border-bottom: 1px solid rgba(23, 20, 15, 0.15); }
+.r5-faq__q {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 0;
+  font-size: clamp(18px, 1.6vw, 21px);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.r5-faq__q::-webkit-details-marker { display: none; }
+.r5-faq__q:hover { color: var(--orange-text); }
+.r5-faq__q:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; border-radius: 4px; }
+.r5-faq__icon { position: relative; width: 32px; height: 32px; flex: none; border-radius: 999px; border: 1.5px solid currentColor; }
+.r5-faq__icon::before,
+.r5-faq__icon::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 1.5px; background: currentColor; transform: translate(-50%, -50%); transition: transform .2s; }
+.r5-faq__icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+.r5-faq__item[open] .r5-faq__icon::after { transform: translate(-50%, -50%) rotate(0deg); }
+.r5-faq__a { padding: 0 56px 28px 0; color: var(--text-2); max-width: 40em; }
+
+/* ---------- Request form: spam trap + privacy note ---------- */
+.wizard-hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.wizard-privacy { margin-top: 20px; font-size: 13px; color: #6b6358; }
+.wizard-privacy a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Privacy policy page ---------- */
+.r5-legal { min-height: 100vh; padding: 32px var(--gutter) 96px; }
+.r5-legal__top { max-width: 760px; margin: 0 auto 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.r5-legal__back { font-size: 15px; font-weight: 600; }
+.r5-legal__body { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+.r5-legal__body h1 { margin-bottom: 8px; }
+.r5-legal__body h2 { margin: 28px 0 0; font-size: 24px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
+.r5-legal__body p, .r5-legal__body li { color: var(--text-2); }
+.r5-legal__body ul { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 10px; }
+.r5-legal__body a { text-decoration: underline; text-underline-offset: 3px; }
