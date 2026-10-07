@@ -57,18 +57,15 @@ const BRAND_GOALS = [
 // Trinidad and Tobago policy: shown wherever alcohol is offered.
 const ALCOHOL_NOTE = "Alcoholic drinks are only served to guests 23 and over. No exceptions.";
 
+// The current offer is the Frozen Experience only.
+const FROZEN = "The Frozen Experience";
 const EVENT_EXPERIENCES = [
   {
-    label: "Slushie",
-    body: "Frozen flavours with toppings, with alcoholic options available for adult events.",
+    label: FROZEN,
+    body: "Cold, fun and made for your moment. Choose your flavours, styling and finishing touches.",
     note: ALCOHOL_NOTE,
   },
-  { label: "Popcorn", body: "Freshly popped and served with a selection of seasonings." },
-  { label: "Cotton Candy", body: "Made fresh for your guests throughout the experience." },
-  { label: "Candy & Sweets", body: "A selection of sweets presented and served from our Signature Cart." },
 ];
-
-const BRANDED_EXPERIENCES = ["Slushies", "Popcorn", "Cotton Candy", "Sweets"];
 
 const FLORAL_OPTS = ["Florals", "Balloons", "Not sure yet"];
 
@@ -119,9 +116,7 @@ function nameQuestion(a: Answers): { label: string; ph: string; hint: string } {
 }
 
 const showsSlushieDetails = (a: Answers) =>
-  isBrand(a)
-    ? list(a.goals).includes("Branded RE5 Experiences") && list(a.branded).includes("Slushies")
-    : list(a.experiences).includes("Slushie");
+  isBrand(a) ? list(a.goals).includes("Branded RE5 Experiences") : true;
 
 const WIZARD_PAGE_IDS = ["plan", "when", "experience", "goal", "details", "yours", "look", "extras", "connect"] as const;
 type WizardPageId = (typeof WIZARD_PAGE_IDS)[number];
@@ -145,8 +140,6 @@ function validateWizardPage(id: WizardPageId, a: Answers): string {
   if (id === "experience") {
     if (isBrand(a)) {
       if (!String(a.products || "").trim()) return "Tell us what you're putting in people's hands.";
-      if (list(a.goals).includes("Branded RE5 Experiences") && !list(a.branded).length)
-        return "Pick which RE5 experience to brand.";
     } else if (!list(a.experiences).length) return "Pick at least one experience.";
   }
   if (id === "goal" && !list(a.success).length) return "Pick at least one thing that would make this a success.";
@@ -250,7 +243,7 @@ function buildWizardBrief(a: Answers) {
 
   if (brand) {
     push("Product / service", String(a.products || ""));
-    if (list(a.goals).includes("Branded RE5 Experiences")) push("Branded experience", list(a.branded).join(", "));
+    if (list(a.goals).includes("Branded RE5 Experiences")) push("Branded experience", FROZEN);
     push("Goal: success looks like", list(a.success).join(", "));
     push("Goal: people should", list(a.actions).join(", "));
     push("Goal: collect for follow-up", String(a.followup || ""));
@@ -262,7 +255,7 @@ function buildWizardBrief(a: Answers) {
   if (showsSlushieDetails(a)) {
     const alcoholNote =
       a.slushieFor === "Adults" || a.slushieFor === "Both" ? ` · Alcohol: ${a.alcohol || ""}` : "";
-    push("Slushie details", `${a.slushieFor || ""}${alcoholNote}`);
+    push("Drink details", `${a.slushieFor || ""}${alcoholNote}`);
   }
 
   if (brand) {
@@ -441,7 +434,7 @@ const CUSTOM_WORDS = [
 ];
 
 // "Explore the Frozen Experience" opens the request form with the frozen option already picked.
-const FROZEN_PRESET = { experiences: ["Slushie"], branded: ["Slushies"] };
+const FROZEN_PRESET = { experiences: [FROZEN] };
 
 const WHATSAPP_URL = "https://wa.me/18687177720";
 
@@ -580,7 +573,7 @@ export default function LandingPage() {
 
   // Accepts a path when opened from a panel; the plain CTAs pass a click event, which is ignored.
   const openWizard = useCallback((path?: unknown, preset?: Answers) => {
-    setAnswers({ ...(path === "event" || path === "brand" ? { path } : {}), ...preset });
+    setAnswers({ experiences: [FROZEN], ...(path === "event" || path === "brand" ? { path } : {}), ...preset });
     setPathPicked(path === "event" || path === "brand");
     setUploads({});
     setUploadErr("");
@@ -1274,8 +1267,8 @@ export default function LandingPage() {
                   <span className="wizard-tag">
                     <StarIcon className="wizard-tag-star" /> The experience
                   </span>
-                  <h2 className="wizard-question">Choose your experience.</h2>
-                  <p className="wizard-hint">Pick one, or more if you&rsquo;d like to combine them.</p>
+                  <h2 className="wizard-question">Your experience.</h2>
+                  <p className="wizard-hint">Our current specialty is frozen drink experiences.</p>
                   <div className="wizard-choice-cards">
                     {EVENT_EXPERIENCES.map((c) => {
                       const on = list(answers.experiences).includes(c.label);
@@ -1311,14 +1304,6 @@ export default function LandingPage() {
                     value={String(answers.products || "")}
                     onChange={(e) => setA("products", e.target.value)}
                   />
-                  {list(answers.goals).includes("Branded RE5 Experiences") && (
-                    <div className="wizard-subquestion">
-                      <p className="wizard-hint">Which RE5 experience should we brand for your campaign?</p>
-                      <div className="wizard-options">
-                        {BRANDED_EXPERIENCES.map((o, i) => renderOption("branded", o, i, true))}
-                      </div>
-                    </div>
-                  )}
                   <WizardIncludes path={isBrand(answers) ? "brand" : "event"} />
                 </>
               )}
@@ -1359,15 +1344,15 @@ export default function LandingPage() {
               {isQ && page === "details" && (
                 <>
                   <span className="wizard-tag">
-                    <StarIcon className="wizard-tag-star" /> The slushies
+                    <StarIcon className="wizard-tag-star" /> The drinks
                   </span>
-                  <h2 className="wizard-question">Who are the slushies for?</h2>
+                  <h2 className="wizard-question">Who are the drinks for?</h2>
                   <div className="wizard-options">
                     {["Children", "Adults", "Both"].map((o, i) => renderOption("slushieFor", o, i))}
                   </div>
                   {(answers.slushieFor === "Adults" || answers.slushieFor === "Both") && (
                     <div className="wizard-subquestion">
-                      <p className="wizard-hint">Would you like an alcoholic slushie option?</p>
+                      <p className="wizard-hint">Would you like an alcoholic option?</p>
                       <p className="wizard-age-note">{ALCOHOL_NOTE}</p>
                       <div className="wizard-options">
                         {["Yes", "No", "Not sure yet"].map((o, i) => renderOption("alcohol", o, i))}
