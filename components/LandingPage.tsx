@@ -310,7 +310,7 @@ const FAQS = [
 
 const IMG = {
   toast: "/images/re5/slushie-group-toast.webp",
-  kids: "/images/re5/slushie-sweets-kids.webp",
+  birthday: "/images/re5/birthday-frozen-cart.webp",
   cups: "/images/re5/candy-slushie-cups.webp",
   brunch: "/images/re5/brunch-frozen-cart.webp",
   spritz: "/images/re5/frozen-spritz-brand-cart.webp",
@@ -321,7 +321,7 @@ const IMG = {
 // Original widths. Each photo also has -480 and -800 copies so phones don't download full size.
 const IMG_WIDTH: Record<string, number> = {
   [IMG.toast]: 1122,
-  [IMG.kids]: 1200,
+  [IMG.birthday]: 1122,
   [IMG.cups]: 1086,
   [IMG.brunch]: 1374,
   [IMG.spritz]: 1374,
@@ -338,7 +338,7 @@ const STRIP_PHOTOS = [
   { src: IMG.brunch, pos: "62% 50%" },
   { src: IMG.cups, pos: "50% 40%" },
   { src: IMG.wedding, pos: "50% 40%" },
-  { src: IMG.kids, pos: "50% 50%" },
+  { src: IMG.birthday, pos: "50% 50%" },
   { src: IMG.spritz, pos: "60% 50%" },
   { src: IMG.toast, pos: "50% 40%" },
   { src: IMG.hand, pos: "50% 50%" },
@@ -395,7 +395,7 @@ const PATHS: PathDef[] = [
     ],
     images: [
       { src: IMG.brunch, alt: "Frozen drink cart at a brunch celebration", pos: "62% 50%" },
-      { src: IMG.kids, alt: "Kids' birthday slushie cart", pos: "40% 50%" },
+      { src: IMG.birthday, alt: "Frozen drink cart styled for a birthday", pos: "40% 50%" },
     ],
   },
   {
@@ -790,10 +790,10 @@ export default function LandingPage() {
             <div className="r5-container r5-feature">
               <div className="r5-photo r5-photo--tall">
                 <img
-                  src={IMG.kids}
-                  srcSet={srcSet(IMG.kids)}
+                  src={IMG.birthday}
+                  srcSet={srcSet(IMG.birthday)}
                   sizes={SIZES_FEATURE}
-                  alt="Kids' birthday slushie cart"
+                  alt="Frozen drink cart styled for a birthday"
                   loading="lazy"
                   style={{ objectPosition: "45% 55%" }}
                 />
