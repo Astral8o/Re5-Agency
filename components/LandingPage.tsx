@@ -53,6 +53,10 @@ const FLAVOURS = [
   "Black Cherry",
   "Pink Lemonade",
 ];
+// What they'd like served: plain slushies, mocktails and/or slushie cocktails (with alcohol).
+const DRINK_OPTS = ["Slushies", "Mocktails", "Slushie cocktails (with alcohol)"];
+const COCKTAILS = DRINK_OPTS[2];
+const ALCOHOL_NOTE = "Alcoholic drinks are only served to guests 23 and over. No exceptions.";
 const TOPPING_OPTS = ["Yes, I’d like toppings", "Keep it simple", NOT_SURE];
 const FROZEN_INTEREST_OPTS = ["Yes", "Maybe, let’s explore it", "I have another idea"];
 const CONTACT_PREF_OPTS = ["WhatsApp", "Phone", "Email"];
@@ -80,6 +84,7 @@ function validateWizardPage(id: WizardPageId, a: Answers): string {
     if (a.planning === "Other" && !filled(a.planningOther)) return "Tell us what you're planning.";
   }
   if (id === "yours") {
+    if (!list(a.drinks).length) return "Pick what you'd like to serve, or choose “I’m not sure yet”.";
     if (!list(a.flavours).length) return "Pick a flavour, or choose “I’m not sure yet”.";
     if (!a.toppings) return "Let us know about toppings.";
   }
@@ -140,6 +145,7 @@ function buildWizardBrief(a: Answers) {
     push("Date", formatWizardDate(a.eventDate));
     push("Location", String(a.venue || ""));
     push("Guests", a.guestCount ? String(a.guestCount) : "");
+    push("Drinks", list(a.drinks).join(", "));
     push("Flavours", list(a.flavours).join(", "));
     push("Toppings", String(a.toppings || ""));
     push("Look / theme", String(a.theme || ""));
@@ -279,6 +285,10 @@ const FAQS = [
   {
     q: "What flavours can we choose?",
     a: "Guava, Passion Fruit, Watermelon, Blue Raspberry, Strawberry Cherry, Cherry, Black Cherry and Pink Lemonade. Not sure yet? We’ll help you choose during the consultation.",
+  },
+  {
+    q: "Do you offer alcoholic drinks?",
+    a: "Yes. Alongside our slushies and mocktails, we offer slushie cocktails with alcohol. Alcoholic drinks are only served to guests 23 and over. No exceptions.",
   },
   {
     q: "Can you match my theme or brand?",
@@ -828,6 +838,7 @@ export default function LandingPage() {
                 </h2>
                 <div className="r5-stack-16">
                   <p className="r5-feature__lead">Cold, fun and made for your moment.</p>
+                  <p className="r5-body-soft">Choose from slushies, mocktails and slushie cocktails.</p>
                   <p className="r5-body-soft">
                     Choose your flavours, make it yours and give your guests something they can taste, enjoy and be
                     part of.
@@ -1202,6 +1213,17 @@ export default function LandingPage() {
                   </span>
                   <h2 className="wizard-question">Make it yours.</h2>
                   <p className="wizard-hint">Personalise your Frozen Experience.</p>
+                  <div className="wizard-subquestion">
+                    <p className="wizard-hint">What would you like to serve? Pick all that apply.</p>
+                    <div className="wizard-options">
+                      {[...DRINK_OPTS, NOT_SURE].map((o, i) => renderOption("drinks", o, i, true))}
+                    </div>
+                    {list(answers.drinks).includes(COCKTAILS) && (
+                      <p className="wizard-age-note" style={{ marginTop: 12 }}>
+                        {ALCOHOL_NOTE}
+                      </p>
+                    )}
+                  </div>
                   <div className="wizard-subquestion">
                     <p className="wizard-hint">What flavours do you have in mind?</p>
                     <div className="wizard-options">
