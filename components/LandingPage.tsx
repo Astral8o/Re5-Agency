@@ -301,7 +301,8 @@ const FAQS = [
 const IMG = {
   toast: "/images/re5/slushie-group-toast.webp",
   kids: "/images/re5/slushie-sweets-kids.webp",
-  cocktail: "/images/re5/signature-slushie-cocktail.webp",
+  cups: "/images/re5/candy-slushie-cups.webp",
+  brunch: "/images/re5/brunch-frozen-cart.webp",
   spritz: "/images/re5/frozen-spritz-brand-cart.webp",
   hand: "/images/re5/frozen-slushie-in-hand.webp",
   wedding: "/images/re5/wedding-frozen-cart.webp",
@@ -311,7 +312,8 @@ const IMG = {
 const IMG_WIDTH: Record<string, number> = {
   [IMG.toast]: 1122,
   [IMG.kids]: 1200,
-  [IMG.cocktail]: 900,
+  [IMG.cups]: 1086,
+  [IMG.brunch]: 1374,
   [IMG.spritz]: 1374,
   [IMG.hand]: 1374,
   [IMG.wedding]: 1122,
@@ -323,10 +325,11 @@ const srcSet = (src: string) => {
 const SIZES_FEATURE = "(max-width: 900px) 92vw, 50vw";
 
 const STRIP_PHOTOS = [
-  { src: IMG.spritz, pos: "60% 50%" },
-  { src: IMG.kids, pos: "50% 50%" },
+  { src: IMG.brunch, pos: "62% 50%" },
+  { src: IMG.cups, pos: "50% 40%" },
   { src: IMG.wedding, pos: "50% 40%" },
-  { src: IMG.cocktail, pos: "50% 28%" },
+  { src: IMG.kids, pos: "50% 50%" },
+  { src: IMG.spritz, pos: "60% 50%" },
   { src: IMG.toast, pos: "50% 40%" },
   { src: IMG.hand, pos: "50% 50%" },
 ];
@@ -334,10 +337,10 @@ const STRIP_PHOTOS = [
 const MARQUEE_WORDS = ["Experience It", "Make A Moment", "Make It Yours", "Show Up"];
 
 const CUSTOM_WORDS = [
-  { word: "colours", src: IMG.kids, pos: "45% 60%" },
+  { word: "colours", src: IMG.cups, pos: "50% 45%" },
   { word: "style", src: IMG.hand, pos: "50% 50%" },
   { word: "signage", src: IMG.wedding, pos: "50% 70%" },
-  { word: "menu", src: IMG.cocktail, pos: "50% 55%" },
+  { word: "menu", src: IMG.brunch, pos: "88% 45%" },
   { word: "moment", src: IMG.toast, pos: "50% 40%" },
 ];
 
@@ -381,7 +384,7 @@ const PATHS: PathDef[] = [
       { item: "Setup and breakdown" },
     ],
     images: [
-      { src: IMG.cocktail, alt: "Bartender serving a slushie at a wedding", pos: "50% 30%" },
+      { src: IMG.brunch, alt: "Frozen drink cart at a brunch celebration", pos: "62% 50%" },
       { src: IMG.kids, alt: "Kids' birthday slushie cart", pos: "40% 50%" },
     ],
   },
@@ -810,12 +813,12 @@ export default function LandingPage() {
             <div className="r5-container r5-feature r5-feature--flip">
               <div className="r5-photo r5-photo--tall">
                 <img
-                  src={IMG.cocktail}
-                  srcSet={srcSet(IMG.cocktail)}
+                  src={IMG.cups}
+                  srcSet={srcSet(IMG.cups)}
                   sizes={SIZES_FEATURE}
-                  alt="Bartender serving a frozen drink at a slushie bar"
+                  alt="Four colourful slushies topped with gummy sweets"
                   loading="lazy"
-                  style={{ objectPosition: "50% 35%" }}
+                  style={{ objectPosition: "50% 40%" }}
                 />
               </div>
               <div className="r5-feature__body">
