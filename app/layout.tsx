@@ -14,7 +14,7 @@ const instrumentSans = Instrument_Sans({
 
 const TITLE = "RE5 Agency | Your Partner in Business Growth & Digital Transformation";
 const DESCRIPTION =
-  "RE5 Agency helps businesses across the Caribbean strengthen their digital presence, improve operations and deliver better customer experiences through technology, AI and practical solutions.";
+  "RE5 helps Caribbean businesses identify opportunities, make improvements, and turn plans into action. Business consulting, marketing, admin support, websites and automation.";
 
 // Applies to the Next.js pages (privacy, 404). The homepage is public/index.html with its own tags.
 export const metadata: Metadata = {
