@@ -21,7 +21,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 const TITLE = "RE5 Agency | Your Partner in Business Growth & Digital Transformation";
 const DESCRIPTION =
-  "RE5 helps Caribbean businesses identify opportunities, make improvements, and turn plans into action. Business consulting, marketing, admin support, websites and automation.";
+  "RE5 helps Caribbean businesses improve marketing, sales, customer management, and operations through business consulting, technology, and AI.";
 
 // Applies to the Next.js pages (privacy, 404). The homepage is public/index.html with its own tags.
 export const metadata: Metadata = {
