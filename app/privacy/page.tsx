@@ -48,6 +48,12 @@ export default function PrivacyPage() {
             services you&rsquo;re interested in and anything you tell us about your plans.
           </li>
           <li>
+            <strong>Website Blueprint Planner:</strong> when you download your free Website Blueprint, we save your
+            first name, email address, whether you chose to receive updates from us, and the date and time of that
+            choice. Your workbook answers and photos are processed in your own browser to create your PDF. They are
+            not sent to us or stored by us, and they&rsquo;re cleared when you leave the page.
+          </li>
+          <li>
             <strong>Website usage:</strong> we use Google Analytics to understand how people use the site, such as
             which pages are visited, the type of device and browser, and your approximate location (city or
             country). Google Analytics uses cookies to do this.
@@ -57,7 +63,12 @@ export default function PrivacyPage() {
         <h2>How we use it</h2>
         <ul>
           <li>To reply to your enquiry and talk through how we can help.</li>
+          <li>To record your Website Blueprint download and your marketing choice.</li>
           <li>To prepare proposals or quotes you ask us for.</li>
+          <li>
+            To send free website tips, business resources and updates, but only if you opted in. You can unsubscribe
+            at any time using the link in any of those emails.
+          </li>
           <li>To improve the website and understand what people are looking for.</li>
         </ul>
         <p>We don&rsquo;t sell your information, and we don&rsquo;t use it for advertising.</p>
@@ -65,7 +76,7 @@ export default function PrivacyPage() {
         <h2>Who we share it with</h2>
         <p>
           We only share information with the services that help us run the website: Vercel (website hosting),
-          Resend (delivers your contact form to our inbox) and Google Analytics (website statistics). They
+          Resend (delivers your contact form to our inbox and stores Website Blueprint sign-ups) and Google Analytics (website statistics). They
           process information on our behalf and only for these purposes. We may also share information if the
           law requires it.
         </p>

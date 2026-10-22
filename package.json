@@ -9,15 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "jspdf": "^2.5.2",
+    "jszip": "^3.10.1",
     "next": "15.5.25",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "resend": "6.28.0"
   },
   "devDependencies": {
-    "typescript": "^5.7.3",
     "@types/node": "^22.10.5",
     "@types/react": "^19.0.7",
-    "@types/react-dom": "^19.0.3"
+    "@types/react-dom": "^19.0.3",
+    "typescript": "^5.7.3"
   }
 }
