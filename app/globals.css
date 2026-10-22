@@ -1,11 +1,9 @@
 :root {
-  --accent: #ff5b1f;
-  --accent-deep: #a3350a;
-  --ink: #17140f;
-  --paper: #f3efe7;
-  --bone: #e7e0d3;
-  --stone: #4a443b;
-  --stone-soft: #6b6358;
+  --accent: #007750;
+  --ink: #0d1410;
+  --paper: #f3f1ec;
+  --stone: #3a4a41;
+  --line: #c9c5bb;
 }
 
 * {
@@ -49,7 +47,7 @@ button {
 
 ::selection {
   background: var(--accent);
-  color: var(--ink);
+  color: var(--paper);
 }
 
 :focus-visible {

@@ -10,7 +10,6 @@ function escapeHtml(value: string) {
     .replace(/'/g, "&#39;");
 }
 
-type BriefRow = { n?: unknown; tag?: unknown; answer?: unknown };
 
 // Spam filter, layer 3: at most 5 requests per visitor every 10 minutes. Kept in memory,
 // so it's per server instance; the honeypot and timing checks below catch most bots anyway.
@@ -43,7 +42,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { offer, contact, email, phone, company, companyLabel, brief, website, elapsed } = (body ?? {}) as Record<
+  const { name, company, email, phone, interests, message, website, elapsed } = (body ?? {}) as Record<
     string,
     unknown
   >;
@@ -55,24 +54,18 @@ export async function POST(request: Request) {
   }
 
   if (
-    typeof contact !== "string" ||
-    !contact.trim() ||
+    typeof name !== "string" ||
+    !name.trim() ||
     typeof email !== "string" ||
     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
   ) {
-    return NextResponse.json(
-      { error: "Name and email are required." },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Name and a valid email are required." }, { status: 400 });
   }
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.error("RESEND_API_KEY is not configured.");
-    return NextResponse.json(
-      { error: "Booking form is not configured yet." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Contact form is not configured yet." }, { status: 500 });
   }
 
   // Server-side only: never sent to the browser. Override with BOOKING_TO_EMAIL in Vercel.
@@ -80,32 +73,25 @@ export async function POST(request: Request) {
   // an inbox that doesn't exist.)
   const toEmail = process.env.BOOKING_TO_EMAIL ?? "astral.ochoa@hotmail.com";
   // re5agency.com is verified in Resend, so any address on it can send without a mailbox.
-  const fromEmail =
-    process.env.RESEND_FROM_EMAIL ?? "Re5 <bookings@re5agency.com>";
+  const fromEmail = process.env.RESEND_FROM_EMAIL ?? "RE5 Agency <enquiries@re5agency.com>";
 
+  const text = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
   const fields = {
-    offer: typeof offer === "string" ? offer.trim().slice(0, 200) : "",
-    contact: String(contact).trim().slice(0, 200),
-    email: String(email).trim().slice(0, 200),
-    phone: typeof phone === "string" ? phone.trim().slice(0, 60) : "",
-    company: typeof company === "string" ? company.trim().slice(0, 200) : "",
-    companyLabel:
-      typeof companyLabel === "string" && companyLabel.trim()
-        ? companyLabel.trim().slice(0, 40)
-        : "Business",
+    name: text(name, 200),
+    company: text(company, 200),
+    email: text(email, 200),
+    phone: text(phone, 60),
+    interests: (Array.isArray(interests) ? interests : [])
+      .filter((i): i is string => typeof i === "string")
+      .slice(0, 10)
+      .map((i) => i.slice(0, 100)),
+    message: text(message, 5000),
   };
 
-  const briefRows = Array.isArray(brief) ? (brief as BriefRow[]).slice(0, 30) : [];
-  const briefHtml = briefRows
-    .map((row) => {
-      const n = typeof row.n === "string" ? row.n.slice(0, 4) : "";
-      const tag = typeof row.tag === "string" ? row.tag.slice(0, 80) : "";
-      const answer = typeof row.answer === "string" ? row.answer.slice(0, 2000) : "";
-      return `<tr><td style="padding:6px 12px 6px 0;color:#6b6358;white-space:nowrap">${escapeHtml(
-        n
-      )} ${escapeHtml(tag)}</td><td style="padding:6px 0">${escapeHtml(answer)}</td></tr>`;
-    })
-    .join("");
+  const row = (label: string, value: string) =>
+    `<tr><td style="padding:6px 16px 6px 0;color:#3A4A41;white-space:nowrap;vertical-align:top">${label}</td><td style="padding:6px 0">${
+      value ? escapeHtml(value).replace(/\n/g, "<br>") : "Not provided"
+    }</td></tr>`;
 
   const resend = new Resend(apiKey);
 
@@ -114,15 +100,16 @@ export async function POST(request: Request) {
       from: fromEmail,
       to: toEmail,
       replyTo: fields.email,
-      subject: `New Re5 booking request: ${fields.offer || "General enquiry"} for ${
-        fields.company || fields.contact
-      }`,
+      subject: `New RE5 Agency enquiry from ${fields.company || fields.name}`,
       html: `
-        <p><strong>Name:</strong> ${escapeHtml(fields.contact)}</p>
-        <p><strong>${escapeHtml(fields.companyLabel)}:</strong> ${escapeHtml(fields.company || "Not provided")}</p>
-        <p><strong>Email:</strong> ${escapeHtml(fields.email)}</p>
-        <p><strong>Phone / WhatsApp:</strong> ${escapeHtml(fields.phone || "Not provided")}</p>
-        <table cellpadding="0" cellspacing="0">${briefHtml}</table>
+        <table cellpadding="0" cellspacing="0">
+          ${row("Name", fields.name)}
+          ${row("Company", fields.company)}
+          ${row("Email", fields.email)}
+          ${row("Phone / WhatsApp", fields.phone)}
+          ${row("Interested in", fields.interests.join(", "))}
+          ${row("Their plans", fields.message)}
+        </table>
       `,
     });
 
