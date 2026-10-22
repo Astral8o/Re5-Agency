@@ -62,3 +62,10 @@
 .bl-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 24px clamp(20px, 4vw, 48px); background: #0d1410; color: #a9b5ae; font-size: 13px; border-top: 1px solid #22302a; }
 .bl-foot a { text-decoration: underline; text-underline-offset: 3px; }
 .bl-foot a:hover { color: #f3f1ec; }
+
+/* Article with an embedded tool */
+.bl-jump { display: inline-flex; margin-top: 4px; padding: 12px 20px; border-radius: 999px; background: #0d1410; color: #f3f1ec !important; font-weight: 600; font-size: 15px; }
+.bl-jump:hover { background: #007750; }
+.bl-tool { scroll-margin-top: 80px; background: #ece8e0; padding: clamp(40px, 6vw, 80px) clamp(12px, 4vw, 48px); }
+.bl-tool-alt { max-width: 880px; margin: 16px auto 0; font-size: 14px; color: #3a4a41; text-align: center; }
+.bl-tool-alt a { color: #007750; text-decoration: underline; text-underline-offset: 3px; }

@@ -195,3 +195,4 @@
 .bp-builders a:hover { border-color: var(--bp-primary); color: var(--bp-primary); }
 .bp-re5 { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; border-radius: 16px; background: var(--bp-paper); }
 .bp-re5 p { margin: 0; font-weight: 600; }
+.bp:not(.bp--embed) { scroll-margin-top: 84px; } /* clear the sticky site header when moving between steps */
