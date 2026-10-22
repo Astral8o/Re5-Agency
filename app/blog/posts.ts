@@ -12,18 +12,6 @@ export type Post = {
 
 export const POSTS: Post[] = [
   {
-    slug: "build-your-own-portfolio-website-with-ai-for-free",
-    number: "002",
-    title: "How to Build Your Own Portfolio Website with AI, for Free",
-    description:
-      "A step-by-step guide for freelancers, creatives and consultants: prepare your content, photos and brand voice, then use AI to build a one-page portfolio website. Includes a free Website Blueprint Planner.",
-    category: "Websites & Online Sales",
-    readingTime: "7 minutes",
-    published: "2026-10-23",
-    cover:
-      "radial-gradient(60% 70% at 75% 25%, #B99ABE 0%, rgba(185,154,190,0) 72%), radial-gradient(55% 60% at 15% 85%, #007750 0%, rgba(0,119,80,0) 70%), #0D1410",
-  },
-  {
     slug: "digital-transformation-small-businesses-trinidad-tobago",
     number: "001",
     title: "Digital Transformation for Small Businesses in Trinidad and Tobago: Where Should You Start?",
