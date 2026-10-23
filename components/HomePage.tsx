@@ -162,18 +162,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                 Let&rsquo;s Talk Business <span aria-hidden="true">→</span>
               </a>
             </div>
-            <nav className="h-index" aria-label="The RE5 Five">
-              <span className="h-mono">The RE5 Five</span>
-              <ol>
-                {SERVICES.map(([t], i) => (
-                  <li key={t}>
-                    <a href="#services">
-                      <span className="h-index-n">{num(i)}.</span> {t}
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </nav>
           </div>
         </section>
 

@@ -57,8 +57,8 @@
 
 /* ---------- hero ---------- */
 .h-hero { padding: clamp(40px, 7vw, 112px) var(--gut); border-bottom: var(--line); }
-.h-hero-panel { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) 280px; }
-.h-hero-main { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; padding: clamp(24px, 4vw, 56px); border-right: var(--line); }
+.h-hero-panel { max-width: 1240px; margin: 0 auto; }
+.h-hero-main { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; padding: clamp(24px, 4vw, 56px); }
 .h-hero-main > .h-mono { width: 100%; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
 .h-hero-title { font-size: clamp(40px, 6vw, 84px); line-height: 1.02; letter-spacing: -0.04em; font-weight: 500; text-wrap: balance; }
 .h-hero-sub { margin: 0; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.6; color: var(--muted); max-width: 36em; }
