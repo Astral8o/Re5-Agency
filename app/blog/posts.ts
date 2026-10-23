@@ -20,7 +20,7 @@ export const POSTS: Post[] = [
     category: "Digital Transformation & Business Growth",
     readingTime: "5 minutes",
     published: "2026-10-22",
-    cover: "#232428",
+    cover: "#26062E",
   },
 ];
 
