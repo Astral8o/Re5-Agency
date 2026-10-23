@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: TITLE, description: DESC, images: ["/digital/demo-og.jpg"] },
 };
 
-export const viewport: Viewport = { themeColor: "#0e3b43" };
+export const viewport: Viewport = { themeColor: "#111111" };
 
 export default function Page() {
   return <Menu />;

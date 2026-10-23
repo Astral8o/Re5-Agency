@@ -108,6 +108,12 @@ export default function Menu() {
     });
   const change = (idx: number, d: number) =>
     setLines((ls) => ls.map((l, j) => (j === idx ? { ...l, qty: l.qty + d } : l)).filter((l) => l.qty > 0));
+  const removeOne = (id: string) =>
+    setLines((ls) => {
+      const idx = ls.map((l) => l.item.id).lastIndexOf(id);
+      if (idx < 0) return ls;
+      return ls.map((l, j) => (j === idx ? { ...l, qty: l.qty - 1 } : l)).filter((l) => l.qty > 0);
+    });
   const qtyOf = (id: string) => lines.filter((l) => l.item.id === id).reduce((n, l) => n + l.qty, 0);
 
   const openDetail = (item: Item) => {
@@ -235,11 +241,22 @@ export default function Menu() {
                       {it.emoji}
                     </span>
                   </button>
-                  {!it.soldOut && (
-                    <button type="button" className={`m-add ${n ? "has-qty" : ""}`} onClick={() => add(it)} aria-label={`Add ${it.name}`}>
-                      {n ? n : "+"}
-                    </button>
-                  )}
+                  {!it.soldOut &&
+                    (n ? (
+                      <div className="m-step" role="group" aria-label={`${it.name} quantity`}>
+                        <button type="button" onClick={() => removeOne(it.id)} aria-label={`One less ${it.name}`}>
+                          −
+                        </button>
+                        <span aria-live="polite">{n}</span>
+                        <button type="button" onClick={() => add(it)} aria-label={`One more ${it.name}`}>
+                          +
+                        </button>
+                      </div>
+                    ) : (
+                      <button type="button" className="m-add" onClick={() => add(it)} aria-label={`Add ${it.name} to order`}>
+                        <span aria-hidden="true">+</span> Add
+                      </button>
+                    ))}
                 </article>
               );
             })}
