@@ -1,5 +1,6 @@
 :root {
-  --accent: #8a2fa3;
+  --accent: #ff6a3d;
+  --font-display: var(--font-sans);
   --ink: #0d1410;
   --paper: #f3f1ec;
   --stone: #3a4a41;

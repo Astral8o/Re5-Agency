@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Instrument_Sans, JetBrains_Mono } from "next/font/google";
+import { Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -9,14 +9,6 @@ const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
   weight: "variable",
   variable: "--font-sans",
-  display: "swap",
-});
-
-// Chunky, playful display face for headlines.
-const bricolage = Bricolage_Grotesque({
-  subsets: ["latin"],
-  weight: "variable",
-  variable: "--font-display",
   display: "swap",
 });
 
@@ -56,7 +48,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${instrumentSans.variable} ${jetbrainsMono.variable} ${bricolage.variable}`}>
+    <html lang="en" className={`${instrumentSans.variable} ${jetbrainsMono.variable}`}>
       <body>
         {children}
         <Script

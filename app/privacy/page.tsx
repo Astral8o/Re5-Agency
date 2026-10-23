@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 function Mark() {
   return (
-    <svg viewBox="0 0 100 100" fill="#8A2FA3" aria-hidden="true">
+    <svg viewBox="0 0 100 100" fill="#FF6A3D" aria-hidden="true">
       <circle cx="50" cy="20" r="15" />
       <circle cx="78.5" cy="40.7" r="15" />
       <circle cx="67.6" cy="74.3" r="15" />
