@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: post.description,
     url,
     publishedTime: post.published,
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+    images: [{ url: "/og-image.jpg?v=2", width: 1200, height: 630 }],
   },
   twitter: { card: "summary_large_image", title: post.title, description: post.description },
 };

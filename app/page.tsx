@@ -7,7 +7,7 @@ const BUSINESS_JSON_LD = {
   "@type": "ProfessionalService",
   name: "RE5 Agency",
   url: "https://www.re5agency.com",
-  image: "https://www.re5agency.com/og-image.jpg",
+  image: "https://www.re5agency.com/og-image.jpg?v=2",
   description:
     "RE5 helps Caribbean businesses improve marketing, sales, customer management, and operations through business consulting, technology, and AI.",
   areaServed: "Caribbean",
