@@ -172,13 +172,14 @@ export default function HomePage({ posts }: { posts: Post[] }) {
               The Expertise to Make It Happen.
             </h2>
           </div>
-          <div className="h-five h-five--offers">
+          <div className="h-offers">
             {OFFERS.map((o, i) => (
-              <article key={o.label} className="h-col">
-                <div className="h-col-text">
-                  <span className="h-mono h-col-label">
-                    {num(i)}. {o.label}
-                  </span>
+              <article key={o.label} className="h-offer">
+                <div className="h-offer-top">
+                  <span className="h-offer-n">{num(i)}</span>
+                  <span className="h-mono">{o.label}</span>
+                </div>
+                <div className="h-offer-body">
                   <h3>{o.title}</h3>
                   <p>{o.body}</p>
                   <div className="h-col-actions">
@@ -200,9 +201,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                       </a>
                     )}
                   </div>
-                </div>
-                <div className="h-col-bar" style={{ height: `${70 + i * 40}px` }}>
-                  <span>{num(i)}</span>
                 </div>
               </article>
             ))}
