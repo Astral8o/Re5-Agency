@@ -48,7 +48,7 @@ export default function Article() {
           </div>
         </div>
         <div className="bl-cover" style={{ background: post.cover }}>
-          <Mark color="#F3F1EC" />
+          <Mark color="#D7F75B" />
         </div>
       </section>
 

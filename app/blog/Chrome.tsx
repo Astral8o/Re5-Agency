@@ -19,7 +19,7 @@ export default function BlogChrome({ children }: { children: ReactNode }) {
     <div className="bl">
       <header className="bl-nav">
         <a href="/" className="bl-logo" aria-label="RE5 Agency home">
-          <Mark />
+          <Mark color="#D7F75B" />
           <span>
             RE<em>5</em> Agency
           </span>

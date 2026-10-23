@@ -20,8 +20,7 @@ export const POSTS: Post[] = [
     category: "Digital Transformation & Business Growth",
     readingTime: "5 minutes",
     published: "2026-10-22",
-    cover:
-      "radial-gradient(60% 70% at 25% 30%, #007750 0%, rgba(0,119,80,0) 72%), radial-gradient(55% 60% at 85% 85%, #A7C68C 0%, rgba(167,198,140,0) 70%), #0D1410",
+    cover: "#0F3D2E",
   },
 ];
 

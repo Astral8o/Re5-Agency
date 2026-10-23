@@ -22,7 +22,7 @@ export default function BlogIndex() {
           {POSTS.map((p) => (
             <a key={p.slug} href={postUrl(p.slug)} className="bl-card">
               <div className="bl-cover" style={{ background: p.cover }}>
-                <Mark color="#F3F1EC" />
+                <Mark color="#D7F75B" />
               </div>
               <div className="bl-meta bl-mono">
                 <span>{p.category}</span>
