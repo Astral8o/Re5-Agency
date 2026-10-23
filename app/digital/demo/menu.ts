@@ -59,7 +59,7 @@ export const MENU: Category[] = [
     id: "sides",
     name: "Sides",
     items: [
-      { id: "mac-pie", name: "Macaroni Pie", desc: "Baked, cheesy and generous.", price: 25, emoji: "🧀", tags: ["Vegetarian"] },
+      { id: "mac-pie", photo: true, name: "Macaroni Pie", desc: "Baked, cheesy and generous.", price: 25, emoji: "🧀", tags: ["Vegetarian"] },
       { id: "plantain", photo: true, name: "Fried Plantain", desc: "Sweet ripe plantain, fried golden.", price: 20, emoji: "🍌", tags: ["Vegetarian"] },
       { id: "callaloo", photo: true, name: "Callaloo", desc: "Dasheen bush, okra, coconut milk and salt beef.", price: 25, emoji: "🥬" },
     ],
@@ -71,7 +71,7 @@ export const MENU: Category[] = [
       { id: "rum-punch", photo: true, name: "Kiskadee Rum Punch", desc: "Our house rum punch with fresh lime and bitters. 18+ only.", price: 55, emoji: "🍹", tags: ["House special"] },
       { id: "sorrel-cocktail", photo: true, name: "Sorrel Spritz", desc: "Spiced sorrel, sparkling water and a splash of rum. 18+ only.", price: 60, emoji: "🍷" },
       { id: "beer", photo: true, name: "Ice-Cold Local Beer", desc: "Ask about today's selection. 18+ only.", price: 25, emoji: "🍺", tags: ["Popular"] },
-      { id: "coconut", name: "Fresh Coconut Water", desc: "Straight from the nut.", price: 25, emoji: "🥥" },
+      { id: "coconut", photo: true, name: "Fresh Coconut Water", desc: "Chilled and served over ice.", price: 25, emoji: "🥥" },
       { id: "mauby", photo: true, name: "Mauby", desc: "Bittersweet and refreshing, served over ice.", price: 20, emoji: "🧋" },
       { id: "passion", photo: true, name: "Passion Fruit Juice", desc: "Freshly made every morning.", price: 25, emoji: "🥤" },
     ],
