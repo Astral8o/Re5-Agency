@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./privacy.css";
+import { Logo } from "../../components/brand";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | RE5 Agency",
@@ -7,25 +8,12 @@ export const metadata: Metadata = {
   alternates: { canonical: "/privacy" },
 };
 
-function Mark() {
-  return (
-    <svg viewBox="0 0 100 100" fill="#FF6A3D" aria-hidden="true">
-      <circle cx="50" cy="20" r="15" />
-      <circle cx="78.5" cy="40.7" r="15" />
-      <circle cx="67.6" cy="74.3" r="15" />
-      <circle cx="32.4" cy="74.3" r="15" />
-      <circle cx="21.5" cy="40.7" r="15" />
-    </svg>
-  );
-}
-
 export default function PrivacyPage() {
   return (
     <div className="pp">
       <header className="pp-top">
         <a href="/" className="pp-logo" aria-label="RE5 Agency home">
-          <Mark />
-          RE5 Agency
+          <Logo />
         </a>
         <a href="/" className="pp-back">
           ← Back to the site

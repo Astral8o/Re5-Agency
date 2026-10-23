@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Mark } from "./brand";
+import { Logo, Mark } from "./brand";
 import PackagesModal from "./PackagesModal";
 import { PACKAGE_SETS, type Package, type PackageSet } from "./packages";
 import type { Post } from "../app/blog/posts";
@@ -122,10 +122,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
       {/* ---------------- Nav ---------------- */}
       <header className="h-nav">
         <a href="#top" className="h-logo" aria-label="RE5 Agency home">
-          <Mark className="h-logo-mark" />
-          <span>
-            RE<em>5</em> Agency
-          </span>
+          <Logo />
         </a>
         <nav className="h-links" aria-label="Main">
           <a href="#services">Services</a>
@@ -354,10 +351,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
         <div className="h-foot-grid">
           <div className="h-foot-brand">
             <a href="#top" className="h-logo" aria-label="RE5 Agency home">
-              <Mark className="h-logo-mark" />
-              <span>
-                RE<em>5</em> Agency
-              </span>
+              <Logo />
             </a>
             <p>Business Consulting</p>
           </div>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Instrument_Sans, JetBrains_Mono } from "next/font/google";
+import { Instrument_Sans, JetBrains_Mono, Unbounded } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -16,6 +16,14 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: "variable",
   variable: "--font-mono",
+  display: "swap",
+});
+
+// Wordmark only: rounded, heavy geometric letters for the "re5" logo.
+const unbounded = Unbounded({
+  subsets: ["latin"],
+  weight: "800",
+  variable: "--font-logo",
   display: "swap",
 });
 
@@ -48,7 +56,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${instrumentSans.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`${instrumentSans.variable} ${jetbrainsMono.variable} ${unbounded.variable}`}>
       <body>
         {children}
         <Script

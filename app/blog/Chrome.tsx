@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import "./blog.css";
+import { Logo } from "../../components/brand";
 
 export function Mark({ color = "#111111" }: { color?: string }) {
   return (
@@ -19,10 +20,7 @@ export default function BlogChrome({ children }: { children: ReactNode }) {
     <div className="bl">
       <header className="bl-nav">
         <a href="/" className="bl-logo" aria-label="RE5 Agency home">
-          <Mark color="#FF6A3D" />
-          <span>
-            RE<em>5</em> Agency
-          </span>
+          <Logo />
         </a>
         <nav className="bl-links">
           <a href="/#services">Services</a>

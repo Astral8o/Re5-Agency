@@ -12,6 +12,19 @@ export function Mark({ color = "currentColor", className }: { color?: string; cl
   );
 }
 
+// Wordmark: five-dot mark, "re5" in Unbounded and a mono "AGENCY" pill. Styles live in globals.css.
+export function Logo({ className = "" }: { className?: string }) {
+  return (
+    <span className={`re5-logo ${className}`}>
+      <Mark className="re5-logo-mark" />
+      <span className="re5-logo-word">
+        re<span>5</span>
+      </span>
+      <span className="re5-logo-tag">Agency</span>
+    </span>
+  );
+}
+
 // Chunky starburst used as a playful accent.
 export function Burst({ color = "currentColor", className, rays = 12 }: { color?: string; className?: string; rays?: number }) {
   return (
