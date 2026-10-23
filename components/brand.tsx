@@ -12,7 +12,7 @@ export function Mark({ color = "currentColor", className }: { color?: string; cl
   );
 }
 
-// Wordmark: five-dot mark and "RE5 Agency" in Saira. Styles live in globals.css.
+// Wordmark: five-dot mark and "RE5 Agency" in Plus Jakarta Sans. Styles live in globals.css.
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <span className={`re5-logo ${className}`}>

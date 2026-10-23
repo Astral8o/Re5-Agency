@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Instrument_Sans, JetBrains_Mono, Saira } from "next/font/google";
+import { Instrument_Sans, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -19,11 +19,10 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-// Wordmark only: Saira, slightly expanded, for the "RE5 Agency" logo.
-const saira = Saira({
+// Wordmark only: Plus Jakarta Sans for the "RE5 Agency" logo.
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: "variable",
-  axes: ["wdth"],
+  weight: "500",
   variable: "--font-logo",
   display: "swap",
 });
@@ -57,7 +56,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${instrumentSans.variable} ${jetbrainsMono.variable} ${saira.variable}`}>
+    <html lang="en" className={`${instrumentSans.variable} ${jetbrainsMono.variable} ${jakarta.variable}`}>
       <body>
         {children}
         <Script
