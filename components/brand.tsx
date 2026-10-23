@@ -12,15 +12,14 @@ export function Mark({ color = "currentColor", className }: { color?: string; cl
   );
 }
 
-// Wordmark: five-dot mark, "re5" in Unbounded and a mono "AGENCY" pill. Styles live in globals.css.
+// Wordmark: five-dot mark and "RE5 Agency" in Saira. Styles live in globals.css.
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <span className={`re5-logo ${className}`}>
       <Mark className="re5-logo-mark" />
       <span className="re5-logo-word">
-        re<span>5</span>
+        RE<span>5</span> Agency
       </span>
-      <span className="re5-logo-tag">Agency</span>
     </span>
   );
 }

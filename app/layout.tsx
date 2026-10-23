@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Instrument_Sans, JetBrains_Mono, Unbounded } from "next/font/google";
+import { Instrument_Sans, JetBrains_Mono, Saira } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -19,10 +19,11 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-// Wordmark only: rounded, heavy geometric letters for the "re5" logo.
-const unbounded = Unbounded({
+// Wordmark only: Saira, slightly expanded, for the "RE5 Agency" logo.
+const saira = Saira({
   subsets: ["latin"],
-  weight: "800",
+  weight: "variable",
+  axes: ["wdth"],
   variable: "--font-logo",
   display: "swap",
 });
@@ -56,7 +57,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${instrumentSans.variable} ${jetbrainsMono.variable} ${unbounded.variable}`}>
+    <html lang="en" className={`${instrumentSans.variable} ${jetbrainsMono.variable} ${saira.variable}`}>
       <body>
         {children}
         <Script

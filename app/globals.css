@@ -57,8 +57,7 @@ button {
 }
 
 /* RE5 wordmark (components/brand.tsx Logo) */
-.re5-logo { display: inline-flex; align-items: center; gap: 9px; color: #111; line-height: 1; white-space: nowrap; }
-.re5-logo-mark { width: 1.15em; height: 1.15em; color: #ff6a3d; flex: none; }
-.re5-logo-word { font-family: var(--font-logo), var(--font-sans), sans-serif; font-weight: 800; font-size: 1em; letter-spacing: -0.045em; transform: translateY(-0.04em); }
-.re5-logo-word span { color: #ff6a3d; }
-.re5-logo-tag { font-family: var(--font-mono), ui-monospace, monospace; font-size: 0.4em; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; border: 1.5px solid currentColor; border-radius: 999px; padding: 0.38em 0.75em 0.32em; }
+.re5-logo { display: inline-flex; align-items: center; gap: 10px; color: #111; line-height: 1; white-space: nowrap; }
+.re5-logo-mark { width: 1.1em; height: 1.1em; color: #ff6a3d; flex: none; }
+.re5-logo-word { font-family: var(--font-logo), var(--font-sans), sans-serif; font-weight: 700; font-stretch: 112.5%; font-style: normal; font-size: 1em; letter-spacing: -0.01em; }
+.re5-logo-word span { color: #ff6a3d; font-style: normal; }
