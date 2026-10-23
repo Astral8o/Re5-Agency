@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Burst, Mark, Spark, Squiggle } from "./brand";
+import { Mark, Spark, Squiggle } from "./brand";
 import type { Post } from "../app/blog/posts";
 
 const SERVICES = [
@@ -124,7 +124,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
               <span className="h-tile-word">RE5</span>
             </div>
             <div className="h-tile h-tile--lavender">
-              <Burst className="h-tile-burst" />
+              <Mark className="h-tile-burst" />
             </div>
             <div className="h-tile h-tile--orange">
               <span className="h-tile-num">05</span>
@@ -167,7 +167,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                 <span className="h-card-num">{String(i + 1).padStart(2, "0")}</span>
                 <h3>{title}</h3>
                 <p>{desc}</p>
-                {i === 0 && <Burst className="h-card-burst" />}
+                {i === 0 && <Mark className="h-card-burst" />}
                 {i === 3 && <Mark className="h-card-mark" />}
               </article>
             ))}
@@ -195,7 +195,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
             {posts.map((p, i) => (
               <a key={p.slug} href={`/blog/${p.slug}`} className={`h-post h-post--${["forest", "plum", "orange"][i % 3]}`}>
                 <div className="h-post-cover">
-                  <Burst className="h-post-burst" />
+                  <Mark className="h-post-burst" />
                 </div>
                 <div className="h-post-body">
                   <span className="h-post-meta">
@@ -221,7 +221,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                 Your Next Move <span className="h-hl">Starts Here.</span>
               </h2>
               <p>One clear priority. A practical plan. The support to make it happen.</p>
-              <Burst className="h-contact-burst" />
+              <Mark className="h-contact-burst" />
             </div>
             <div className="h-form-card">
               {!sent ? (

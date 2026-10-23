@@ -212,3 +212,9 @@
 }
 .h-five .h-card--cta { grid-column: 1 / -1; min-height: 150px; align-items: center; }
 .h-five .h-card--cta span:first-child { max-width: none; }
+/* Logo used in place of the starburst: no spin, sized to read as the RE5 mark. */
+.h-tile-burst, .h-card-burst, .h-post-burst, .h-contact-burst { animation: none; }
+.h-tile-burst { width: 62%; }
+.h-card-burst { width: 150px; right: -26px; top: -26px; }
+.h-post-burst { width: 30%; }
+@media (max-width: 600px) { .h-card-burst { width: 110px; right: -22px; top: -22px; } }
