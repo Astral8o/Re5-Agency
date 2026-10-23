@@ -196,8 +196,10 @@ export const PACKAGE_SETS: PackageSet[] = [
             title: "What's Included",
             items: [
               "Business needs assessment",
-              "CRM selection, setup, and configuration",
+              "CRM setup and configuration",
               "Customer database setup",
+              "Import of your existing customer list (Excel, contacts)",
+              "Gmail or Outlook connected to customer records",
               "One sales or inquiry pipeline",
               "Lead tracking and follow-up reminders",
               "Basic reporting dashboard",
