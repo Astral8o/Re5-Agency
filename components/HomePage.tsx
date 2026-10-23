@@ -12,6 +12,28 @@ const SERVICES = [
   ["Business Systems & Automation", "CRM, business software, AI, and workflow automation."],
 ] as const;
 
+// "What We Offer" section. Each button opens the contact form with that service already picked.
+const OFFERS = [
+  {
+    label: "Marketing & Customer Growth",
+    title: "Get Seen. Attract Customers. Grow Your Business.",
+    body: "We develop marketing strategies, manage social media, and create campaigns that help businesses reach customers and increase sales.",
+    cta: "View Marketing Packages",
+  },
+  {
+    label: "Websites & Online Sales",
+    title: "Your Business Deserves to Be Seen.",
+    body: "We build websites, eCommerce stores, and RE5 Digital interactive pages that help customers discover your business, explore your offerings, and place orders.",
+    cta: "Explore Our Packages",
+  },
+  {
+    label: "Business Systems & Automation",
+    title: "Smarter Systems. Better Business Decisions.",
+    body: "We implement business software, CRM, inventory management, and AI-powered automation to reduce manual work, anticipate stock needs, and make everyday operations easier.",
+    cta: "See AI in Action",
+  },
+] as const;
+
 const num = (i: number) => String(i + 1).padStart(2, "0");
 
 export default function HomePage({ posts }: { posts: Post[] }) {
@@ -131,31 +153,32 @@ export default function HomePage({ posts }: { posts: Post[] }) {
           </div>
         </section>
 
-        {/* ---------------- The RE5 Five ---------------- */}
+        {/* ---------------- What We Offer ---------------- */}
         <section id="services" className="h-section" aria-labelledby="h-five-title">
           <div className="h-head">
-            <span className="h-mono">The RE5 Five</span>
+            <span className="h-mono">What We Offer</span>
             <h2 id="h-five-title" className="h-h2">
               The Expertise to Make It Happen.
             </h2>
           </div>
-          <div className="h-five">
-            {SERVICES.map(([title, desc], i) => (
-              <article key={title} className="h-col">
+          <div className="h-five h-five--offers">
+            {OFFERS.map((o, i) => (
+              <article key={o.label} className="h-col">
                 <div className="h-col-text">
-                  <h3>{title}</h3>
-                  <p>{desc}</p>
+                  <span className="h-mono h-col-label">
+                    {num(i)}. {o.label}
+                  </span>
+                  <h3>{o.title}</h3>
+                  <p>{o.body}</p>
+                  <a href="#contact" className="h-btn h-btn--sm h-col-cta" onClick={() => setPicked((p) => (p.includes(o.label) ? p : [...p, o.label]))}>
+                    {o.cta} <span aria-hidden="true">→</span>
+                  </a>
                 </div>
-                <div className="h-col-bar" style={{ height: `${28 + i * 14}%` }}>
+                <div className="h-col-bar" style={{ height: `${70 + i * 40}px` }}>
                   <span>{num(i)}</span>
                 </div>
               </article>
             ))}
-          </div>
-          <div>
-            <a href="#contact" className="h-btn h-btn--lg h-btn--ink">
-              Explore Our Services <span aria-hidden="true">→</span>
-            </a>
           </div>
         </section>
 
