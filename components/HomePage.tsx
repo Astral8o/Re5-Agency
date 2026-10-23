@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Mark } from "./brand";
+import PackagesModal from "./PackagesModal";
+import { PACKAGE_SETS, type Package, type PackageSet } from "./packages";
 import type { Post } from "../app/blog/posts";
 
 const SERVICES = [
@@ -18,20 +20,16 @@ const OFFERS = [
     label: "Marketing & Customer Growth",
     title: "Get Seen. Attract Customers. Grow Your Business.",
     body: "We develop marketing strategies, manage social media, and create campaigns that help businesses reach customers and increase sales.",
-    cta: "View Marketing Packages",
   },
   {
     label: "Websites & Online Sales",
     title: "Your Business Deserves to Be Seen.",
     body: "We build websites, eCommerce stores, and RE5 Digital interactive pages that help customers discover your business, explore your offerings, and place orders.",
-    cta: "Explore Our Packages",
   },
   {
     label: "Business Systems & Automation",
     title: "Smarter Systems. Better Business Decisions.",
     body: "We implement business software, CRM, inventory management, and AI-powered automation to reduce manual work, anticipate stock needs, and make everyday operations easier.",
-    cta: "See AI in Action",
-    href: "/see-ai-in-action",
   },
 ] as const;
 
@@ -47,6 +45,22 @@ export default function HomePage({ posts }: { posts: Post[] }) {
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState(false);
   const [sent, setSent] = useState(false);
+
+  // Packages pop-up and the package chosen from it
+  const [openSet, setOpenSet] = useState<PackageSet | null>(null);
+  const [chosen, setChosen] = useState<{ service: string; name: string; consult: boolean } | null>(null);
+  const nameRef = useRef<HTMLInputElement | null>(null);
+
+  const choosePackage = (set: PackageSet, pkg: Package) => {
+    setChosen({ service: set.service, name: pkg.name, consult: pkg.cta === "Request a Consultation" });
+    setPicked((p) => (p.includes(set.service) ? p : [...p, set.service]));
+    setSent(false);
+    setOpenSet(null);
+    requestAnimationFrame(() => {
+      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => nameRef.current?.focus({ preventScroll: true }), 450);
+    });
+  };
 
   // Links like /?interest=automation#contact arrive with that service already picked.
   useEffect(() => {
@@ -86,6 +100,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
           email: f.get("email"),
           phone: f.get("phone"),
           interests: picked,
+          package: chosen ? `${chosen.name} (${chosen.service})${chosen.consult ? ", consultation request" : ""}` : "",
           message: f.get("message"),
           website: f.get("website"),
           elapsed: Date.now() - openedAt.current,
@@ -182,13 +197,20 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                   </span>
                   <h3>{o.title}</h3>
                   <p>{o.body}</p>
-                  <a
-                    href={"href" in o ? o.href : "#contact"}
-                    className="h-btn h-btn--sm h-col-cta"
-                    onClick={"href" in o ? undefined : () => setPicked((p) => (p.includes(o.label) ? p : [...p, o.label]))}
-                  >
-                    {o.cta} <span aria-hidden="true">→</span>
-                  </a>
+                  <div className="h-col-actions">
+                    <button
+                      type="button"
+                      className="h-btn h-btn--sm"
+                      onClick={() => setOpenSet(PACKAGE_SETS.find((x) => x.service === o.label) ?? null)}
+                    >
+                      See Packages <span aria-hidden="true">→</span>
+                    </button>
+                    {o.label === "Business Systems & Automation" && (
+                      <a href="/see-ai-in-action" className="h-link">
+                        See AI in Action <span aria-hidden="true">→</span>
+                      </a>
+                    )}
+                  </div>
                 </div>
                 <div className="h-col-bar" style={{ height: `${70 + i * 40}px` }}>
                   <span>{num(i)}</span>
@@ -243,10 +265,21 @@ export default function HomePage({ posts }: { posts: Post[] }) {
             <div className="h-panel h-form-card">
               {!sent ? (
                 <form onSubmit={submit} className="h-form">
+                  {chosen && (
+                    <div className="h-chosen" role="status">
+                      <span>
+                        <span className="h-mono">{chosen.consult ? "Consultation request" : "Selected package"}</span>
+                        <strong>{chosen.name}</strong>
+                      </span>
+                      <button type="button" className="h-chosen-x" onClick={() => setChosen(null)} aria-label="Remove selected package">
+                        ✕
+                      </button>
+                    </div>
+                  )}
                   <div className="h-form-grid">
                     <label>
                       Name
-                      <input name="name" required autoComplete="name" />
+                      <input name="name" required autoComplete="name" ref={nameRef} />
                     </label>
                     <label>
                       Company
@@ -271,7 +304,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                     ))}
                   </fieldset>
                   <label>
-                    Tell us about your plans
+                    {chosen?.consult ? "Tell us about your business and what you'd like to connect" : "Tell us about your plans"}
                     <textarea name="message" rows={4} />
                   </label>
                   <input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="h-hp" />
@@ -298,6 +331,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                     onClick={() => {
                       setSent(false);
                       setPicked([]);
+                      setChosen(null);
                       openedAt.current = Date.now();
                     }}
                   >
@@ -351,7 +385,9 @@ export default function HomePage({ posts }: { posts: Post[] }) {
         </div>
       </footer>
 
-      {showSticky && !menu && (
+      <PackagesModal set={openSet} onClose={() => setOpenSet(null)} onChoose={choosePackage} />
+
+      {showSticky && !menu && !openSet && (
         <div className="h-sticky">
           <a href="#contact" className="h-btn h-btn--lg">
             Let&rsquo;s Talk Business →

@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { name, company, email, phone, interests, message, website, elapsed } = (body ?? {}) as Record<
+  const { name, company, email, phone, interests, message, website, elapsed, package: pkg } = (body ?? {}) as Record<
     string,
     unknown
   >;
@@ -86,6 +86,7 @@ export async function POST(request: Request) {
       .slice(0, 10)
       .map((i) => i.slice(0, 100)),
     message: text(message, 5000),
+    pkg: text(pkg, 200),
   };
 
   const row = (label: string, value: string) =>
@@ -100,13 +101,14 @@ export async function POST(request: Request) {
       from: fromEmail,
       to: toEmail,
       replyTo: fields.email,
-      subject: `New RE5 Agency enquiry from ${fields.company || fields.name}`,
+      subject: `New RE5 Agency enquiry from ${fields.company || fields.name}${fields.pkg ? `: ${fields.pkg.split(" (")[0]}` : ""}`,
       html: `
         <table cellpadding="0" cellspacing="0">
           ${row("Name", fields.name)}
           ${row("Company", fields.company)}
           ${row("Email", fields.email)}
           ${row("Phone / WhatsApp", fields.phone)}
+          ${fields.pkg ? row("Package", fields.pkg) : ""}
           ${row("Interested in", fields.interests.join(", "))}
           ${row("Their plans", fields.message)}
         </table>
