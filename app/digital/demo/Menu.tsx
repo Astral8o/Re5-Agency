@@ -94,7 +94,9 @@ export default function Menu() {
   }, [active]);
   const jump = (id: string) => {
     const el = document.getElementById(`cat-${id}`);
-    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 112, behavior: "smooth" });
+    // Land each section just below the sticky search bar, whose height differs on phone and desktop.
+    const bar = (document.querySelector(".m-sticky") as HTMLElement | null)?.offsetHeight ?? 112;
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - bar - 8, behavior: "smooth" });
   };
 
   /* ---------- basket ---------- */
