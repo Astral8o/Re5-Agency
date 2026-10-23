@@ -9,7 +9,7 @@ import type { Post } from "../app/blog/posts";
 const SERVICES = [
   ["Marketing & Customer Growth", "Brand development, campaigns, and customer engagement."],
   ["Websites & Online Sales", "Websites, eCommerce, and digital experiences."],
-  ["Business Systems & Automation", "CRM, business software, AI, and workflow automation."],
+  ["Virtual Assistant", "Customer messages, admin, and everyday business tasks."],
 ] as const;
 
 // "What We Offer" section. Each button opens the contact form with that service already picked.
@@ -21,13 +21,13 @@ const OFFERS = [
   },
   {
     label: "Websites & Online Sales",
-    title: "Your Business Deserves to Be Seen.",
-    body: "We build websites, eCommerce stores, and RE5 Digital interactive pages that help customers discover your business, explore your offerings, and place orders.",
+    title: "Sell Online. Answer Faster. Run It All in One Place.",
+    body: "From your website or RE5 Digital page to the messages, orders, and customers it brings in, we set up everything you need to sell online and manage it from one simple dashboard.",
   },
   {
-    label: "Business Systems & Automation",
-    title: "Smarter Systems. Better Business Decisions.",
-    body: "We implement business software, CRM, inventory management, and AI-powered automation to reduce manual work, anticipate stock needs, and make everyday operations easier.",
+    label: "Virtual Assistant",
+    title: "Your Extra Pair of Hands.",
+    body: "Focus on running your business while a trained RE5 virtual assistant handles customer messages, admin, and the day-to-day tasks that eat up your time.",
   },
 ] as const;
 
@@ -63,7 +63,8 @@ export default function HomePage({ posts }: { posts: Post[] }) {
   // Links like /?interest=automation#contact arrive with that service already picked.
   useEffect(() => {
     const map: Record<string, string> = {
-      automation: "Business Systems & Automation",
+      automation: "Websites & Online Sales",
+      assistant: "Virtual Assistant",
       marketing: "Marketing & Customer Growth",
       websites: "Websites & Online Sales",
     };
@@ -193,9 +194,9 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                         See RE5 Digital demo <span aria-hidden="true">↗</span>
                       </a>
                     )}
-                    {o.label === "Business Systems & Automation" && (
+                    {o.label === "Websites & Online Sales" && (
                       <a href="/see-ai-in-action" className="h-link">
-                        See AI in Action <span aria-hidden="true">→</span>
+                        See the Dashboard in action <span aria-hidden="true">→</span>
                       </a>
                     )}
                   </div>

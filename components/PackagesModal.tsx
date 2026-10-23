@@ -29,41 +29,9 @@ export default function PackagesModal({
     };
   }, [set]);
 
-  return (
-    <dialog
-      ref={ref}
-      className="pk"
-      aria-labelledby="pk-title"
-      onClose={() => {
-        document.documentElement.style.overflow = "";
-        onClose();
-      }}
-      onClick={(e) => {
-        // Clicking the dimmed backdrop (outside the panel) closes it.
-        if (e.target === e.currentTarget) onClose();
-      }}
-    >
-      {set && (
-        <div className="pk-panel">
-          <div className="pk-top">
-            <span className="h-mono">Packages · {set.title}</span>
-            <button type="button" className="pk-close" onClick={onClose} aria-label="Close packages">
-              ✕
-            </button>
-          </div>
-          <div className="pk-head">
-            <h2 id="pk-title">{set.title}</h2>
-            <p className="pk-headline">{set.headline}</p>
-            {set.intro.map((t) => (
-              <p key={t} className="pk-intro">
-                {t}
-              </p>
-            ))}
-          </div>
-          <div className="pk-grid">
-            {set.packages.map((p, i) => (
+  const card = (set: PackageSet, p: Package, label: string) => (
               <article key={p.id} className={`pk-card ${p.wide ? "pk-card--wide" : ""}`}>
-                <span className="h-mono pk-num">{String(i + 1).padStart(2, "0")}.</span>
+                <span className="h-mono pk-num">{label}</span>
                 <h3>{p.name}</h3>
                 <p className="pk-price">{p.price}</p>
                 <p className="pk-tagline">{p.tagline}</p>
@@ -106,8 +74,47 @@ export default function PackagesModal({
                   )}
                 </div>
               </article>
+  );
+
+  return (
+    <dialog
+      ref={ref}
+      className="pk"
+      aria-labelledby="pk-title"
+      onClose={() => {
+        document.documentElement.style.overflow = "";
+        onClose();
+      }}
+      onClick={(e) => {
+        // Clicking the dimmed backdrop (outside the panel) closes it.
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      {set && (
+        <div className="pk-panel">
+          <div className="pk-top">
+            <span className="h-mono">Packages · {set.title}</span>
+            <button type="button" className="pk-close" onClick={onClose} aria-label="Close packages">
+              ✕
+            </button>
+          </div>
+          <div className="pk-head">
+            <h2 id="pk-title">{set.title}</h2>
+            <p className="pk-headline">{set.headline}</p>
+            {set.intro.map((t) => (
+              <p key={t} className="pk-intro">
+                {t}
+              </p>
             ))}
           </div>
+          <div className="pk-grid">{set.packages.map((p, i) => card(set, p, String(i + 1).padStart(2, "0") + "."))}</div>
+          {set.addons && (
+            <div className="pk-addons">
+              <h3 className="pk-sub">{set.addons.title}</h3>
+              <p className="pk-intro">{set.addons.intro}</p>
+              <div className="pk-grid">{set.addons.packages.map((p) => card(set, p, "Add-on"))}</div>
+            </div>
+          )}
           <p className="pk-foot">{set.footnote}</p>
         </div>
       )}

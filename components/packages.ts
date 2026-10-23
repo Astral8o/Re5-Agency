@@ -20,6 +20,7 @@ export type PackageSet = {
   headline: string;
   intro: string[];
   packages: Package[];
+  addons?: { title: string; intro: string; packages: Package[] }; // optional add-ons shown under the main packages
   footnote: string;
 };
 
@@ -88,10 +89,10 @@ export const PACKAGE_SETS: PackageSet[] = [
   {
     service: "Websites & Online Sales",
     title: "Websites & Online Sales",
-    headline: "Your Business Deserves to Be Seen.",
+    headline: "Sell Online. Answer Faster. Run It All in One Place.",
     intro: [
       "Make it easier for customers to discover your business, explore your products and services, and buy from you online.",
-      "Whether you're starting small or building a complete online store, we have a solution to help you take the next step.",
+      "Start with a website or RE5 Digital page, then add an AI chat assistant, connected orders, and a simple business dashboard, all working together as one system.",
     ],
     packages: [
       {
@@ -171,147 +172,153 @@ export const PACKAGE_SETS: PackageSet[] = [
         cta: "Get Started",
       },
     ],
+    addons: {
+      title: "Add-ons",
+      intro:
+        "Add these to any website package. Each add-on has a one-time setup fee and a monthly fee that covers the software, hosting, and support, and they all work together as one system.",
+      packages: [
+        {
+          id: "ai-chat-assistant",
+          name: "AI Chat Assistant",
+          price: "TT$2,500 setup + TT$500/month",
+          tagline: "Answer Customers, Even After Hours.",
+          intro: ["An AI assistant that replies to customer questions instantly, collects their details, and passes them to your team when a person is needed."],
+          groups: [
+            {
+              title: "What's Included",
+              items: [
+                "AI chat assistant on your website, with WhatsApp and Instagram available",
+                "Answers common questions on prices, hours, location, and availability",
+                "Collects each customer's name, number, and request",
+                "Hands conversations to you or your team when needed",
+                "Trained on your business information",
+                "Updates when your prices, menu, or services change",
+              ],
+            },
+          ],
+          cta: "Get Started",
+        },
+        {
+          id: "connected-orders",
+          name: "Connected Orders & Inquiries",
+          price: "TT$2,000 setup + TT$500/month",
+          tagline: "Every Message. One Place.",
+          intro: ["Bring the orders and inquiries from your WhatsApp, social media, and website into one place, so nothing gets lost in the chats."],
+          groups: [
+            {
+              title: "What's Included",
+              items: [
+                "WhatsApp Business, Instagram, Facebook, and website forms connected",
+                "Orders and inquiries logged automatically",
+                "Instant alerts for new orders",
+                "See which channel each order came from",
+                "Setup, testing, and staff training",
+              ],
+            },
+          ],
+          cta: "Get Started",
+        },
+        {
+          id: "business-dashboard",
+          name: "Business Dashboard",
+          price: "TT$3,000 setup + TT$350/month",
+          demo: "/see-ai-in-action",
+          tagline: "See Your Business at a Glance.",
+          intro: ["A simple CRM and inventory dashboard that keeps track of your customers, orders, and stock, all in one place."],
+          groups: [
+            {
+              title: "What's Included",
+              items: [
+                "Customer list built automatically from your orders and inquiries",
+                "Customer order history",
+                "Follow-up reminders for regular customers",
+                "Stock levels with low-stock alerts",
+                "Import of your existing customer and product lists",
+                "Simple sales summary: today, this week, and top items",
+                "Staff training and handover",
+              ],
+            },
+          ],
+          cta: "Get Started",
+        },
+        {
+          id: "connected-business-bundle",
+          name: "Connected Business Bundle",
+          price: "TT$6,500 setup + TT$1,200/month",
+          wide: true,
+          tagline: "Everything Connected. One System.",
+          intro: [
+            "Get the AI Chat Assistant, Connected Orders & Inquiries, and Business Dashboard together, set up to work as one system with your website or RE5 Digital page.",
+            "Save TT$1,000 on setup and TT$150 every month compared with buying each add-on separately.",
+          ],
+          groups: [
+            {
+              title: "What's Included",
+              items: ["AI Chat Assistant", "Connected Orders & Inquiries", "Business Dashboard", "One setup, one monthly fee, one point of contact"],
+            },
+          ],
+          cta: "Get Started",
+        },
+      ],
+    },
     footnote:
-      "Prices reflect one-time setup. USD amounts are approximate. Hosting, domain registration, payment provider fees, maintenance, and additional functionality are charged separately.",
+      "Website prices reflect one-time setup. USD amounts are approximate. Hosting, domain registration, payment provider fees, maintenance, and additional functionality are charged separately. Add-on monthly fees include the software and support; WhatsApp marketing message fees set by Meta are charged separately.",
   },
   {
-    service: "Business Systems & Automation",
-    title: "Business Systems & Automation",
-    headline: "Smarter Systems. Better Business Decisions.",
+    service: "Virtual Assistant",
+    title: "Virtual Assistant",
+    headline: "Your Extra Pair of Hands.",
     intro: [
-      "Missed customer inquiries, inaccurate inventory records, and repetitive tasks can cost your business time and money.",
-      "We help you address these challenges with practical business systems, AI, and automation that make everyday work easier.",
+      "Customer messages, admin, and everyday tasks can take up hours of your week.",
+      "A trained RE5 virtual assistant handles them for you, so you can focus on running and growing your business.",
     ],
     packages: [
       {
-        id: "crm",
-        name: "CRM & Customer Management",
-        price: "TT$2,500 | One-Time Setup",
-        tagline: "Every Customer Opportunity Matters.",
-        intro: [
-          "Keep customer information organized, track sales opportunities, and make sure important follow-ups don't get overlooked.",
-        ],
+        id: "va-part-time",
+        name: "Part-Time Assistant",
+        price: "TT$1,800/month | 20 hours",
+        tagline: "Help When You Need It.",
+        intro: ["Ideal for businesses that need regular support with customer messages and admin, without hiring full-time staff."],
         groups: [
           {
             title: "What's Included",
             items: [
-              "Business needs assessment",
-              "CRM setup and configuration",
-              "Customer database setup",
-              "Import of your existing customer list (Excel, contacts)",
-              "Gmail or Outlook connected to customer records",
-              "One sales or inquiry pipeline",
-              "Lead tracking and follow-up reminders",
-              "Basic reporting dashboard",
-              "Staff training and handover",
+              "20 hours of support each month",
+              "Replies to customer inquiries on WhatsApp, social media, and email",
+              "Order and appointment booking",
+              "Customer list and order updates",
+              "Data entry and admin tasks",
+              "Monthly summary of completed work",
             ],
           },
         ],
         cta: "Get Started",
       },
       {
-        id: "business-automation",
-        name: "Business Automation",
-        price: "Starting at TT$5,500 | One-Time Setup",
-        tagline: "Less Manual Work. More Control.",
-        intro: [
-          "Still tracking inventory in spreadsheets or spending hours completing the same tasks?",
-          "We implement business systems and automations that help you keep track of important activities, reduce repetitive work, and manage operations more efficiently.",
-        ],
+        id: "va-dedicated",
+        name: "Dedicated Assistant",
+        price: "TT$6,000/month | 80 hours",
+        tagline: "A Regular Part of Your Team.",
+        intro: ["A dedicated assistant who learns how your business works and supports you consistently throughout the month."],
         groups: [
           {
             title: "What's Included",
             items: [
-              "Business process assessment",
-              "Setup of one primary business system, such as CRM or inventory management",
-              "Sales or inventory tracking configuration",
-              "Up to 2 supported workflow automations",
-              "Basic reporting dashboard",
-              "System testing, training, and handover",
-            ],
-          },
-          {
-            title: "Examples of What We Can Automate",
-            items: [
-              "Low-stock alerts to help prevent unexpected stockouts",
-              "Customer follow-up reminders",
-              "Lead notifications and inquiry tracking",
-              "Routine updates between compatible business systems",
+              "80 hours of support each month",
+              "The same dedicated assistant",
+              "Customer inquiries, orders, and appointment booking",
+              "Invoices and payment reminders",
+              "Social media post scheduling",
+              "Calendar and email management",
+              "Customer list, order, and stock updates in your dashboard",
+              "Weekly check-ins and a monthly summary",
             ],
           },
         ],
         cta: "Get Started",
-      },
-      {
-        id: "advanced-ai",
-        name: "Advanced AI & Business Systems",
-        price: "Custom Quote | One-Time Implementation",
-        tagline: "Bring Your Business Together.",
-        intro: [
-          "Imagine your marketing, website, sales, customer management, and inventory working together.",
-          "We design and implement connected business systems that help information move between different areas of your business, reduce duplicated work, and give you a clearer picture of performance.",
-          "With AI and automation, your business can go further, from forecasting demand and identifying sales opportunities to improving customer communication and managing everyday operations.",
-        ],
-        groups: [
-          {
-            title: "Marketing & Sales",
-            items: [
-              "Connect marketing campaigns with lead and sales tracking",
-              "Automate customer follow-ups",
-              "Identify opportunities for repeat business",
-            ],
-          },
-          {
-            title: "Websites & Online Sales",
-            items: [
-              "Connect website inquiries and online orders with compatible business systems",
-              "Coordinate customer, order, and sales information",
-            ],
-          },
-          {
-            title: "Customer Management",
-            items: [
-              "Centralize customer records and interactions",
-              "Track purchase history and sales opportunities",
-              "Support personalized customer communications",
-            ],
-          },
-          {
-            title: "Inventory & Purchasing",
-            items: [
-              "Monitor inventory levels and product performance",
-              "Automate reorder notifications",
-              "Use AI-assisted forecasting to anticipate demand where supported",
-            ],
-          },
-          {
-            title: "AI & Workflow Automation",
-            items: [
-              "Connect business processes across compatible software",
-              "Automate repetitive administrative tasks",
-              "Introduce AI assistants for appropriate business activities",
-            ],
-          },
-          {
-            title: "Business Reporting",
-            items: [
-              "Connect marketing, sales, customer, and operational information",
-              "Build dashboards to monitor performance and support business decisions",
-            ],
-          },
-        ],
-        after: [
-          {
-            title: "The Result",
-            text: "Better coordination, fewer manual tasks, stronger customer relationships, and a business equipped to manage growth.",
-          },
-          { text: "Every implementation begins with discovery to determine the right systems, integrations, and features for your business." },
-        ],
-        cta: "Request a Consultation",
-        wide: true,
       },
     ],
     footnote:
-      "All packages include one-time implementation fees. Software subscriptions, AI usage, paid integrations, and ongoing support are separate unless included in your quotation.",
+      "Hours are per calendar month. Our assistants can work inside your RE5 Business Dashboard and connected inbox. Additional hours and tasks can be quoted separately.",
   },
 ];

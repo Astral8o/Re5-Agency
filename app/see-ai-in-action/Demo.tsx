@@ -65,7 +65,7 @@ export default function Demo() {
       {/* ---------------- Intro ---------------- */}
       <section className="d-intro h-pattern">
         <div className="h-panel d-intro-panel">
-          <span className="h-mono d-rule">See AI in Action · Business Systems &amp; Automation</span>
+          <span className="h-mono d-rule">See AI in Action · Business Dashboard</span>
           <h1>Know what&rsquo;s running low before your customers do.</h1>
           <p className="d-lead">
             Try it with {SHOP}, a sample shop. See how smart forecasting can flag products that are about to run out,
