@@ -48,7 +48,7 @@ export default function Article() {
           </div>
         </div>
         <div className="bl-cover" style={{ background: post.cover }}>
-          <Mark color="#D7F75B" />
+          <Mark color="#DCF36A" />
         </div>
       </section>
 
@@ -254,7 +254,7 @@ export default function Article() {
 
       <section className="bl-close">
         <div className="bl-close-inner">
-          <span className="bl-mono" style={{ color: "#A7C68C" }}>
+          <span className="bl-mono" style={{ color: "#DCF36A" }}>
             Take the Next Step With RE5 Agency
           </span>
           <p>

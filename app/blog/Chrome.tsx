@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import "./blog.css";
 
-export function Mark({ color = "#007750" }: { color?: string }) {
+export function Mark({ color = "#7B5CF5" }: { color?: string }) {
   return (
     <svg viewBox="0 0 100 100" fill={color} aria-hidden="true">
       <circle cx="50" cy="20" r="15" />
@@ -19,7 +19,7 @@ export default function BlogChrome({ children }: { children: ReactNode }) {
     <div className="bl">
       <header className="bl-nav">
         <a href="/" className="bl-logo" aria-label="RE5 Agency home">
-          <Mark color="#D7F75B" />
+          <Mark color="#DCF36A" />
           <span>
             RE<em>5</em> Agency
           </span>

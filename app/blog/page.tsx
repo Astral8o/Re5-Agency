@@ -13,7 +13,7 @@ export default function BlogIndex() {
     <BlogChrome>
       <main className="bl-index">
         <div className="bl-index-head">
-          <span className="bl-mono" style={{ color: "#007750" }}>
+          <span className="bl-mono" style={{ color: "#5B3FD9" }}>
             RE5 Insights
           </span>
           <h1>Latest from RE5</h1>
@@ -22,7 +22,7 @@ export default function BlogIndex() {
           {POSTS.map((p) => (
             <a key={p.slug} href={postUrl(p.slug)} className="bl-card">
               <div className="bl-cover" style={{ background: p.cover }}>
-                <Mark color="#D7F75B" />
+                <Mark color="#DCF36A" />
               </div>
               <div className="bl-meta bl-mono">
                 <span>{p.category}</span>
