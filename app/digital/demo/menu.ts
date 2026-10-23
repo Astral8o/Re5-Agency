@@ -13,7 +13,7 @@ export type Item = {
 export type Category = { id: string; name: string; items: Item[] };
 
 export const BUSINESS = {
-  name: "Kiskadee Bar & Kitchen",
+  name: "Kiskadee Bar & Restaurant",
   tagline: "Local flavours, cold drinks and good vibes by the water.",
   area: "Western Main Road, Chaguaramas",
   hours: [
@@ -27,7 +27,7 @@ export const BUSINESS = {
 // Fictional bank details, shown when a customer picks bank deposit.
 export const BANK = {
   bank: "Island Commercial Bank (demo)",
-  accountName: "Kiskadee Bar & Kitchen Ltd",
+  accountName: "Kiskadee Bar & Restaurant Ltd",
   accountNo: "000 000 000 0",
   branch: "Chaguaramas",
 };
@@ -52,7 +52,7 @@ export const MENU: Category[] = [
       { id: "pelau", photo: true, name: "Chicken Pelau", desc: "One-pot rice, pigeon peas and caramelised chicken, with fresh salsa.", price: 85, emoji: "🍚" },
       { id: "kingfish", photo: true, name: "Grilled Kingfish", desc: "Char-grilled kingfish with fresh tomato salsa and lime.", price: 140, emoji: "🐠" },
       { id: "channa-aloo", photo: true, name: "Curry Channa & Aloo", desc: "Chickpea and potato curry with white rice.", price: 70, emoji: "🫓", tags: ["Vegetarian"] },
-      { id: "sunday-lunch", name: "Sunday Lunch Plate", desc: "Stew chicken, macaroni pie, callaloo, rice and peas. Sundays only.", price: 95, emoji: "🍽️", soldOut: true },
+      { id: "sunday-lunch", photo: true, name: "Sunday Lunch Plate", desc: "Stew chicken, macaroni pie, potato salad, stewed lentils and fresh salad. Sundays only.", price: 95, emoji: "🍽️", soldOut: true },
     ],
   },
   {

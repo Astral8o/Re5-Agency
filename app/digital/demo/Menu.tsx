@@ -34,22 +34,6 @@ function Sheet({ open, onClose, label, children }: { open: boolean; onClose: () 
   );
 }
 
-// Opening hours in Trinidad & Tobago time, as [open, close] in 24h (24 = midnight).
-const HOURS: Record<string, [number, number]> = { Sun: [12, 21], Mon: [11, 22], Tue: [11, 22], Wed: [11, 22], Thu: [11, 22], Fri: [11, 24], Sat: [11, 24] };
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const fmtHour = (h: number) => `${h % 12 || 12}:00 ${h % 24 < 12 ? "am" : "pm"}`;
-
-function openStatus(): { open: boolean; text: string } {
-  const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Port_of_Spain", weekday: "short", hour: "numeric", hour12: false }).formatToParts(new Date());
-  const day = parts.find((p) => p.type === "weekday")?.value ?? "Mon";
-  const hour = Number(parts.find((p) => p.type === "hour")?.value ?? 12) % 24;
-  const [open, close] = HOURS[day];
-  if (hour >= open && hour < close) return { open: true, text: `Open now · Closes ${fmtHour(close)}${close - hour <= 1 ? " (closing soon)" : ""}` };
-  if (hour < open) return { open: false, text: `Closed · Opens ${fmtHour(open)} today` };
-  const next = DAYS[(DAYS.indexOf(day) + 1) % 7];
-  return { open: false, text: `Closed · Opens ${fmtHour(HOURS[next][0])} tomorrow` };
-}
-
 type Mode = "Dine-in" | "Pickup" | "Delivery";
 type Pay = "Cash on delivery" | "Card on delivery" | "Pay in store" | "Bank deposit";
 const PAYMENTS: Record<Mode, Pay[]> = {
@@ -76,12 +60,10 @@ export default function Menu() {
   const [pay, setPay] = useState<Pay>("Pay in store");
   const [tried, setTried] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [openNow, setOpenNow] = useState<{ open: boolean; text: string } | null>(null);
   const [url, setUrl] = useState("https://www.re5agency.com/digital/demo");
   const tabsRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    setOpenNow(openStatus());
     setUrl(`${window.location.origin}/digital/demo`);
   }, []);
 
@@ -201,13 +183,12 @@ export default function Menu() {
           <span>🌊</span>
         </div>
         <div className="m-brand">
-          <div className="m-logo" aria-hidden="true">
-            🐦
+          <div className="m-logo">
+            <img src="/digital/kiskadee-logo.webp" alt={`${BUSINESS.name} logo`} width={360} height={360} />
           </div>
           <h1>{BUSINESS.name}</h1>
           <p>{BUSINESS.tagline}</p>
           <div className="m-meta">
-            {openNow !== null && <span className={`m-open ${openNow.open ? "is-open" : ""}`}>● {openNow.text}</span>}
             <span>📍 Chaguaramas</span>
           </div>
           <div className="m-actions">
@@ -446,7 +427,6 @@ export default function Menu() {
                   <p>Send a photo of your deposit slip or transfer in the WhatsApp chat. We start your order once payment is confirmed.</p>
                 </div>
               )}
-              {openNow && !openNow.open && <p className="m-small m-hint">We&apos;re closed right now ({openNow.text.replace("Closed · ", "")}). You can still send your order and we&apos;ll reply when we open.</p>}
               <button type="button" className="m-btn m-btn--wa m-btn--block" onClick={send}>
                 <WaIcon /> Send order on WhatsApp
               </button>
