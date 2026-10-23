@@ -205,6 +205,11 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                     >
                       See Packages <span aria-hidden="true">→</span>
                     </button>
+                    {o.label === "Websites & Online Sales" && (
+                      <a href="/digital/demo" target="_blank" rel="noopener" className="h-link">
+                        See RE5 Digital demo <span aria-hidden="true">↗</span>
+                      </a>
+                    )}
                     {o.label === "Business Systems & Automation" && (
                       <a href="/see-ai-in-action" className="h-link">
                         See AI in Action <span aria-hidden="true">→</span>

@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     })),
     { url: "https://www.re5agency.com/see-ai-in-action", changeFrequency: "monthly", priority: 0.8 },
+    { url: "https://www.re5agency.com/digital/demo", changeFrequency: "monthly", priority: 0.7 },
     { url: "https://www.re5agency.com/privacy", changeFrequency: "yearly", priority: 0.2 },
   ];
 }

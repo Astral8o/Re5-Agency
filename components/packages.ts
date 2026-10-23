@@ -11,6 +11,7 @@ export type Package = {
   note?: { label: string; text: string };
   after?: { title?: string; text: string }[];
   cta: "Get Started" | "Request a Consultation";
+  demo?: string; // optional link to a live demo
   wide?: boolean;
 };
 export type PackageSet = {
@@ -97,6 +98,7 @@ export const PACKAGE_SETS: PackageSet[] = [
         id: "re5-digital",
         name: "RE5 Digital",
         price: "Starting at TT$350 / US$52",
+        demo: "/digital/demo",
         tagline: "Start Online. Start Simple.",
         intro: [
           "Not every business needs a full website.",

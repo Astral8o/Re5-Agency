@@ -95,9 +95,16 @@ export default function PackagesModal({
                     <p>{a.text}</p>
                   </div>
                 ))}
-                <button type="button" className="h-btn pk-cta" onClick={() => onChoose(set, p)}>
-                  {p.cta} <span aria-hidden="true">→</span>
-                </button>
+                <div className="pk-actions">
+                  <button type="button" className="h-btn pk-cta" onClick={() => onChoose(set, p)}>
+                    {p.cta} <span aria-hidden="true">→</span>
+                  </button>
+                  {p.demo && (
+                    <a href={p.demo} target="_blank" rel="noopener" className="pk-demo">
+                      See a live demo ↗
+                    </a>
+                  )}
+                </div>
               </article>
             ))}
           </div>
