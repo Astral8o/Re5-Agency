@@ -112,6 +112,7 @@ export const PACKAGE_SETS: PackageSet[] = [
               "Personalized link",
               "QR code",
               "Digital menu with WhatsApp ordering",
+              "Multi-language menu",
               "Business information and contact details",
               "Initial setup and publishing",
             ],
