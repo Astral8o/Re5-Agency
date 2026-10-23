@@ -238,7 +238,7 @@ export default function Menu() {
                       </span>
                     </span>
                     <span className="m-item-img" aria-hidden="true">
-                      {it.emoji}
+                      {it.photo ? <img src={`/digital/menu/${it.id}-sm.webp`} alt="" width={240} height={240} loading="lazy" decoding="async" /> : it.emoji}
                     </span>
                   </button>
                   {!it.soldOut &&
@@ -284,7 +284,7 @@ export default function Menu() {
         {detail && (
           <div className="m-detail">
             <div className="m-detail-img" aria-hidden="true">
-              {detail.emoji}
+              {detail.photo ? <img src={`/digital/menu/${detail.id}.webp`} alt="" width={800} height={600} /> : detail.emoji}
             </div>
             <h2>{detail.name}</h2>
             <p>{detail.desc}</p>
