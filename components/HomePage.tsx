@@ -195,11 +195,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                         See RE5 Digital demo <span aria-hidden="true">↗</span>
                       </a>
                     )}
-                    {o.label === "Websites & Online Sales" && (
-                      <a href="/see-ai-in-action" className="h-link">
-                        See the Dashboard in action <span aria-hidden="true">→</span>
-                      </a>
-                    )}
                   </div>
                 </div>
               </article>
