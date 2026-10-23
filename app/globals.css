@@ -57,7 +57,8 @@ button {
 }
 
 /* RE5 wordmark (components/brand.tsx Logo) */
-.re5-logo { display: inline-flex; align-items: center; gap: 10px; color: #111; line-height: 1; white-space: nowrap; }
-.re5-logo-mark { width: 1.1em; height: 1.1em; color: #ff6a3d; flex: none; }
+.re5-logo { display: inline-flex; align-items: center; gap: 0.36em; color: #111; line-height: 1; white-space: nowrap; }
+/* Icon is about 1.25x the cap height, centred on the capitals. */
+.re5-logo-mark { width: 0.86em; height: 0.86em; color: #ff6a3d; flex: none; }
 .re5-logo-word { font-family: var(--font-logo), var(--font-sans), sans-serif; font-weight: 500; font-style: normal; font-size: 1.05em; letter-spacing: -0.02em; }
 .re5-logo-word span { color: #ff6a3d; font-style: normal; }

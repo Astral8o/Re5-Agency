@@ -1,8 +1,9 @@
 // RE5 brand graphics shared by the homepage, blog and privacy page.
 
-export function Mark({ color = "currentColor", className }: { color?: string; className?: string }) {
+export function Mark({ color = "currentColor", className, tight = false }: { color?: string; className?: string; tight?: boolean }) {
+  // tight crops the viewBox to the dots so the mark can be sized against text.
   return (
-    <svg viewBox="0 0 100 100" fill={color} aria-hidden="true" className={className}>
+    <svg viewBox={tight ? "6.5 5 87 84.3" : "0 0 100 100"} fill={color} aria-hidden="true" className={className}>
       <circle cx="50" cy="20" r="15" />
       <circle cx="78.5" cy="40.7" r="15" />
       <circle cx="67.6" cy="74.3" r="15" />
@@ -16,7 +17,7 @@ export function Mark({ color = "currentColor", className }: { color?: string; cl
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <span className={`re5-logo ${className}`}>
-      <Mark className="re5-logo-mark" />
+      <Mark className="re5-logo-mark" tight />
       <span className="re5-logo-word">
         RE<span>5</span> Agency
       </span>
