@@ -24,6 +24,14 @@ export const BUSINESS = {
   phone: "+1 868 000 0000",
 };
 
+// Fictional bank details, shown when a customer picks bank deposit.
+export const BANK = {
+  bank: "Island Commercial Bank (demo)",
+  accountName: "Kiskadee Bar & Kitchen Ltd",
+  accountNo: "000 000 000 0",
+  branch: "Chaguaramas",
+};
+
 export const MENU: Category[] = [
   {
     id: "starters",

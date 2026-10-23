@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { BUSINESS, MENU, tt, type Item } from "./menu";
+import { BANK, BUSINESS, MENU, tt, type Item } from "./menu";
 
 type Line = { item: Item; qty: number; note: string };
 
@@ -34,15 +34,29 @@ function Sheet({ open, onClose, label, children }: { open: boolean; onClose: () 
   );
 }
 
-function isOpenNow(): boolean {
-  // Trinidad & Tobago time
+// Opening hours in Trinidad & Tobago time, as [open, close] in 24h (24 = midnight).
+const HOURS: Record<string, [number, number]> = { Sun: [12, 21], Mon: [11, 22], Tue: [11, 22], Wed: [11, 22], Thu: [11, 22], Fri: [11, 24], Sat: [11, 24] };
+const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const fmtHour = (h: number) => `${h % 12 || 12}:00 ${h % 24 < 12 ? "am" : "pm"}`;
+
+function openStatus(): { open: boolean; text: string } {
   const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Port_of_Spain", weekday: "short", hour: "numeric", hour12: false }).formatToParts(new Date());
   const day = parts.find((p) => p.type === "weekday")?.value ?? "Mon";
   const hour = Number(parts.find((p) => p.type === "hour")?.value ?? 12) % 24;
-  if (day === "Sun") return hour >= 12 && hour < 21;
-  if (day === "Fri" || day === "Sat") return hour >= 11;
-  return hour >= 11 && hour < 22;
+  const [open, close] = HOURS[day];
+  if (hour >= open && hour < close) return { open: true, text: `Open now · Closes ${fmtHour(close)}${close - hour <= 1 ? " (closing soon)" : ""}` };
+  if (hour < open) return { open: false, text: `Closed · Opens ${fmtHour(open)} today` };
+  const next = DAYS[(DAYS.indexOf(day) + 1) % 7];
+  return { open: false, text: `Closed · Opens ${fmtHour(HOURS[next][0])} tomorrow` };
 }
+
+type Mode = "Dine-in" | "Pickup" | "Delivery";
+type Pay = "Cash on delivery" | "Card on delivery" | "Pay in store" | "Bank deposit";
+const PAYMENTS: Record<Mode, Pay[]> = {
+  "Dine-in": ["Pay in store", "Bank deposit"],
+  Pickup: ["Pay in store", "Bank deposit"],
+  Delivery: ["Cash on delivery", "Card on delivery", "Bank deposit"],
+};
 
 const WA = (text: string) => `https://wa.me/?text=${encodeURIComponent(text)}`;
 
@@ -54,16 +68,20 @@ export default function Menu() {
   const [detailQty, setDetailQty] = useState(1);
   const [detailNote, setDetailNote] = useState("");
   const [sheet, setSheet] = useState<"" | "basket" | "info" | "share">("");
-  const [mode, setMode] = useState<"Dine-in" | "Pickup">("Dine-in");
+  const [mode, setMode] = useState<Mode>("Dine-in");
   const [table, setTable] = useState("");
   const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [pay, setPay] = useState<Pay>("Pay in store");
+  const [tried, setTried] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [openNow, setOpenNow] = useState<boolean | null>(null);
+  const [openNow, setOpenNow] = useState<{ open: boolean; text: string } | null>(null);
   const [url, setUrl] = useState("https://www.re5agency.com/digital/demo");
   const tabsRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    setOpenNow(isOpenNow());
+    setOpenNow(openStatus());
     setUrl(`${window.location.origin}/digital/demo`);
   }, []);
 
@@ -129,11 +147,30 @@ export default function Menu() {
       ...lines.flatMap((l) => [`${l.qty} x ${l.item.name}  ${tt(l.qty * l.item.price)}`, ...(l.note.trim() ? [`   Note: ${l.note.trim()}`] : [])]),
       "",
       `Total: ${tt(total)}`,
-      `${mode}${mode === "Dine-in" && table.trim() ? `, table ${table.trim()}` : ""}`,
+      `Order type: ${mode}${mode === "Dine-in" && table.trim() ? `, table ${table.trim()}` : ""}`,
+      ...(mode === "Delivery" ? [`Deliver to: ${address.trim()}`] : []),
+      `Payment: ${pay}${pay === "Bank deposit" ? " (I'll send proof of payment here)" : ""}`,
       ...(name.trim() ? [`Name: ${name.trim()}`] : []),
+      ...(phone.trim() ? [`Phone: ${phone.trim()}`] : []),
       "",
       "(Sent from the RE5 Digital demo menu. This is a fictional business.)",
     ].join("\n");
+
+  const pickMode = (m: Mode) => {
+    setMode(m);
+    if (!PAYMENTS[m].includes(pay)) setPay(PAYMENTS[m][0]);
+  };
+  const missing = {
+    name: tried && mode !== "Dine-in" && !name.trim(),
+    phone: tried && mode !== "Dine-in" && phone.replace(/\D/g, "").length < 7,
+    address: tried && mode === "Delivery" && address.trim().length < 6,
+  };
+  const send = () => {
+    const bad = mode !== "Dine-in" && (!name.trim() || phone.replace(/\D/g, "").length < 7 || (mode === "Delivery" && address.trim().length < 6));
+    setTried(true);
+    if (bad) return;
+    window.open(WA(orderText()), "_blank", "noopener");
+  };
 
   const shareText = `Check out the menu at ${BUSINESS.name} 🐦🍹\n${url}`;
   const copy = async () => {
@@ -170,7 +207,7 @@ export default function Menu() {
           <h1>{BUSINESS.name}</h1>
           <p>{BUSINESS.tagline}</p>
           <div className="m-meta">
-            {openNow !== null && <span className={`m-open ${openNow ? "is-open" : ""}`}>{openNow ? "● Open now" : "● Closed now"}</span>}
+            {openNow !== null && <span className={`m-open ${openNow.open ? "is-open" : ""}`}>● {openNow.text}</span>}
             <span>📍 Chaguaramas</span>
           </div>
           <div className="m-actions">
@@ -351,9 +388,9 @@ export default function Menu() {
                 <strong>{tt(total)}</strong>
               </div>
               <div className="m-mode" role="radiogroup" aria-label="Order type">
-                {(["Dine-in", "Pickup"] as const).map((m) => (
-                  <button key={m} type="button" role="radio" aria-checked={mode === m} className={mode === m ? "is-on" : ""} onClick={() => setMode(m)}>
-                    {m}
+                {(["Dine-in", "Pickup", "Delivery"] as const).map((m) => (
+                  <button key={m} type="button" role="radio" aria-checked={mode === m} className={mode === m ? "is-on" : ""} onClick={() => pickMode(m)}>
+                    {m === "Pickup" ? "Pick up" : m}
                   </button>
                 ))}
               </div>
@@ -363,13 +400,56 @@ export default function Menu() {
                   <input value={table} onChange={(e) => setTable(e.target.value)} inputMode="numeric" maxLength={4} />
                 </label>
               )}
+              {mode === "Pickup" && <p className="m-small m-hint">Pick up at {BUSINESS.area}. We&apos;ll message you when it&apos;s ready.</p>}
               <label className="m-field">
-                Your name (optional)
-                <input value={name} onChange={(e) => setName(e.target.value)} maxLength={40} />
+                Your name{mode === "Dine-in" ? " (optional)" : ""}
+                <input value={name} onChange={(e) => setName(e.target.value)} maxLength={40} autoComplete="name" aria-invalid={!!missing.name} />
+                {missing.name && <span className="m-err">Please add your name</span>}
               </label>
-              <a className="m-btn m-btn--wa m-btn--block" href={WA(orderText())} target="_blank" rel="noopener">
+              <label className="m-field">
+                Phone number{mode === "Dine-in" ? " (optional)" : ""}
+                <input value={phone} onChange={(e) => setPhone(e.target.value)} type="tel" inputMode="tel" placeholder="e.g. 868 123 4567" maxLength={20} autoComplete="tel" aria-invalid={!!missing.phone} />
+                {missing.phone && <span className="m-err">Please add a number we can reach you on</span>}
+              </label>
+              {mode === "Delivery" && (
+                <label className="m-field">
+                  Delivery address
+                  <textarea value={address} onChange={(e) => setAddress(e.target.value)} rows={2} placeholder="House number, street, area and a landmark" maxLength={200} autoComplete="street-address" aria-invalid={!!missing.address} />
+                  {missing.address && <span className="m-err">Please add your delivery address</span>}
+                  <span className="m-small">Delivery fee is confirmed on WhatsApp before your order is made.</span>
+                </label>
+              )}
+              <fieldset className="m-pay">
+                <legend>Payment method</legend>
+                {PAYMENTS[mode].map((p) => (
+                  <label key={p} className={pay === p ? "is-on" : ""}>
+                    <input type="radio" name="pay" checked={pay === p} onChange={() => setPay(p)} />
+                    {p}
+                  </label>
+                ))}
+              </fieldset>
+              {pay === "Bank deposit" && (
+                <div className="m-bank">
+                  <strong>Bank details</strong>
+                  <dl>
+                    <dt>Bank</dt>
+                    <dd>{BANK.bank}</dd>
+                    <dt>Account name</dt>
+                    <dd>{BANK.accountName}</dd>
+                    <dt>Account no.</dt>
+                    <dd>{BANK.accountNo}</dd>
+                    <dt>Branch</dt>
+                    <dd>{BANK.branch}</dd>
+                    <dt>Amount</dt>
+                    <dd>{tt(total)}{mode === "Delivery" ? " + delivery" : ""}</dd>
+                  </dl>
+                  <p>Send a photo of your deposit slip or transfer in the WhatsApp chat. We start your order once payment is confirmed.</p>
+                </div>
+              )}
+              {openNow && !openNow.open && <p className="m-small m-hint">We&apos;re closed right now ({openNow.text.replace("Closed · ", "")}). You can still send your order and we&apos;ll reply when we open.</p>}
+              <button type="button" className="m-btn m-btn--wa m-btn--block" onClick={send}>
                 <WaIcon /> Send order on WhatsApp
-              </a>
+              </button>
               <p className="m-small">
                 Demo: WhatsApp opens with your order typed out so you can see how it looks. Choose any chat (even
                 yourself). Nothing is sent to a real business.

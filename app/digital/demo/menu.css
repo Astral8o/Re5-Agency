@@ -116,7 +116,7 @@
 .m-basket li strong { color: var(--ink); font-size: 15.5px; }
 .m-note { font-style: italic; }
 .m-total { display: flex; justify-content: space-between; font-size: 18px; padding: 12px 0; }
-.m-mode { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 4px; border-radius: 999px; background: #f2f2f2; margin-bottom: 12px; }
+.m-mode { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 4px; border-radius: 999px; background: #f2f2f2; margin-bottom: 12px; }
 .m-mode button { font: inherit; font-weight: 600; padding: 10px; border-radius: 999px; border: 0; background: transparent; cursor: pointer; color: var(--muted); }
 .m-mode button.is-on { background: #111; color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
 .m-basket .m-field { margin-bottom: 12px; }
@@ -134,3 +134,21 @@
 .m-info h3 { margin: 16px 0 6px; font-size: 16px; }
 .m-info > p { margin: 0; }
 @media (prefers-reduced-motion: reduce) { .m-sheet[open] { animation: none; } }
+
+/* order details */
+.m-field textarea { font: inherit; font-size: 16px; font-weight: 400; padding: 11px 14px; border-radius: 12px; border: 1.5px solid var(--line); background: #fff; resize: vertical; }
+.m-field [aria-invalid="true"] { border-color: #d93a1f; }
+.m-err { color: #c2321a; font-size: 13px; font-weight: 600; }
+.m-field .m-small { font-weight: 400; margin: 0; }
+.m-hint { margin: 0 0 12px; }
+.m-pay { border: 0; margin: 0 0 12px; padding: 0; display: grid; gap: 8px; }
+.m-pay legend { font-size: 14px; font-weight: 600; margin-bottom: 8px; padding: 0; }
+.m-pay label { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 12px; font-size: 15px; cursor: pointer; background: #fff; }
+.m-pay label.is-on { border-color: #111; box-shadow: inset 4px 0 0 var(--sun); }
+.m-pay input { accent-color: var(--sun); width: 18px; height: 18px; margin: 0; }
+.m-bank { background: #111; color: #fff; border-radius: 14px; padding: 14px 16px; margin-bottom: 14px; font-size: 14px; }
+.m-bank strong { color: var(--sun); }
+.m-bank dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin: 10px 0; }
+.m-bank dt { color: #aaa; }
+.m-bank dd { margin: 0; font-weight: 600; }
+.m-bank p { margin: 0; color: #ddd; line-height: 1.45; }
