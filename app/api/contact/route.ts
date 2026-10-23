@@ -68,10 +68,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Contact form is not configured yet." }, { status: 500 });
   }
 
-  // Server-side only: never sent to the browser. Override with BOOKING_TO_EMAIL in Vercel.
-  // (RESEND_TO_EMAIL is deliberately not read: Vercel still holds an old value pointing at
-  // an inbox that doesn't exist.)
-  const toEmail = process.env.BOOKING_TO_EMAIL ?? "astral.ochoa@hotmail.com";
+  // Every enquiry goes to this inbox. Server-side only: never sent to the browser or shown on the site.
+  // Deliberately not read from Vercel settings, so no stale setting can redirect enquiries.
+  const toEmail = "astral.ochoa@hotmail.com";
   // re5agency.com is verified in Resend, so any address on it can send without a mailbox.
   const fromEmail = process.env.RESEND_FROM_EMAIL ?? "RE5 Agency <enquiries@re5agency.com>";
 
