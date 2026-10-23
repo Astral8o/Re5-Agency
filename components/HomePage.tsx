@@ -31,6 +31,7 @@ const OFFERS = [
     title: "Smarter Systems. Better Business Decisions.",
     body: "We implement business software, CRM, inventory management, and AI-powered automation to reduce manual work, anticipate stock needs, and make everyday operations easier.",
     cta: "See AI in Action",
+    href: "/see-ai-in-action",
   },
 ] as const;
 
@@ -46,6 +47,17 @@ export default function HomePage({ posts }: { posts: Post[] }) {
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState(false);
   const [sent, setSent] = useState(false);
+
+  // Links like /?interest=automation#contact arrive with that service already picked.
+  useEffect(() => {
+    const map: Record<string, string> = {
+      automation: "Business Systems & Automation",
+      marketing: "Marketing & Customer Growth",
+      websites: "Websites & Online Sales",
+    };
+    const pick = map[new URLSearchParams(window.location.search).get("interest") ?? ""];
+    if (pick) setPicked((p) => (p.includes(pick) ? p : [...p, pick]));
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -170,7 +182,11 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                   </span>
                   <h3>{o.title}</h3>
                   <p>{o.body}</p>
-                  <a href="#contact" className="h-btn h-btn--sm h-col-cta" onClick={() => setPicked((p) => (p.includes(o.label) ? p : [...p, o.label]))}>
+                  <a
+                    href={"href" in o ? o.href : "#contact"}
+                    className="h-btn h-btn--sm h-col-cta"
+                    onClick={"href" in o ? undefined : () => setPicked((p) => (p.includes(o.label) ? p : [...p, o.label]))}
+                  >
                     {o.cta} <span aria-hidden="true">→</span>
                   </a>
                 </div>
