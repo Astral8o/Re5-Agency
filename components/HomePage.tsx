@@ -7,9 +7,7 @@ import { PACKAGE_SETS, type Package, type PackageSet } from "./packages";
 import type { Post } from "../app/blog/posts";
 
 const SERVICES = [
-  ["Business Consulting", "Strategy, planning, and operational improvement."],
   ["Marketing & Customer Growth", "Brand development, campaigns, and customer engagement."],
-  ["Business & Administrative Support", "Administrative services, customer inquiries, and operational assistance."],
   ["Websites & Online Sales", "Websites, eCommerce, and digital experiences."],
   ["Business Systems & Automation", "CRM, business software, AI, and workflow automation."],
 ] as const;
