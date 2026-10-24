@@ -173,16 +173,35 @@ body:has(.m) { background: #fff; }
   .m-tabs button { font-size: 15.5px; padding: 9px 16px; }
 
   .m-list { max-width: var(--wrap); padding: 0 24px; }
-  .m-cat { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding-top: 34px; scroll-margin-top: 90px; }
-  .m-cat h2 { grid-column: 1 / -1; margin: 0 0 2px; font-size: 24px; }
-  .m-item { border: 1px solid var(--line); border-radius: 20px; background: #fff; transition: box-shadow .2s ease, border-color .2s ease; }
-  .m-item:hover:not(.is-out) { border-color: #d9d9d9; box-shadow: 0 8px 24px rgba(0,0,0,.08); }
-  .m-item-main { gap: 18px; padding: 18px 18px 72px; height: 100%; }
-  .m-item-name { font-size: 17.5px; }
-  .m-item-img { width: 120px; height: 120px; border-radius: 16px; }
-  .m-add, .m-step { left: 18px; right: auto; bottom: 18px; }
-  .m-foot { grid-column: 1 / -1; padding-top: 40px; }
 
   .m-basketbar { left: auto; transform: none; right: max(24px, calc((100vw - var(--wrap)) / 2 + 24px)); bottom: 24px; width: 380px; }
 }
-@media (min-width: 960px) and (prefers-reduced-motion: reduce) { .m-item { transition: none; } }
+
+/* ---------- dish cards: two per row on phones, more on wider screens ---------- */
+.m-cat { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.m-cat h2 { grid-column: 1 / -1; margin: 6px 0 4px; }
+.m-item { container-type: inline-size; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 18px; background: #fff; overflow: hidden; transition: box-shadow .2s ease; }
+.m-item:hover:not(.is-out) { box-shadow: 0 8px 22px rgba(0,0,0,.09); }
+.m-item-main { flex: 1; flex-direction: column; align-items: stretch; gap: 0; padding: 0 0 14px; }
+.m-item-img { order: -1; width: 100%; height: auto; aspect-ratio: 1; border-radius: 0; font-size: 56px; }
+.m-item-text { align-items: center; text-align: center; gap: 4px; padding: 30px 10px 0; }
+.m-item-foot { order: -1; justify-content: center; margin: 0; }
+.m-item-foot strong { font-size: 17px; }
+.m-item-name { font-size: 15px; line-height: 1.25; }
+.m-item-desc { font-size: 12.5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.m-item-foot .m-tag { font-size: 10.5px; padding: 2px 7px; }
+/* The Add button and counter sit on the bottom edge of the photo (100cqw = the card's width = the photo's height). */
+.m-add, .m-step { top: calc(100cqw - 20px); bottom: auto; left: 50%; right: auto; transform: translateX(-50%); }
+.m-add { min-height: 40px; padding: 0 22px; border: 2px solid #fff; box-shadow: 0 3px 10px rgba(0,0,0,.18); }
+.m-step { border: 2px solid #fff; box-shadow: 0 3px 10px rgba(0,0,0,.18); }
+.m-step button { width: 36px; height: 36px; }
+@media (min-width: 640px) { .m-cat { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; } }
+@media (min-width: 960px) {
+  .m-cat { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; padding-top: 34px; scroll-margin-top: 90px; }
+  .m-cat h2 { font-size: 24px; }
+  .m-item { border-radius: 20px; }
+  .m-item-name { font-size: 16px; }
+  .m-item-desc { font-size: 13px; }
+  .m-foot { padding-top: 40px; }
+}
+@media (prefers-reduced-motion: reduce) { .m-item { transition: none; } }
