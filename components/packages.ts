@@ -175,12 +175,12 @@ export const PACKAGE_SETS: PackageSet[] = [
     addons: {
       title: "Add-ons",
       intro:
-        "Add these to any website package. Each add-on has a one-time setup fee and a monthly fee that covers the software, hosting, and support, and they all work together as one system.",
+        "Add these to any website package. Each add-on is quoted based on your needs, with a one-time setup and a monthly fee that covers the software, hosting, and support, and they all work together as one system.",
       packages: [
         {
           id: "ai-chat-assistant",
           name: "AI Chat Assistant",
-          price: "TT$2,500 setup + TT$500/month",
+          price: "Custom Quote",
           tagline: "Answer Customers, Even After Hours.",
           intro: ["An AI assistant that replies to customer questions instantly, collects their details, and passes them to your team when a person is needed."],
           groups: [
@@ -201,7 +201,7 @@ export const PACKAGE_SETS: PackageSet[] = [
         {
           id: "connected-orders",
           name: "Connected Orders & Inquiries",
-          price: "TT$2,000 setup + TT$500/month",
+          price: "Custom Quote",
           tagline: "Every Message. One Place.",
           intro: ["Bring the orders and inquiries from your WhatsApp, social media, and website into one place, so nothing gets lost in the chats."],
           groups: [
@@ -221,7 +221,7 @@ export const PACKAGE_SETS: PackageSet[] = [
         {
           id: "business-dashboard",
           name: "Business Dashboard",
-          price: "TT$3,000 setup + TT$350/month",
+          price: "Custom Quote",
           demo: "/see-ai-in-action",
           tagline: "See Your Business at a Glance.",
           intro: ["A simple CRM and inventory dashboard that keeps track of your customers, orders, and stock, all in one place."],
@@ -244,12 +244,12 @@ export const PACKAGE_SETS: PackageSet[] = [
         {
           id: "connected-business-bundle",
           name: "Connected Business Bundle",
-          price: "TT$6,500 setup + TT$1,200/month",
+          price: "Custom Quote",
           wide: true,
           tagline: "Everything Connected. One System.",
           intro: [
             "Get the AI Chat Assistant, Connected Orders & Inquiries, and Business Dashboard together, set up to work as one system with your website or RE5 Digital page.",
-            "Save TT$1,000 on setup and TT$150 every month compared with buying each add-on separately.",
+            "Save compared with adding each one separately.",
           ],
           groups: [
             {
