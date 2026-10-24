@@ -124,7 +124,7 @@ export const PACKAGE_SETS: PackageSet[] = [
       {
         id: "business-website",
         name: "Business Website",
-        price: "Starting at TT$2,500 / US$368",
+        price: "Custom Quote",
         tagline: "Make a Strong First Impression Online.",
         intro: [
           "We design and build professional websites that help customers discover your business, learn about your offerings, and get in touch.",
@@ -149,7 +149,7 @@ export const PACKAGE_SETS: PackageSet[] = [
       {
         id: "ecommerce-website",
         name: "eCommerce Website",
-        price: "Starting at TT$5,500 / US$810",
+        price: "Custom Quote",
         tagline: "Make It Easier for Customers to Buy.",
         intro: ["We build online stores that allow customers to browse products, place orders, and complete purchases conveniently."],
         groups: [
@@ -262,7 +262,7 @@ export const PACKAGE_SETS: PackageSet[] = [
       ],
     },
     footnote:
-      "Website prices reflect one-time setup. USD amounts are approximate. Hosting, domain registration, payment provider fees, maintenance, and additional functionality are charged separately. Add-on monthly fees include the software and support; WhatsApp marketing message fees set by Meta are charged separately.",
+      "Business and eCommerce websites are quoted based on your needs. RE5 Digital pricing reflects one-time setup; USD amounts are approximate. Hosting, domain registration, payment provider fees, maintenance, and additional functionality are charged separately. Add-on monthly fees include the software and support; WhatsApp marketing message fees set by Meta are charged separately.",
   },
   {
     service: "Virtual Assistant",
