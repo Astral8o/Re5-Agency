@@ -39,7 +39,7 @@ export default function Article() {
       <section className="bl-hero">
         <div className="bl-hero-inner">
           <span className="bl-crumb bl-mono">
-            <a href="/blog">RE5 Insights</a> · Article {post.number}
+            <a href="/blog">RE5 Education Centre</a> · Article {post.number}
           </span>
           <h1>{post.title}</h1>
           <div className="bl-meta bl-mono">

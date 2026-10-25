@@ -6,28 +6,15 @@ import PackagesModal from "./PackagesModal";
 import { PACKAGE_SETS, type Package, type PackageSet } from "./packages";
 import type { Post } from "../app/blog/posts";
 
-const SERVICES = [
-  ["Marketing & Customer Growth", "Brand development, campaigns, and customer engagement."],
-  ["Websites & Online Sales", "Websites, eCommerce, and digital experiences."],
-  ["Virtual Assistant", "Customer messages, admin, and everyday business tasks."],
-] as const;
+// RE5 offers one service for now; every enquiry is about it.
+const SERVICE = "Websites & Online Sales";
 
-// "What We Offer" section. Each button opens the contact form with that service already picked.
+// "What We Offer" section.
 const OFFERS = [
-  {
-    label: "Marketing & Customer Growth",
-    title: "Get Seen. Attract Customers. Grow Your Business.",
-    body: "We develop marketing strategies, manage social media, and create campaigns that help businesses reach customers and increase sales.",
-  },
   {
     label: "Websites & Online Sales",
     title: "Sell Online. Answer Faster. Run It All in One Place.",
     body: "From your website or RE5 Digital page to the messages, orders, and customers it brings in, we set up everything you need to sell online and manage it from one simple dashboard.",
-  },
-  {
-    label: "Virtual Assistant",
-    title: "Your Extra Pair of Hands.",
-    body: "Focus on running your business while a trained RE5 virtual assistant handles customer messages, admin, and the day-to-day tasks that eat up your time.",
   },
 ] as const;
 
@@ -39,7 +26,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
 
   // Contact form
   const openedAt = useRef(Date.now());
-  const [picked, setPicked] = useState<string[]>([]);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState(false);
   const [sent, setSent] = useState(false);
@@ -51,7 +37,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
 
   const choosePackage = (set: PackageSet, pkg: Package) => {
     setChosen({ service: set.service, name: pkg.name, consult: pkg.cta === "Request a Consultation" });
-    setPicked((p) => (p.includes(set.service) ? p : [...p, set.service]));
     setSent(false);
     setOpenSet(null);
     requestAnimationFrame(() => {
@@ -60,17 +45,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
     });
   };
 
-  // Links like /?interest=automation#contact arrive with that service already picked.
-  useEffect(() => {
-    const map: Record<string, string> = {
-      automation: "Websites & Online Sales",
-      assistant: "Virtual Assistant",
-      marketing: "Marketing & Customer Growth",
-      websites: "Websites & Online Sales",
-    };
-    const pick = map[new URLSearchParams(window.location.search).get("interest") ?? ""];
-    if (pick) setPicked((p) => (p.includes(pick) ? p : [...p, pick]));
-  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -98,7 +72,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
           company: f.get("company"),
           email: f.get("email"),
           phone: f.get("phone"),
-          interests: picked,
+          interests: [SERVICE],
           package: chosen ? `${chosen.name} (${chosen.service})${chosen.consult ? ", consultation request" : ""}` : "",
           message: f.get("message"),
           website: f.get("website"),
@@ -114,7 +88,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
     }
   };
 
-  const toggle = (s: string) => setPicked((p) => (p.includes(s) ? p.filter((x) => x !== s) : [...p, s]));
 
   return (
     <div className="h" id="top">
@@ -125,7 +98,8 @@ export default function HomePage({ posts }: { posts: Post[] }) {
         </a>
         <nav className="h-links" aria-label="Main">
           <a href="#services">Services</a>
-          <a href="#blog">Blog</a>
+          <a href="/about">About</a>
+          <a href="#blog">Education Centre</a>
           <a href="#contact" className="h-btn h-btn--sm">
             Let&rsquo;s Talk Business
           </a>
@@ -137,7 +111,8 @@ export default function HomePage({ posts }: { posts: Post[] }) {
       {menu && (
         <nav id="h-menu" className="h-menu" aria-label="Mobile">
           <a href="#services" onClick={() => setMenu(false)}>Services</a>
-          <a href="#blog" onClick={() => setMenu(false)}>Blog</a>
+          <a href="/about" onClick={() => setMenu(false)}>About</a>
+          <a href="#blog" onClick={() => setMenu(false)}>Education Centre</a>
           <a href="#contact" className="h-btn" onClick={() => setMenu(false)}>
             Let&rsquo;s Talk Business →
           </a>
@@ -172,7 +147,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
               The Expertise to Make It Happen.
             </h2>
           </div>
-          <div className="h-offers">
+          <div className="h-offers h-offers--one">
             {OFFERS.map((o, i) => (
               <article key={o.label} className="h-offer">
                 <div className="h-offer-top">
@@ -206,11 +181,14 @@ export default function HomePage({ posts }: { posts: Post[] }) {
         <section id="blog" className="h-section h-section--rule" aria-labelledby="h-blog-title">
           <div className="h-head h-head--row">
             <div>
-              <span className="h-mono">RE5 Insights</span>
-              <h2 id="h-blog-title" className="h-h2">Latest from RE5</h2>
+              <span className="h-mono">RE5 Education Centre</span>
+              <h2 id="h-blog-title" className="h-h2">Knowledge to Help Your Business Move Forward</h2>
+              <p className="h-edu-intro">
+                Explore free resources, practical guides, emerging technologies, and opportunities to help your business navigate digital transformation and make informed decisions about its future.
+              </p>
             </div>
             <a href="/blog" className="h-link">
-              View all posts <span aria-hidden="true">→</span>
+              Explore the Education Centre <span aria-hidden="true">→</span>
             </a>
           </div>
           <div className="h-posts">
@@ -276,15 +254,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                       <input name="phone" type="tel" autoComplete="tel" />
                     </label>
                   </div>
-                  <fieldset className="h-chips">
-                    <legend>I&rsquo;m interested in</legend>
-                    {SERVICES.map(([t]) => (
-                      <button key={t} type="button" aria-pressed={picked.includes(t)} className="h-chip" onClick={() => toggle(t)}>
-                        {picked.includes(t) ? "✓ " : ""}
-                        {t}
-                      </button>
-                    ))}
-                  </fieldset>
                   <label>
                     {chosen?.consult ? "Tell us about your business and what you'd like to connect" : "Tell us about your plans"}
                     <textarea name="message" rows={4} />
@@ -312,7 +281,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                     className="h-btn h-btn--ghost"
                     onClick={() => {
                       setSent(false);
-                      setPicked([]);
                       setChosen(null);
                       openedAt.current = Date.now();
                     }}
@@ -337,15 +305,13 @@ export default function HomePage({ posts }: { posts: Post[] }) {
           </div>
           <div className="h-foot-col">
             <span className="h-mono">Services</span>
-            {SERVICES.map(([t]) => (
-              <a key={t} href="#services">
-                {t}
-              </a>
-            ))}
+            <a href="#services">{SERVICE}</a>
+            <a href="/digital/demo">RE5 Digital</a>
           </div>
           <div className="h-foot-col">
             <span className="h-mono">Company</span>
-            <a href="/blog">Blog</a>
+            <a href="/about">About</a>
+            <a href="/blog">Education Centre</a>
             <a href="#contact">Contact</a>
           </div>
           <div className="h-foot-col">

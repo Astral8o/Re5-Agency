@@ -14,7 +14,7 @@ export function Mark({ color = "#111111" }: { color?: string }) {
   );
 }
 
-// Header, closing call to action and footer shared by the blog pages, matching the homepage.
+// Header, closing call to action and footer shared by the Education Centre (blog), About and article pages, matching the homepage.
 export default function BlogChrome({ children }: { children: ReactNode }) {
   return (
     <div className="bl">
@@ -24,7 +24,8 @@ export default function BlogChrome({ children }: { children: ReactNode }) {
         </a>
         <nav className="bl-links">
           <a href="/#services">Services</a>
-          <a href="/blog">Blog</a>
+          <a href="/about">About</a>
+          <a href="/blog">Education Centre</a>
           <a href="/#contact" className="bl-cta">
             Let&rsquo;s Talk Business
           </a>

@@ -233,3 +233,7 @@
 .pk-addons > .pk-intro { max-width: 760px; margin-bottom: 6px; }
 .pk-addons .pk-price { background: var(--lav); border-radius: 16px; }
 .pk-addons .pk-card--wide .pk-price { background: var(--coral); }
+
+/* ---------- single offer ---------- */
+.h-offers--one { grid-template-columns: 1fr; max-width: 860px; }
+.h-edu-intro { margin: 0; max-width: 40em; font-size: clamp(16px, 1.3vw, 18px); line-height: 1.6; color: var(--muted); }

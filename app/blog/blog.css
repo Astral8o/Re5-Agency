@@ -65,3 +65,4 @@
 .bl-foot a { text-decoration: underline; text-underline-offset: 3px; }
 .bl-foot a:hover { color: #ff6a3d; }
 
+.bl-index-intro { margin: 0; max-width: 40em; font-size: clamp(16px, 1.4vw, 19px); line-height: 1.6; color: #55525c; }

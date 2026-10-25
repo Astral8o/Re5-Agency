@@ -3,8 +3,8 @@ import BlogChrome, { Mark } from "./Chrome";
 import { POSTS, postUrl } from "./posts";
 
 export const metadata: Metadata = {
-  title: "Blog | RE5 Agency",
-  description: "RE5 Insights: practical ideas on digital transformation and business growth for Caribbean businesses.",
+  title: "RE5 Education Centre | RE5 Agency",
+  description: "Explore free resources, practical guides, emerging technologies, and opportunities to help your business navigate digital transformation and make informed decisions about its future.",
   alternates: { canonical: "/blog" },
 };
 
@@ -14,9 +14,10 @@ export default function BlogIndex() {
       <main className="bl-index">
         <div className="bl-index-head">
           <span className="bl-mono" style={{ color: "#55525C" }}>
-            RE5 Insights
+            RE5 Education Centre
           </span>
-          <h1>Latest from RE5</h1>
+          <h1>Knowledge to Help Your Business Move Forward</h1>
+          <p className="bl-index-intro">Explore free resources, practical guides, emerging technologies, and opportunities to help your business navigate digital transformation and make informed decisions about its future.</p>
         </div>
         <div className="bl-grid">
           {POSTS.map((p) => (
