@@ -124,7 +124,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
         <section className="h-hero h-pattern" aria-labelledby="h-hero-title">
           <div className="h-panel h-hero-panel">
             <div className="h-hero-main">
-              <span className="h-mono">RE5 Agency / Digital Transformation</span>
               <h1 id="h-hero-title" className="h-hero-title">
                 Helping Caribbean Businesses <span className="h-mark">Thrive in the Digital Economy.</span>
               </h1>
