@@ -118,13 +118,6 @@ export default function PackagesModal({
             ))}
           </div>
           <div className="pk-grid">{set.packages.map((p, i) => card(set, p, String(i + 1).padStart(2, "0") + "."))}</div>
-          {set.addons && (
-            <div className="pk-addons">
-              <h3 className="pk-sub">{set.addons.title}</h3>
-              <p className="pk-intro">{set.addons.intro}</p>
-              <div className="pk-grid">{set.addons.packages.map((p) => card(set, p, "Add-on"))}</div>
-            </div>
-          )}
           <p className="pk-foot">{set.footnote}</p>
         </div>
       )}

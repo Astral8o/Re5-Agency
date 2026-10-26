@@ -282,3 +282,18 @@
 @media (prefers-reduced-motion: reduce) { .h-build, .h-addon { transition: none; } }
 .pk-card { scroll-margin-top: 84px; transition: box-shadow .3s ease; }
 .pk-card.is-focus { box-shadow: 0 0 0 4px var(--coral); }
+
+/* ---------- Websites & Online Sales: RE5 Digital, then the two website packages ---------- */
+.h-offer-top .h-build-price { margin-left: auto; }
+.h-svc-text > p { margin: 0; }
+.h-sites { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2vw, 24px); margin-top: clamp(16px, 2vw, 24px); }
+.h-site { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; border: var(--line); border-radius: var(--r); background: var(--paper); box-shadow: var(--shadow); padding: clamp(22px, 3vw, 36px); }
+.h-site:nth-child(1) { background: var(--lav-soft); }
+.h-site .h-offer-top { padding: 0 0 16px; width: 100%; border-bottom: 1px solid rgba(17,17,17,.25); }
+.h-site h3 { font-size: clamp(24px, 2.2vw, 32px); line-height: 1.12; letter-spacing: -0.03em; font-weight: 500; text-wrap: balance; }
+.h-site p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--muted); }
+.h-site .h-btn { margin-top: auto; }
+@media (max-width: 900px) { .h-sites { grid-template-columns: 1fr; } }
+.h-offer-top { flex-wrap: wrap; }
+.h-build-price { white-space: nowrap; }
+@media (max-width: 600px) { .h-offer-top .h-build-price { font-size: 12.5px; padding: 4px 10px; } .h-offer-top .h-mono { white-space: nowrap; } }

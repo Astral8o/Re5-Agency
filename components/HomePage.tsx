@@ -10,17 +10,9 @@ import type { Post } from "../app/blog/posts";
 // RE5 offers one service for now; every enquiry is about it.
 const SERVICE = "Websites & Online Sales";
 
-// "What We Offer" shows the same packages as the pop-up, so names and prices always match.
+// "What We Offer" uses the pop-up's own packages and wording, so the two always match.
 const WEB = PACKAGE_SETS.find((x) => x.service === SERVICE)!;
-const SHORT: Record<string, string> = {
-  "re5-digital": "Interactive menu or order page with a link and QR code. Orders arrive straight in your WhatsApp.",
-  "business-website": "A professional, mobile-friendly website that helps customers find you, trust you and get in touch.",
-  "ecommerce-website": "An online store with product catalogue, checkout and payments, so customers can buy any time.",
-  "ai-chat-assistant": "Answers customer questions instantly, even after hours.",
-  "connected-orders": "WhatsApp, Instagram, Facebook and your website in one place.",
-  "business-dashboard": "Customers, orders and stock at a glance.",
-  "connected-business-bundle": "All three add-ons, set up to work as one system.",
-};
+const [DIGITAL, ...SITES] = WEB.packages;
 
 const num = (i: number) => String(i + 1).padStart(2, "0");
 
@@ -151,28 +143,29 @@ export default function HomePage({ posts }: { posts: Post[] }) {
           <div className="h-head">
             <span className="h-mono">What We Offer</span>
             <h2 id="h-five-title" className="h-h2">
-              The Expertise to Make It Happen.
+              {WEB.title}
             </h2>
+            {WEB.intro.map((t) => (
+              <p key={t} className="h-edu-intro">
+                {t}
+              </p>
+            ))}
           </div>
+
           <article className="h-svc">
             <div className="h-svc-text">
               <div className="h-offer-top">
                 <span className="h-offer-n">01</span>
-                <span className="h-mono">{SERVICE}</span>
+                <span className="h-mono">{DIGITAL.name}</span>
+                <span className="h-build-price">{DIGITAL.price}</span>
               </div>
-              <h3>Sell Online. Answer Faster. Run It All in One Place.</h3>
-              <p>
-                From your website or RE5 Digital page to the messages, orders and customers it brings in, we set up
-                everything you need to sell online and manage it from one simple dashboard.
-              </p>
-              <ul className="h-svc-steps">
-                <li><b>1</b> Customers find you through your link, QR code or website.</li>
-                <li><b>2</b> They browse, choose and order in a few taps.</li>
-                <li><b>3</b> The order lands in your WhatsApp, ready to confirm.</li>
-              </ul>
+              <h3>{DIGITAL.tagline}</h3>
+              {DIGITAL.intro.map((t) => (
+                <p key={t}>{t}</p>
+              ))}
               <div className="h-col-actions">
-                <button type="button" className="h-btn h-btn--sm" onClick={() => openPackages()}>
-                  See all packages <span aria-hidden="true">→</span>
+                <button type="button" className="h-btn h-btn--sm" onClick={() => openPackages(DIGITAL.id)}>
+                  See what&rsquo;s included <span aria-hidden="true">→</span>
                 </button>
                 <a href="/digital/demo" target="_blank" rel="noopener" className="h-link">
                   Try the live demo <span aria-hidden="true">↗</span>
@@ -182,39 +175,23 @@ export default function HomePage({ posts }: { posts: Post[] }) {
             <DemoPhone />
           </article>
 
-          <div className="h-builds">
-            <span className="h-mono">Packages</span>
-            <div className="h-builds-grid">
-              {WEB.packages.map((p, i) => (
-                <button key={p.id} type="button" className="h-build" onClick={() => openPackages(p.id)}>
-                  <span className="h-build-top">
-                    <span className="h-offer-n">{num(i)}</span>
-                    <span className="h-build-price">{p.price}</span>
-                  </span>
-                  <h4>{p.name}</h4>
-                  <p>{SHORT[p.id]}</p>
-                  <span className="h-build-more">
-                    See what&rsquo;s included <span aria-hidden="true">→</span>
-                  </span>
-                </button>
-              ))}
-            </div>
-            {WEB.addons && (
-              <>
-                <span className="h-mono">Add-ons for any package</span>
-                <div className="h-addons">
-                  {WEB.addons.packages.map((p) => (
-                    <button key={p.id} type="button" className={`h-addon ${p.wide ? "h-addon--bundle" : ""}`} onClick={() => openPackages(p.id)}>
-                      <h4>{p.name}</h4>
-                      <p>{SHORT[p.id]}</p>
-                      <span className="h-build-more">
-                        Details <span aria-hidden="true">→</span>
-                      </span>
-                    </button>
-                  ))}
+          <div className="h-sites">
+            {SITES.map((p, i) => (
+              <article key={p.id} className="h-site">
+                <div className="h-offer-top">
+                  <span className="h-offer-n">{num(i + 1)}</span>
+                  <span className="h-mono">{p.name}</span>
+                  <span className="h-build-price">{p.price}</span>
                 </div>
-              </>
-            )}
+                <h3>{p.tagline}</h3>
+                {p.intro.map((t) => (
+                  <p key={t}>{t}</p>
+                ))}
+                <button type="button" className="h-btn h-btn--sm" onClick={() => openPackages(p.id)}>
+                  See what&rsquo;s included <span aria-hidden="true">→</span>
+                </button>
+              </article>
+            ))}
           </div>
         </section>
 
