@@ -10,17 +10,17 @@ import type { Post } from "../app/blog/posts";
 // RE5 offers one service for now; every enquiry is about it.
 const SERVICE = "Websites & Online Sales";
 
-// "What We Offer": the services inside Websites & Online Sales.
-const BUILDS = [
-  ["Business Websites", "Professional, mobile-friendly websites that help customers find you, trust you and get in touch."],
-  ["Online Stores", "eCommerce stores with product catalogues, checkout and payments, so customers can buy any time."],
-  ["RE5 Digital", "Interactive menus and order pages with a link and QR code. Orders arrive straight in your WhatsApp."],
-] as const;
-const ADDONS = [
-  ["AI Chat Assistant", "Answers customer questions instantly, even after hours."],
-  ["Connected Orders & Inquiries", "WhatsApp, Instagram, Facebook and your website in one place."],
-  ["Business Dashboard", "Customers, orders and stock at a glance."],
-] as const;
+// "What We Offer" shows the same packages as the pop-up, so names and prices always match.
+const WEB = PACKAGE_SETS.find((x) => x.service === SERVICE)!;
+const SHORT: Record<string, string> = {
+  "re5-digital": "Interactive menu or order page with a link and QR code. Orders arrive straight in your WhatsApp.",
+  "business-website": "A professional, mobile-friendly website that helps customers find you, trust you and get in touch.",
+  "ecommerce-website": "An online store with product catalogue, checkout and payments, so customers can buy any time.",
+  "ai-chat-assistant": "Answers customer questions instantly, even after hours.",
+  "connected-orders": "WhatsApp, Instagram, Facebook and your website in one place.",
+  "business-dashboard": "Customers, orders and stock at a glance.",
+  "connected-business-bundle": "All three add-ons, set up to work as one system.",
+};
 
 const num = (i: number) => String(i + 1).padStart(2, "0");
 
@@ -36,6 +36,11 @@ export default function HomePage({ posts }: { posts: Post[] }) {
 
   // Packages pop-up and the package chosen from it
   const [openSet, setOpenSet] = useState<PackageSet | null>(null);
+  const [focusPkg, setFocusPkg] = useState<string | undefined>();
+  const openPackages = (id?: string) => {
+    setFocusPkg(id);
+    setOpenSet(WEB);
+  };
   const [chosen, setChosen] = useState<{ service: string; name: string; consult: boolean } | null>(null);
   const nameRef = useRef<HTMLInputElement | null>(null);
 
@@ -166,8 +171,8 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                 <li><b>3</b> The order lands in your WhatsApp, ready to confirm.</li>
               </ul>
               <div className="h-col-actions">
-                <button type="button" className="h-btn h-btn--sm" onClick={() => setOpenSet(PACKAGE_SETS.find((x) => x.service === SERVICE) ?? null)}>
-                  See Packages <span aria-hidden="true">→</span>
+                <button type="button" className="h-btn h-btn--sm" onClick={() => openPackages()}>
+                  See all packages <span aria-hidden="true">→</span>
                 </button>
                 <a href="/digital/demo" target="_blank" rel="noopener" className="h-link">
                   Try the live demo <span aria-hidden="true">↗</span>
@@ -178,25 +183,38 @@ export default function HomePage({ posts }: { posts: Post[] }) {
           </article>
 
           <div className="h-builds">
-            <span className="h-mono">What we build</span>
+            <span className="h-mono">Packages</span>
             <div className="h-builds-grid">
-              {BUILDS.map(([t, d], i) => (
-                <div key={t} className="h-build">
-                  <span className="h-offer-n">{num(i)}</span>
-                  <h4>{t}</h4>
-                  <p>{d}</p>
-                </div>
+              {WEB.packages.map((p, i) => (
+                <button key={p.id} type="button" className="h-build" onClick={() => openPackages(p.id)}>
+                  <span className="h-build-top">
+                    <span className="h-offer-n">{num(i)}</span>
+                    <span className="h-build-price">{p.price}</span>
+                  </span>
+                  <h4>{p.name}</h4>
+                  <p>{SHORT[p.id]}</p>
+                  <span className="h-build-more">
+                    See what&rsquo;s included <span aria-hidden="true">→</span>
+                  </span>
+                </button>
               ))}
             </div>
-            <span className="h-mono">Add-ons that work together</span>
-            <div className="h-addons">
-              {ADDONS.map(([t, d]) => (
-                <div key={t} className="h-addon">
-                  <h4>{t}</h4>
-                  <p>{d}</p>
+            {WEB.addons && (
+              <>
+                <span className="h-mono">Add-ons for any package</span>
+                <div className="h-addons">
+                  {WEB.addons.packages.map((p) => (
+                    <button key={p.id} type="button" className={`h-addon ${p.wide ? "h-addon--bundle" : ""}`} onClick={() => openPackages(p.id)}>
+                      <h4>{p.name}</h4>
+                      <p>{SHORT[p.id]}</p>
+                      <span className="h-build-more">
+                        Details <span aria-hidden="true">→</span>
+                      </span>
+                    </button>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </>
+            )}
           </div>
         </section>
 
@@ -368,7 +386,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
         </div>
       </footer>
 
-      <PackagesModal set={openSet} onClose={() => setOpenSet(null)} onChoose={choosePackage} />
+      <PackagesModal set={openSet} focus={focusPkg} onClose={() => setOpenSet(null)} onChoose={choosePackage} />
 
       {showSticky && !menu && !openSet && (
         <div className="h-sticky">

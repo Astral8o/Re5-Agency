@@ -268,3 +268,17 @@
 .h-soon-card { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; background: var(--paper); border: 1.5px dashed var(--ink); border-radius: var(--r); padding: clamp(26px, 4vw, 48px); }
 .h-soon-card h2 { margin: 0; font-size: clamp(28px, 3.4vw, 46px); line-height: 1.08; letter-spacing: -0.035em; font-weight: 500; }
 .h-soon-card p { margin: 0; max-width: 34em; font-size: 17px; line-height: 1.6; color: var(--muted); }
+.h-build, .h-addon { font: inherit; color: inherit; text-align: left; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease; }
+.h-build:hover, .h-addon:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+.h-build:focus-visible, .h-addon:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
+.h-build-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.h-build-price { font-size: 14px; font-weight: 700; padding: 5px 12px; border: 1.5px solid var(--ink); border-radius: 999px; background: var(--coral); }
+.h-build-more { margin-top: auto; padding-top: 6px; font-weight: 600; font-size: 15px; text-decoration: underline; text-decoration-color: var(--coral); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.h-addons { grid-template-columns: repeat(4, 1fr); }
+.h-addon { background: var(--paper); }
+.h-addon--bundle { border-style: solid; background: var(--lav-soft); }
+@media (max-width: 1100px) { .h-addons { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 900px) { .h-addons { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .h-build, .h-addon { transition: none; } }
+.pk-card { scroll-margin-top: 84px; transition: box-shadow .3s ease; }
+.pk-card.is-focus { box-shadow: 0 0 0 4px var(--coral); }

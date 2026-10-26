@@ -6,10 +6,12 @@ import type { Package, PackageSet } from "./packages";
 // Native <dialog>: traps focus, closes on Esc, and is announced as a dialog by screen readers.
 export default function PackagesModal({
   set,
+  focus,
   onClose,
   onChoose,
 }: {
   set: PackageSet | null;
+  focus?: string; // package id to scroll to when the pop-up opens
   onClose: () => void;
   onChoose: (set: PackageSet, pkg: Package) => void;
 }) {
@@ -22,15 +24,23 @@ export default function PackagesModal({
       d.showModal();
       d.scrollTop = 0;
       document.documentElement.style.overflow = "hidden";
+      if (focus) {
+        const el = d.querySelector<HTMLElement>(`#pk-${focus}`);
+        if (el) {
+          el.scrollIntoView({ block: "start" });
+          el.classList.add("is-focus");
+          setTimeout(() => el.classList.remove("is-focus"), 1600);
+        }
+      }
     }
     if (!set && d.open) d.close();
     return () => {
       document.documentElement.style.overflow = "";
     };
-  }, [set]);
+  }, [set, focus]);
 
   const card = (set: PackageSet, p: Package, label: string) => (
-              <article key={p.id} className={`pk-card ${p.wide ? "pk-card--wide" : ""}`}>
+              <article key={p.id} id={`pk-${p.id}`} className={`pk-card ${p.wide ? "pk-card--wide" : ""}`}>
                 <span className="h-mono pk-num">{label}</span>
                 <h3>{p.name}</h3>
                 <p className="pk-price">{p.price}</p>
