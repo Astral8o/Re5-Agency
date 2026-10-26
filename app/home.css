@@ -237,3 +237,5 @@
 /* ---------- single offer ---------- */
 .h-offers--one { grid-template-columns: 1fr; max-width: 860px; }
 .h-edu-intro { margin: 0; max-width: 40em; font-size: clamp(16px, 1.3vw, 18px); line-height: 1.6; color: var(--muted); }
+.h-soon { margin: 0; align-self: flex-start; width: fit-content; display: inline-flex; align-items: center; gap: 10px; padding: 8px 16px; border: 1.5px dashed var(--ink); border-radius: 999px; font-family: var(--font-mono), monospace; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+.h-soon span { color: var(--coral); }

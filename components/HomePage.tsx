@@ -175,6 +175,9 @@ export default function HomePage({ posts }: { posts: Post[] }) {
               </article>
             ))}
           </div>
+          <p className="h-soon">
+            <span aria-hidden="true">✦</span> More services coming soon.
+          </p>
         </section>
 
         {/* ---------------- Blog ---------------- */}
