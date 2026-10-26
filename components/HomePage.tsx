@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Logo, Mark } from "./brand";
 import DemoLaptop from "./DemoLaptop";
 import DemoPhone from "./DemoPhone";
-import { FAQ } from "./faq";
+import { FAQ_GROUPS } from "./faq";
 import PackagesModal from "./PackagesModal";
 import { PACKAGE_SETS, type Package, type PackageSet } from "./packages";
 import type { Post } from "../app/blog/posts";
@@ -36,6 +36,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
   // Packages pop-up and the package chosen from it
   const [openSet, setOpenSet] = useState<PackageSet | null>(null);
   const [focusPkg, setFocusPkg] = useState<string | undefined>();
+  const [faqTab, setFaqTab] = useState(FAQ_GROUPS[0].id);
   const openPackages = (id?: string) => {
     setFocusPkg(id);
     setOpenSet(WEB);
@@ -229,12 +230,21 @@ export default function HomePage({ posts }: { posts: Post[] }) {
               <p className="h-edu-intro">Everything you need to know before we get started.</p>
             </div>
             <div className="h-faq-list">
-              {FAQ.map((f) => (
-                <details key={f.q} className="h-faq-item">
+              <div className="h-faq-tabs" role="tablist" aria-label="FAQ topics">
+                {FAQ_GROUPS.map((g) => (
+                  <button key={g.id} type="button" role="tab" id={`faq-tab-${g.id}`} aria-selected={faqTab === g.id} aria-controls="faq-panel" className={faqTab === g.id ? "on" : ""} onClick={() => setFaqTab(g.id)}>
+                    {g.label}
+                  </button>
+                ))}
+              </div>
+              <div id="faq-panel" role="tabpanel" aria-labelledby={`faq-tab-${faqTab}`} className="h-faq-panel">
+              {FAQ_GROUPS.find((g) => g.id === faqTab)!.items.map((f) => (
+                <details key={faqTab + f.q} className="h-faq-item">
                   <summary>{f.q}</summary>
                   <p>{f.a}</p>
                 </details>
               ))}
+              </div>
               <a href="#contact" className="h-link h-faq-more">
                 Still have questions? Let&rsquo;s talk business <span aria-hidden="true">→</span>
               </a>
