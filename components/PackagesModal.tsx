@@ -11,11 +11,13 @@ export default function PackagesModal({
   onChoose,
 }: {
   set: PackageSet | null;
-  focus?: string; // package id to scroll to when the pop-up opens
+  focus?: string; // package id: show only this package
   onClose: () => void;
   onChoose: (set: PackageSet, pkg: Package) => void;
 }) {
   const ref = useRef<HTMLDialogElement | null>(null);
+  // A package id shows just that package; no id shows the whole set.
+  const one = focus ? set?.packages.find((p) => p.id === focus) : undefined;
 
   useEffect(() => {
     const d = ref.current;
@@ -24,14 +26,6 @@ export default function PackagesModal({
       d.showModal();
       d.scrollTop = 0;
       document.documentElement.style.overflow = "hidden";
-      if (focus) {
-        const el = d.querySelector<HTMLElement>(`#pk-${focus}`);
-        if (el) {
-          el.scrollIntoView({ block: "start" });
-          el.classList.add("is-focus");
-          setTimeout(() => el.classList.remove("is-focus"), 1600);
-        }
-      }
     }
     if (!set && d.open) d.close();
     return () => {
@@ -89,8 +83,9 @@ export default function PackagesModal({
   return (
     <dialog
       ref={ref}
-      className="pk"
-      aria-labelledby="pk-title"
+      className={`pk ${one ? "pk--one" : ""}`}
+      aria-labelledby={one ? undefined : "pk-title"}
+      aria-label={one ? `${one.name}: what's included` : undefined}
       onClose={() => {
         document.documentElement.style.overflow = "";
         onClose();
@@ -103,11 +98,15 @@ export default function PackagesModal({
       {set && (
         <div className="pk-panel">
           <div className="pk-top">
-            <span className="h-mono">Packages · {set.title}</span>
+            <span className="h-mono">{one ? `What's included · ${one.name}` : `Packages · ${set.title}`}</span>
             <button type="button" className="pk-close" onClick={onClose} aria-label="Close packages">
               ✕
             </button>
           </div>
+          {one ? (
+            <div className="pk-grid pk-grid--one">{card(set, one, set.title)}</div>
+          ) : (
+          <>
           <div className="pk-head">
             <h2 id="pk-title">{set.title}</h2>
             <p className="pk-headline">{set.headline}</p>
@@ -118,6 +117,8 @@ export default function PackagesModal({
             ))}
           </div>
           <div className="pk-grid">{set.packages.map((p, i) => card(set, p, String(i + 1).padStart(2, "0") + "."))}</div>
+          </>
+          )}
           <p className="pk-foot">{set.footnote}</p>
         </div>
       )}

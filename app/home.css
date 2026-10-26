@@ -327,3 +327,6 @@
 .h-faq-tabs button.on { background: var(--ink); color: #fff; box-shadow: 3px 3px 0 var(--coral); }
 .h-faq-tabs button:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
 .h-faq-panel { display: flex; flex-direction: column; gap: 12px; }
+.pk.pk--one { width: min(720px, calc(100vw - 32px)); }
+@media (max-width: 600px) { .pk.pk--one { width: calc(100vw - 16px); } }
+.pk-grid--one { grid-template-columns: 1fr; }

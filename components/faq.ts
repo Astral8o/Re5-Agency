@@ -32,6 +32,9 @@ export const FAQ_GROUPS: { id: string; label: string; items: QA[] }[] = [
     id: "general",
     label: "General",
     items: [
+      { q: "What is RE5 Agency?", a: "RE5 Agency is a Caribbean digital agency. We help businesses of every size get online, reach more customers and sell more, starting with websites, online stores and RE5 Digital pages." },
+      { q: "What kinds of businesses do you work with?", a: "Small and growing businesses of all kinds, from restaurants, bars and bakeries to salons, boutiques, service providers and online sellers. If you have customers to reach, we can help." },
+      { q: "How do I get started?", a: "Send us a message through the contact form or tap Let's Talk Business. We'll set up a free consultation to learn about your business and recommend the right solution." },
       { q: "I don't have a logo, photos or wording yet. Can you still help?", a: "Yes. We work with what you have and guide you on the photos and information we need. If you're starting from scratch, we'll talk through the options in your consultation." },
       { q: "What do you need from me to get started?", a: "Your business details, your logo if you have one, photos, and your menu, services or product list with prices. We'll send you a simple checklist so nothing is missed." },
       { q: "How do I pay RE5?", a: "We take a 50% deposit to begin and the remaining 50% at launch. Payment is by bank transfer." },
