@@ -60,7 +60,7 @@
 .h-hero-panel { max-width: 1240px; margin: 0 auto; }
 .h-hero-main { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; padding: clamp(24px, 4vw, 56px); }
 .h-hero-main > .h-mono { width: 100%; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
-.h-hero-title { font-size: clamp(40px, 6vw, 84px); line-height: 1.02; letter-spacing: -0.04em; font-weight: 500; text-wrap: balance; }
+.h-hero-title { font-size: clamp(40px, 6vw, 84px); line-height: 1.12; letter-spacing: -0.04em; font-weight: 500; text-wrap: balance; }
 .h-hero-sub { margin: 0; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.6; color: var(--muted); max-width: 36em; }
 .h-index { display: flex; flex-direction: column; gap: 14px; padding: clamp(24px, 3vw, 40px) 24px; background: var(--lav-soft); border-radius: 0 var(--r) var(--r) 0; }
 .h-index > .h-mono { padding-bottom: 14px; border-bottom: 1px solid var(--ink); }

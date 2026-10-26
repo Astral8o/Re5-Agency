@@ -9,7 +9,7 @@ const BUSINESS_JSON_LD = {
   url: "https://www.re5agency.com",
   image: "https://www.re5agency.com/og-image.jpg?v=2",
   description:
-    "RE5 helps Caribbean businesses grow online and sell more through professional websites, e-commerce solutions, and interactive ordering platforms.",
+    "RE5 helps Caribbean businesses of every size thrive in the digital economy with the knowledge, tools and support to reach more customers and grow with confidence.",
   areaServed: "Caribbean",
   address: { "@type": "PostalAddress", addressCountry: "TT" },
 };

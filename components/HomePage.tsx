@@ -124,13 +124,12 @@ export default function HomePage({ posts }: { posts: Post[] }) {
         <section className="h-hero h-pattern" aria-labelledby="h-hero-title">
           <div className="h-panel h-hero-panel">
             <div className="h-hero-main">
-              <span className="h-mono">RE5 Agency / Business Consulting</span>
+              <span className="h-mono">RE5 Agency / Digital Transformation</span>
               <h1 id="h-hero-title" className="h-hero-title">
-                More Customers. Better Operations. <span className="h-mark">More Room to Grow.</span>
+                Helping Caribbean Businesses <span className="h-mark">Thrive in the Digital Economy.</span>
               </h1>
               <p className="h-hero-sub">
-                RE5 helps Caribbean businesses grow online and sell more through professional websites, e-commerce
-                solutions, and interactive ordering platforms.
+                RE5 gives businesses of every size the knowledge, tools and support to adopt digital technology, reach more customers and grow with confidence.
               </p>
               <a href="#contact" className="h-btn h-btn--lg">
                 Let&rsquo;s Talk Business <span aria-hidden="true">→</span>
