@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Logo, Mark } from "./brand";
 import DemoLaptop from "./DemoLaptop";
 import DemoPhone from "./DemoPhone";
+import { FAQ } from "./faq";
 import PackagesModal from "./PackagesModal";
 import { PACKAGE_SETS, type Package, type PackageSet } from "./packages";
 import type { Post } from "../app/blog/posts";
@@ -214,6 +215,30 @@ export default function HomePage({ posts }: { posts: Post[] }) {
             <a href="#contact" className="h-link">
               Tell us what your business needs <span aria-hidden="true">→</span>
             </a>
+          </div>
+        </section>
+
+        {/* ---------------- FAQ ---------------- */}
+        <section id="faq" className="h-section" aria-labelledby="h-faq-title">
+          <div className="h-faq">
+            <div className="h-head">
+              <span className="h-mono">FAQ</span>
+              <h2 id="h-faq-title" className="h-h2">
+                Questions, Answered.
+              </h2>
+              <p className="h-edu-intro">Everything you need to know before we get started.</p>
+            </div>
+            <div className="h-faq-list">
+              {FAQ.map((f) => (
+                <details key={f.q} className="h-faq-item">
+                  <summary>{f.q}</summary>
+                  <p>{f.a}</p>
+                </details>
+              ))}
+              <a href="#contact" className="h-link h-faq-more">
+                Still have questions? Let&rsquo;s talk business <span aria-hidden="true">→</span>
+              </a>
+            </div>
           </div>
         </section>
 
