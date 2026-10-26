@@ -198,9 +198,21 @@ export default function HomePage({ posts }: { posts: Post[] }) {
               ))}
             </div>
           </div>
-          <p className="h-soon">
-            <span aria-hidden="true">✦</span> More services coming soon.
-          </p>
+        </section>
+
+        {/* ---------------- Coming soon ---------------- */}
+        <section className="h-soon-band h-pattern" aria-labelledby="h-soon-title">
+          <div className="h-soon-card">
+            <span className="h-mono">On the way</span>
+            <h2 id="h-soon-title">More Services Coming Soon.</h2>
+            <p>
+              We&rsquo;re starting with websites and online sales, with more ways to help Caribbean businesses grow
+              on the way.
+            </p>
+            <a href="#contact" className="h-link">
+              Tell us what your business needs <span aria-hidden="true">→</span>
+            </a>
+          </div>
         </section>
 
         {/* ---------------- Blog ---------------- */}
