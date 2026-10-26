@@ -12,6 +12,7 @@ export type Package = {
   after?: { title?: string; text: string }[];
   cta: "Get Started" | "Request a Consultation";
   demo?: string; // optional link to a live demo
+  fine?: string; // fine print shown when this package is viewed on its own
   wide?: boolean;
 };
 export type PackageSet = {
@@ -35,6 +36,7 @@ export const PACKAGE_SETS: PackageSet[] = [
     packages: [
       {
         id: "re5-digital",
+        fine: "Price reflects one-time setup and publishing; the USD amount is approximate. Hosting and menu or price updates are covered by the RE5 Care Plan. Your own domain name is optional and paid separately.",
         name: "RE5 Digital",
         price: "Starting at TT$350 / US$52",
         demo: "/digital/demo",
@@ -61,6 +63,7 @@ export const PACKAGE_SETS: PackageSet[] = [
       },
       {
         id: "business-website",
+        fine: "Quoted based on your needs. Hosting, domain registration, maintenance, and additional pages or functionality are charged separately.",
         name: "Business Website",
         price: "Custom Quote",
         tagline: "Make a Strong First Impression Online.",
@@ -86,6 +89,7 @@ export const PACKAGE_SETS: PackageSet[] = [
       },
       {
         id: "ecommerce-website",
+        fine: "Quoted based on your needs. Hosting, domain registration, payment provider fees, maintenance, and additional functionality are charged separately.",
         name: "eCommerce Website",
         price: "Custom Quote",
         tagline: "Make It Easier for Customers to Buy.",

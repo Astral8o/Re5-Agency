@@ -119,7 +119,7 @@ export default function PackagesModal({
           <div className="pk-grid">{set.packages.map((p, i) => card(set, p, String(i + 1).padStart(2, "0") + "."))}</div>
           </>
           )}
-          <p className="pk-foot">{set.footnote}</p>
+          <p className="pk-foot">{one?.fine ?? set.footnote}</p>
         </div>
       )}
     </dialog>
