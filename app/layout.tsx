@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Instrument_Sans, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
+import CleanHash from "@/components/CleanHash";
 import "./globals.css";
 
 const GA_MEASUREMENT_ID = "G-6RBX04Y5KR";
@@ -58,6 +59,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${instrumentSans.variable} ${jetbrainsMono.variable} ${jakarta.variable}`}>
       <body>
+        <CleanHash />
         {children}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
