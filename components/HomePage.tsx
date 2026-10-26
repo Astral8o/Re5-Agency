@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Logo, Mark } from "./brand";
+import DemoLaptop from "./DemoLaptop";
 import DemoPhone from "./DemoPhone";
 import PackagesModal from "./PackagesModal";
 import { PACKAGE_SETS, type Package, type PackageSet } from "./packages";
@@ -13,6 +14,11 @@ const SERVICE = "Websites & Online Sales";
 // "What We Offer" uses the pop-up's own packages and wording, so the two always match.
 const WEB = PACKAGE_SETS.find((x) => x.service === SERVICE)!;
 const [DIGITAL, ...SITES] = WEB.packages;
+// Example sites shown in the laptop previews (fictional businesses, recorded from RE5 demo builds).
+const LAPTOP: Record<string, { name: string; url: string; label: string }> = {
+  "business-website": { name: "salon-loop", url: "islesalon.com", label: "Example business website for a nail salon: browsing services and booking an appointment" },
+  "ecommerce-website": { name: "store-loop", url: "islandheat.shop", label: "Example online store for a pepper sauce brand: adding products to the cart and checking out" },
+};
 
 const num = (i: number) => String(i + 1).padStart(2, "0");
 
@@ -183,6 +189,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                   <span className="h-mono">{p.name}</span>
                   <span className="h-build-price">{p.price}</span>
                 </div>
+                <DemoLaptop {...LAPTOP[p.id]} />
                 <h3>{p.tagline}</h3>
                 {p.intro.map((t) => (
                   <p key={t}>{t}</p>
