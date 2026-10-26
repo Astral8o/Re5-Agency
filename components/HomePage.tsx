@@ -17,7 +17,7 @@ const WEB = PACKAGE_SETS.find((x) => x.service === SERVICE)!;
 const [DIGITAL, ...SITES] = WEB.packages;
 // Example sites shown in the laptop previews (fictional businesses, recorded from RE5 demo builds).
 const LAPTOP: Record<string, { name: string; url: string; label: string }> = {
-  "business-website": { name: "salon-loop", url: "islesalon.com", label: "Example business website for a nail salon: browsing services and booking an appointment" },
+  "business-website": { name: "hair-loop", url: "lumierehair.com", label: "Example business website for a hair supplier: browsing the collection, applying for a wholesale account and finding the showroom" },
   "ecommerce-website": { name: "store-loop", url: "islandheat.shop", label: "Example online store for a pepper sauce brand: adding products to the cart and checking out" },
 };
 
