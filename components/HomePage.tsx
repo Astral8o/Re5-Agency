@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Logo, Mark } from "./brand";
+import DemoPhone from "./DemoPhone";
 import PackagesModal from "./PackagesModal";
 import { PACKAGE_SETS, type Package, type PackageSet } from "./packages";
 import type { Post } from "../app/blog/posts";
@@ -9,13 +10,16 @@ import type { Post } from "../app/blog/posts";
 // RE5 offers one service for now; every enquiry is about it.
 const SERVICE = "Websites & Online Sales";
 
-// "What We Offer" section.
-const OFFERS = [
-  {
-    label: "Websites & Online Sales",
-    title: "Sell Online. Answer Faster. Run It All in One Place.",
-    body: "From your website or RE5 Digital page to the messages, orders, and customers it brings in, we set up everything you need to sell online and manage it from one simple dashboard.",
-  },
+// "What We Offer": the services inside Websites & Online Sales.
+const BUILDS = [
+  ["Business Websites", "Professional, mobile-friendly websites that help customers find you, trust you and get in touch."],
+  ["Online Stores", "eCommerce stores with product catalogues, checkout and payments, so customers can buy any time."],
+  ["RE5 Digital", "Interactive menus and order pages with a link and QR code. Orders arrive straight in your WhatsApp."],
+] as const;
+const ADDONS = [
+  ["AI Chat Assistant", "Answers customer questions instantly, even after hours."],
+  ["Connected Orders & Inquiries", "WhatsApp, Instagram, Facebook and your website in one place."],
+  ["Business Dashboard", "Customers, orders and stock at a glance."],
 ] as const;
 
 const num = (i: number) => String(i + 1).padStart(2, "0");
@@ -145,33 +149,54 @@ export default function HomePage({ posts }: { posts: Post[] }) {
               The Expertise to Make It Happen.
             </h2>
           </div>
-          <div className="h-offers h-offers--one">
-            {OFFERS.map((o, i) => (
-              <article key={o.label} className="h-offer">
-                <div className="h-offer-top">
+          <article className="h-svc">
+            <div className="h-svc-text">
+              <div className="h-offer-top">
+                <span className="h-offer-n">01</span>
+                <span className="h-mono">{SERVICE}</span>
+              </div>
+              <h3>Sell Online. Answer Faster. Run It All in One Place.</h3>
+              <p>
+                From your website or RE5 Digital page to the messages, orders and customers it brings in, we set up
+                everything you need to sell online and manage it from one simple dashboard.
+              </p>
+              <ul className="h-svc-steps">
+                <li><b>1</b> Customers find you through your link, QR code or website.</li>
+                <li><b>2</b> They browse, choose and order in a few taps.</li>
+                <li><b>3</b> The order lands in your WhatsApp, ready to confirm.</li>
+              </ul>
+              <div className="h-col-actions">
+                <button type="button" className="h-btn h-btn--sm" onClick={() => setOpenSet(PACKAGE_SETS.find((x) => x.service === SERVICE) ?? null)}>
+                  See Packages <span aria-hidden="true">→</span>
+                </button>
+                <a href="/digital/demo" target="_blank" rel="noopener" className="h-link">
+                  Try the live demo <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </div>
+            <DemoPhone />
+          </article>
+
+          <div className="h-builds">
+            <span className="h-mono">What we build</span>
+            <div className="h-builds-grid">
+              {BUILDS.map(([t, d], i) => (
+                <div key={t} className="h-build">
                   <span className="h-offer-n">{num(i)}</span>
-                  <span className="h-mono">{o.label}</span>
+                  <h4>{t}</h4>
+                  <p>{d}</p>
                 </div>
-                <div className="h-offer-body">
-                  <h3>{o.title}</h3>
-                  <p>{o.body}</p>
-                  <div className="h-col-actions">
-                    <button
-                      type="button"
-                      className="h-btn h-btn--sm"
-                      onClick={() => setOpenSet(PACKAGE_SETS.find((x) => x.service === o.label) ?? null)}
-                    >
-                      See Packages <span aria-hidden="true">→</span>
-                    </button>
-                    {o.label === "Websites & Online Sales" && (
-                      <a href="/digital/demo" target="_blank" rel="noopener" className="h-link">
-                        See RE5 Digital demo <span aria-hidden="true">↗</span>
-                      </a>
-                    )}
-                  </div>
+              ))}
+            </div>
+            <span className="h-mono">Add-ons that work together</span>
+            <div className="h-addons">
+              {ADDONS.map(([t, d]) => (
+                <div key={t} className="h-addon">
+                  <h4>{t}</h4>
+                  <p>{d}</p>
                 </div>
-              </article>
-            ))}
+              ))}
+            </div>
           </div>
           <p className="h-soon">
             <span aria-hidden="true">✦</span> More services coming soon.
