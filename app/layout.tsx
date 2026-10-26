@@ -29,7 +29,7 @@ const jakarta = Plus_Jakarta_Sans({
 
 const TITLE = "RE5 Agency | Your Partner in Business Growth & Digital Transformation";
 const DESCRIPTION =
-  "RE5 helps Caribbean businesses improve marketing, sales, customer management, and operations through business consulting, technology, and AI.";
+  "RE5 helps Caribbean businesses grow online and sell more through professional websites, e-commerce solutions, and interactive ordering platforms.";
 
 // Applies to the Next.js pages (privacy, 404). The homepage is public/index.html with its own tags.
 export const metadata: Metadata = {

@@ -129,8 +129,8 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                 More Customers. Better Operations. <span className="h-mark">More Room to Grow.</span>
               </h1>
               <p className="h-hero-sub">
-                RE5 helps Caribbean businesses improve marketing, sales, customer management, and operations through
-                business consulting, technology, and AI.
+                RE5 helps Caribbean businesses grow online and sell more through professional websites, e-commerce
+                solutions, and interactive ordering platforms.
               </p>
               <a href="#contact" className="h-btn h-btn--lg">
                 Let&rsquo;s Talk Business <span aria-hidden="true">→</span>
