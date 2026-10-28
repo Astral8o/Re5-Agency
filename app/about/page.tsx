@@ -52,9 +52,6 @@ export default function AboutPage() {
                     <a href="/#services" className="ab-btn">
                       See Packages <span aria-hidden="true">→</span>
                     </a>
-                    <a href="/digital/demo" target="_blank" rel="noopener" className="ab-link">
-                      See RE5 Digital demo <span aria-hidden="true">↗</span>
-                    </a>
                   </div>
                 </div>
               </article>

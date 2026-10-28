@@ -175,9 +175,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                 <button type="button" className="h-btn h-btn--sm" onClick={() => openPackages(DIGITAL.id)}>
                   See what&rsquo;s included <span aria-hidden="true">→</span>
                 </button>
-                <a href="/digital/demo" target="_blank" rel="noopener" className="h-link">
-                  Try the live demo <span aria-hidden="true">↗</span>
-                </a>
               </div>
             </div>
             <DemoPhone />
@@ -381,7 +378,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
           <div className="h-foot-col">
             <span className="h-mono">Services</span>
             <a href="#services">{SERVICE}</a>
-            <a href="/digital/demo">RE5 Digital</a>
+            <a href="#services">RE5 Digital</a>
           </div>
           <div className="h-foot-col">
             <span className="h-mono">Company</span>

@@ -39,7 +39,6 @@ export const PACKAGE_SETS: PackageSet[] = [
         fine: "Price reflects one-time setup and publishing; the USD amount is approximate. Hosting and menu or price updates are covered by the RE5 Care Plan. Your own domain name is optional and paid separately.",
         name: "RE5 Digital",
         price: "Starting at TT$350 / US$52",
-        demo: "/digital/demo",
         tagline: "Start Online. Start Simple.",
         intro: [
           "Not every business needs a full website.",
