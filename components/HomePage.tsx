@@ -33,6 +33,10 @@ const ICON: Record<string, string> = {
   bulb: "M9 18h6m-5 3h4M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3Z",
   wrench: "M14.5 5.5a4 4 0 0 0 5 5L12 18l-3 3-3-3 3-3 7.5-7.5a4 4 0 0 1-2-2Z",
   cap: "M2 9l10-5 10 5-10 5L2 9Zm4 2v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5",
+  ear: "M7 9a5 5 0 0 1 10 0c0 3-3 4-3 7a3 3 0 0 1-6 0m2-7a2 2 0 0 1 4 0",
+  puzzle: "M10 3h4v3a2 2 0 1 0 4 0V6h3v5h-3a2 2 0 1 0 0 4h3v6h-5v-3a2 2 0 1 0-4 0v3H3v-6h3a2 2 0 1 0 0-4H3V6h7V3Z",
+  hand: "M3 12l4-4 4 2 3-2 7 5-4 4-3-2-2 2-3-2-2 1-4-4Zm8-2 4 3",
+  compass: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm3.5 5.5-2 5-5 2 2-5 5-2Z",
 };
 const Icon = ({ name }: { name: string }) => (
   <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -45,16 +49,18 @@ const GOALS = [
   ["megaphone", "Reach More Customers", "Explore ways to build awareness and connect with your market."],
   ["gear", "Improve How You Work", "Explore technology and AI to support everyday business operations."],
 ] as const;
-const APPROACH = [
-  ["chat", "We Listen", "Understand your goals and challenges."],
-  ["bulb", "We Explore", "Identify opportunities worth pursuing."],
-  ["wrench", "We Build", "Develop solutions around your needs."],
-  ["cap", "We Guide", "Help you understand and use what we've created."],
+const WHY = [
+  ["ear", "We Listen First", "Understanding before recommending."],
+  ["puzzle", "Solutions That Fit", "Based on your actual business needs."],
+  ["hand", "One Point of Contact", "Clear communication throughout."],
+  ["compass", "Built for Your Goals", "Decisions guided by what you want to achieve."],
 ] as const;
 const STEPS = [
-  ["Let's Understand Your Business", "We discuss your goals, customers, and what you want to achieve."],
-  ["Let's Find the Right Approach", "We recommend an appropriate solution, scope, and next steps."],
-  ["Let's Bring It to Life", "We develop, launch, and guide you through using your solution."],
+  ["Discover", "Get to know your business and goals."],
+  ["Define", "Identify needs and priorities."],
+  ["Recommend", "Agree on the right solution."],
+  ["Develop", "Build and review the solution."],
+  ["Launch & Handover", "Test, launch and guide you."],
 ] as const;
 
 export default function HomePage({ posts }: { posts: Post[] }) {
@@ -260,37 +266,18 @@ export default function HomePage({ posts }: { posts: Post[] }) {
           </div>
         </section>
 
-        {/* ---------------- Approach ---------------- */}
-        <section className="h-section h-approach" aria-labelledby="h-approach-title">
-          <div className="h-approach-inner">
-            <div className="h-head">
-              <span className="h-mono h-kicker">The RE5 Approach</span>
-              <h2 id="h-approach-title" className="h-h2">Your Business Comes First.</h2>
-              <p className="h-edu-intro">We believe the right solution starts with understanding your business, not choosing a tool.</p>
-            </div>
-            <div className="h-approach-grid">
-              {APPROACH.map(([icon, t, d]) => (
-                <div key={t} className="h-approach-item">
-                  <span className="h-approach-icon"><Icon name={icon} /></span>
-                  <h3>{t}</h3>
-                  <p>{d}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* ---------------- How we work ---------------- */}
         <section className="h-section h-section--rule" aria-labelledby="h-how-title">
           <div className="h-how">
             <div className="h-head">
               <span className="h-mono h-kicker">How We Work</span>
               <h2 id="h-how-title" className="h-h2">From Conversation to Solution.</h2>
+              <p className="h-edu-intro">Every business has different needs. We take the time to understand yours and develop solutions that fit your goals.</p>
             </div>
             <ol className="h-steps">
               {STEPS.map(([t, d], i) => (
                 <li key={t}>
-                  <span className="h-step-n">{i + 1}</span>
+                  <span className="h-step-n">{num(i)}</span>
                   <div>
                     <h3>{t}</h3>
                     <p>{d}</p>
@@ -301,12 +288,31 @@ export default function HomePage({ posts }: { posts: Post[] }) {
           </div>
         </section>
 
+        {/* ---------------- Why RE5 ---------------- */}
+        <section className="h-section h-approach" aria-labelledby="h-why-title">
+          <div className="h-approach-inner">
+            <div className="h-head">
+              <span className="h-mono h-kicker">Why RE5</span>
+              <h2 id="h-why-title" className="h-h2">More Than Just a Digital Solution.</h2>
+            </div>
+            <div className="h-approach-grid">
+              {WHY.map(([icon, t, d]) => (
+                <div key={t} className="h-approach-item">
+                  <span className="h-approach-icon"><Icon name={icon} /></span>
+                  <h3>{t}</h3>
+                  <p>{d}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ---------------- Blog ---------------- */}
         <section id="blog" className="h-section h-edu" aria-labelledby="h-blog-title">
           <div className="h-head h-head--row">
             <div>
-              <span className="h-mono">RE5 Education Centre</span>
-              <h2 id="h-blog-title" className="h-h2">Knowledge to Help Your Business Move Forward.</h2>
+              <span className="h-mono h-kicker">RE5 Education</span>
+              <h2 id="h-blog-title" className="h-h2">Learn What AI Can Do for Your Business.</h2>
               <p className="h-edu-intro">
                 Discover free guides, tutorials, and practical resources to help you understand AI and use it in your business.
               </p>

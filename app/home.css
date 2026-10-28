@@ -403,3 +403,11 @@
 .h-edu { background: var(--lav-soft); }
 .h-edu .h-head { border-top-color: transparent; padding-top: 0; }
 .h-edu .h-post { background: var(--paper); }
+/* five-step process as numbered cards */
+.h-steps { gap: 10px; }
+.h-steps li { padding: 16px 20px; border: var(--line); border-radius: 18px; background: var(--paper); align-items: center; }
+.h-steps li:nth-child(odd) { background: var(--lav-soft); }
+.h-steps li::before { display: none; }
+.h-step-n { width: auto; height: auto; border: 0; background: none; font-size: 26px; color: var(--muted); min-width: 40px; }
+.h-steps h3 { margin-top: 0; }
+.h-steps p { margin-top: 2px; }
