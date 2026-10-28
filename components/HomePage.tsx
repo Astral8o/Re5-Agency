@@ -96,6 +96,21 @@ export default function HomePage({ posts }: { posts: Post[] }) {
   };
 
 
+  // How We Work: fill each dot of the path as it scrolls into view.
+  useEffect(() => {
+    const items = document.querySelectorAll(".h-path li");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      items.forEach((el) => el.classList.add("is-on"));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (es) => es.forEach((e) => e.isIntersecting && (e.target.classList.add("is-on"), io.unobserve(e.target))),
+      { rootMargin: "0px 0px -20% 0px" }
+    );
+    items.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   useEffect(() => {
     const onScroll = () => {
       const c = document.getElementById("contact");
@@ -200,9 +215,9 @@ export default function HomePage({ posts }: { posts: Post[] }) {
             <p className="h-edu-intro">Explore the possibilities for your business.</p>
           </div>
           <div className="h-goal-grid">
-            {GOALS.map(([icon, t, d], i) => (
-              <div key={t} className={`h-goal ${i === 1 || i === 2 ? "h-goal--peach" : ""}`}>
-                <span className="h-goal-icon"><Icon name={icon} /></span>
+            {GOALS.map(([, t, d], i) => (
+              <div key={t} className="h-goal">
+                <span className="h-offer-n">{num(i)}</span>
                 <h3>{t}</h3>
                 <p>{d}</p>
               </div>
@@ -268,24 +283,26 @@ export default function HomePage({ posts }: { posts: Post[] }) {
 
         {/* ---------------- How we work ---------------- */}
         <section className="h-section h-section--rule" aria-labelledby="h-how-title">
-          <div className="h-how">
-            <div className="h-head">
-              <span className="h-mono h-kicker">How We Work</span>
-              <h2 id="h-how-title" className="h-h2">From Conversation to Solution.</h2>
-              <p className="h-edu-intro">Every business has different needs. We take the time to understand yours and develop solutions that fit your goals.</p>
-            </div>
-            <ol className="h-steps">
-              {STEPS.map(([t, d], i) => (
-                <li key={t}>
-                  <span className="h-step-n">{num(i)}</span>
-                  <div>
-                    <h3>{t}</h3>
-                    <p>{d}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
+          <div className="h-head h-how-head">
+            <span className="h-mono h-kicker">How We Work</span>
+            <h2 id="h-how-title" className="h-h2">From Conversation to Solution.</h2>
+            <p className="h-edu-intro">Every business has different needs. We take the time to understand yours and develop solutions that fit your goals.</p>
+            <p className="h-how-note">
+              <Mark className="h-how-mark" /> Five dots, five steps.
+            </p>
           </div>
+          {/* The five steps echo the five dots of the RE5 mark; each dot fills as it scrolls into view. */}
+          <ol className="h-path">
+            {STEPS.map(([t, d], i) => (
+              <li key={t} style={{ ["--i" as string]: i }}>
+                <span className="h-path-dot">{num(i)}</span>
+                <div>
+                  <h3>{t}</h3>
+                  <p>{d}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </section>
 
         {/* ---------------- Why RE5 ---------------- */}
