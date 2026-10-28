@@ -7,8 +7,8 @@ const BUSINESS_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
   name: "RE5 Agency",
-  url: "https://www.re5agency.com",
-  image: "https://www.re5agency.com/og-image.jpg?v=2",
+  url: "https://re5agency.com",
+  image: "https://re5agency.com/og-image.jpg?v=2",
   description:
     "RE5 helps Caribbean businesses of every size thrive in the digital economy with the knowledge, tools and support to reach more customers and grow with confidence.",
   areaServed: "Caribbean",

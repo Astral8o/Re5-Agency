@@ -36,11 +36,11 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  metadataBase: new URL("https://www.re5agency.com"),
+  metadataBase: new URL("https://re5agency.com"),
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
-    url: "https://www.re5agency.com",
+    url: "https://re5agency.com",
     siteName: "RE5 Agency",
     type: "website",
     images: [{ url: "/og-image.jpg?v=2", width: 1200, height: 630 }],

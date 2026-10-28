@@ -3,7 +3,7 @@ import BlogChrome, { Mark } from "../Chrome";
 import { POSTS } from "../posts";
 
 const post = POSTS.find((p) => p.slug === "digital-transformation-small-businesses-trinidad-tobago")!;
-const url = `https://www.re5agency.com/blog/${post.slug}`;
+const url = `https://re5agency.com/blog/${post.slug}`;
 
 export const metadata: Metadata = {
   title: `${post.title} | RE5 Agency`,
@@ -28,8 +28,8 @@ const ARTICLE_LD = {
   datePublished: post.published,
   articleSection: post.category,
   mainEntityOfPage: url,
-  author: { "@type": "Organization", name: "RE5 Agency", url: "https://www.re5agency.com" },
-  publisher: { "@type": "Organization", name: "RE5 Agency", url: "https://www.re5agency.com" },
+  author: { "@type": "Organization", name: "RE5 Agency", url: "https://re5agency.com" },
+  publisher: { "@type": "Organization", name: "RE5 Agency", url: "https://re5agency.com" },
 };
 
 export default function Article() {
