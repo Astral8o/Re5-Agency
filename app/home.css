@@ -330,3 +330,6 @@
 .pk.pk--one { width: min(720px, calc(100vw - 32px)); }
 @media (max-width: 600px) { .pk.pk--one { width: calc(100vw - 16px); } }
 .pk-grid--one { grid-template-columns: 1fr; }
+/* Pattern now lives only in the hero and contact sections; these use flat colour. */
+.h-post-cover { background: var(--lav); }
+.h-soon-band { background: var(--lav-soft); }

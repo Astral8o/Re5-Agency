@@ -205,7 +205,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
         </section>
 
         {/* ---------------- Coming soon ---------------- */}
-        <section className="h-soon-band h-pattern" aria-labelledby="h-soon-title">
+        <section className="h-soon-band" aria-labelledby="h-soon-title">
           <div className="h-soon-card">
             <span className="h-mono">On the way</span>
             <h2 id="h-soon-title">More Services Coming Soon.</h2>
@@ -269,7 +269,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
           <div className="h-posts">
             {posts.map((p) => (
               <a key={p.slug} href={`/blog/${p.slug}`} className="h-panel h-post">
-                <div className="h-post-cover h-pattern">
+                <div className="h-post-cover">
                   <Mark className="h-post-mark" />
                 </div>
                 <div className="h-post-body">
