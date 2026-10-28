@@ -12,7 +12,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
-    { url: "https://www.re5agency.com/digital/demo", changeFrequency: "monthly", priority: 0.7 },
     { url: "https://www.re5agency.com/privacy", changeFrequency: "yearly", priority: 0.2 },
   ];
 }
