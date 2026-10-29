@@ -37,7 +37,6 @@ export default function PackagesModal({
               <article key={p.id} id={`pk-${p.id}`} className={`pk-card ${p.wide ? "pk-card--wide" : ""}`}>
                 <span className="h-mono pk-num">{label}</span>
                 <h3>{p.name}</h3>
-                <p className="pk-price">{p.price}</p>
                 <p className="pk-tagline">{p.tagline}</p>
                 {p.intro.map((t) => (
                   <p key={t} className="pk-text">

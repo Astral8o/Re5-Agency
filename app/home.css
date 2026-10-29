@@ -293,7 +293,6 @@ a.h-card:hover, .h-card--link:hover { transform: translate(-2px, -2px); box-shad
 .pk-card--wide { grid-column: 1 / -1; background: var(--lav-soft); }
 .pk-num { font-family: var(--font-mono), monospace; font-size: 12px; letter-spacing: .08em; color: var(--muted); }
 .pk-card h3 { margin: 0; font-size: 24px; line-height: 1.15; letter-spacing: -0.025em; font-weight: 600; }
-.pk-price { margin: 0; align-self: flex-start; padding: 6px 14px; border: 1.5px solid var(--ink); border-radius: 999px; background: var(--coral); font-weight: 700; font-size: 16px; }
 .pk-tagline { margin: 2px 0 0; font-style: italic; font-size: 17px; }
 .pk-text { margin: 0; font-size: 15px; line-height: 1.6; color: var(--muted); }
 .pk-groups { display: flex; flex-direction: column; gap: 14px; }
@@ -315,8 +314,6 @@ a.h-card:hover, .h-card--link:hover { transform: translate(-2px, -2px); box-shad
 .pk-addons { display: flex; flex-direction: column; gap: 14px; padding-top: 22px; border-top: 1.5px solid var(--ink); }
 .pk-sub { margin: 0; font-size: clamp(24px, 3vw, 34px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 500; }
 .pk-addons > .pk-intro { max-width: 760px; margin-bottom: 6px; }
-.pk-addons .pk-price { background: var(--lav); border-radius: 16px; }
-.pk-addons .pk-card--wide .pk-price { background: var(--coral); }
 .pk-card { scroll-margin-top: 84px; transition: box-shadow .3s ease; }
 .pk-card.is-focus { box-shadow: 0 0 0 4px var(--coral); }
 .pk.pk--one { width: min(720px, calc(100vw - 32px)); }

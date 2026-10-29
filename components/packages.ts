@@ -4,7 +4,6 @@ export type Group = { title?: string; items: string[] };
 export type Package = {
   id: string;
   name: string;
-  price: string;
   tagline: string;
   intro: string[];
   groups: Group[];
@@ -36,9 +35,8 @@ export const PACKAGE_SETS: PackageSet[] = [
     packages: [
       {
         id: "re5-digital",
-        fine: "Price reflects one-time setup and publishing; the USD amount is approximate. Hosting and menu or price updates are covered by the RE5 Care Plan. Your own domain name is optional and paid separately.",
+        fine: "Covers one-time setup and publishing. Hosting and menu or price updates are covered by the RE5 Care Plan. Your own domain name is optional and paid separately.",
         name: "RE5 Digital",
-        price: "Starting at TT$350 / US$52",
         tagline: "Start Online. Start Simple.",
         intro: [
           "Not every business needs a full website.",
@@ -64,7 +62,6 @@ export const PACKAGE_SETS: PackageSet[] = [
         id: "business-website",
         fine: "Quoted based on your needs. Hosting, domain registration, maintenance, and additional pages or functionality are charged separately.",
         name: "Business Website",
-        price: "Custom Quote",
         tagline: "Make a Strong First Impression Online.",
         intro: [
           "We design and build professional websites that help customers discover your business, learn about your offerings, and get in touch.",
@@ -90,7 +87,6 @@ export const PACKAGE_SETS: PackageSet[] = [
         id: "ecommerce-website",
         fine: "Quoted based on your needs. Hosting, domain registration, payment provider fees, maintenance, and additional functionality are charged separately.",
         name: "eCommerce Website",
-        price: "Custom Quote",
         tagline: "Make It Easier for Customers to Buy.",
         intro: ["We build online stores that allow customers to browse products, place orders, and complete purchases conveniently."],
         groups: [
@@ -114,6 +110,6 @@ export const PACKAGE_SETS: PackageSet[] = [
       },
     ],
     footnote:
-      "Business and eCommerce websites are quoted based on your needs. RE5 Digital pricing reflects one-time setup; USD amounts are approximate. Hosting, domain registration, payment provider fees, maintenance, and additional functionality are charged separately.",
+      "Every package is quoted based on your needs. RE5 Digital covers one-time setup and publishing. Hosting, domain registration, payment provider fees, maintenance, and additional functionality are charged separately.",
   },
 ];

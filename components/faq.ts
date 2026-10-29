@@ -8,11 +8,11 @@ export const FAQ_GROUPS: { id: string; label: string; items: QA[] }[] = [
       { q: "What is RE5 Digital?", a: "A single interactive page, such as a menu, catalogue or order page, with its own link and QR code. Customers browse, choose what they want and send the order straight to your WhatsApp." },
       { q: "Do my customers need to download an app?", a: "No. The link and QR code open in any phone browser. Customers can share it on WhatsApp, Instagram or anywhere else." },
       { q: "How long does it take?", a: "Usually 3 to 5 days once we have your menu or product list, prices and photos." },
-      { q: "How much does it cost?", a: "RE5 Digital starts at TT$350 for setup and publishing." },
+      { q: "How much does it cost?", a: "It depends on the size of your menu or product list and what you need. Tell us about your business and we'll send you a clear quote." },
       { q: "Can I update my menu or prices myself?", a: "RE5 Digital pages are managed by our team, so you can't edit them yourself. Just send us your changes on WhatsApp and we'll update them for you. Updates are included in the RE5 Care Plan." },
       { q: "How do my customers pay?", a: "Each order arrives in your WhatsApp with the customer's chosen payment method, such as cash or card on delivery, pay on pickup or bank deposit. You confirm the order and collect payment the way you normally do." },
       { q: "Can I use my own domain name?", a: "Your page uses an RE5 link by default. If you'd like your own domain, you can buy one and we'll connect it for you." },
-      { q: "Are there any ongoing costs?", a: "The RE5 Care Plan, from TT$250 a month, covers hosting, backups, up to 2 updates to your menu or prices a month and support on WhatsApp." },
+      { q: "Are there any ongoing costs?", a: "The RE5 Care Plan covers hosting, backups, up to 2 updates to your menu or prices a month and support on WhatsApp. We'll include it in your quote." },
     ],
   },
   {
@@ -25,7 +25,7 @@ export const FAQ_GROUPS: { id: string; label: string; items: QA[] }[] = [
       { q: "Who owns the website and domain?", a: "You do. Your domain name is registered in your name." },
       { q: "Can my customers pay online?", a: "Online stores can accept card payments where supported, as well as bank transfer and cash on delivery." },
       { q: "How do updates work after launch?", a: "Send us your changes and our team will update your site. Regular updates are included in the RE5 Care Plan." },
-      { q: "Are there any ongoing costs?", a: "Your domain name, hosting and any payment provider fees are separate from the build. The RE5 Care Plan, from TT$250 a month, covers hosting, security updates, backups, up to 2 content updates a month and support on WhatsApp." },
+      { q: "Are there any ongoing costs?", a: "Your domain name, hosting and any payment provider fees are separate from the build. The RE5 Care Plan covers hosting, security updates, backups, up to 2 content updates a month and support on WhatsApp." },
     ],
   },
   {
