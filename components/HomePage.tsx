@@ -49,6 +49,10 @@ const GOALS = [
   ["megaphone", "Reach More Customers", "Explore ways to build awareness and connect with your market."],
   ["gear", "Improve How You Work", "Explore technology and AI to support everyday business operations."],
 ] as const;
+const GOAL_SHOTS = [
+  ["goal-ordering", "A restaurant menu on a phone with orders sent through WhatsApp", "Online ordering"],
+  ["goal-website", "A wholesale supplier's website shown on a desktop and a phone", "Business websites"],
+] as const;
 const STEPS = [
   ["Discover", "Get to know your business and goals."],
   ["Define", "Identify needs and priorities."],
@@ -207,6 +211,17 @@ export default function HomePage({ posts }: { posts: Post[] }) {
             <span className="h-mono h-kicker">What We Help You Achieve</span>
             <h2 id="h-goals-title" className="h-h2">Where Would You Like to Take Your Business?</h2>
             <p className="h-edu-intro">Explore the possibilities for your business.</p>
+          </div>
+          <div className="h-goal-shots">
+            {GOAL_SHOTS.map(([src, alt, cap]) => (
+              <figure key={src} className="h-goal-shot">
+                <picture>
+                  <source srcSet={`/home/${src}.webp`} type="image/webp" />
+                  <img src={`/home/${src}.jpg`} alt={alt} width={1200} height={800} loading="lazy" />
+                </picture>
+                <figcaption className="h-mono">{cap}</figcaption>
+              </figure>
+            ))}
           </div>
           <div className="h-goal-grid">
             {GOALS.map(([, t, d], i) => (
