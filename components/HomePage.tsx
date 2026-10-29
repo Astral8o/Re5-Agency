@@ -242,8 +242,8 @@ export default function HomePage({ posts }: { posts: Post[] }) {
               </div>
               <h3>{DIGITAL.tagline}</h3>
               <p>Give customers a convenient way to explore your menu, choose what they want, and send orders through WhatsApp.</p>
-              <button type="button" className="h-sol-link" onClick={() => openPackages(DIGITAL.id)}>
-                Explore {DIGITAL.name} <span aria-hidden="true">→</span>
+              <button type="button" className="h-btn h-sol-cta" onClick={() => openPackages(DIGITAL.id)} aria-label={`See what's included in ${DIGITAL.name}`}>
+                See what&rsquo;s included <span aria-hidden="true">→</span>
               </button>
             </article>
             <article className="h-sol h-sol--peach">
@@ -263,13 +263,10 @@ export default function HomePage({ posts }: { posts: Post[] }) {
               </div>
               <h3>Build Your Presence. Open New Opportunities.</h3>
               <p>From business websites and searchable product catalogues to online stores, create a better way for customers to find you and do business with you.</p>
-              <div className="h-sol-links">
-                {SITES.map((p) => (
-                  <button key={p.id} type="button" className="h-sol-link" onClick={() => openPackages(p.id)}>
-                    {p.name} <span aria-hidden="true">→</span>
-                  </button>
-                ))}
-              </div>
+              {/* One button that follows the switcher above, so the video and the package always match. */}
+              <button type="button" className="h-btn h-sol-cta" onClick={() => openPackages(siteDemo)} aria-label={`See what's included in the ${SITES.find((p) => p.id === siteDemo)!.name}`}>
+                See what&rsquo;s included <span aria-hidden="true">→</span>
+              </button>
             </article>
           </div>
           <div className="h-more">
@@ -333,7 +330,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                 Discover free guides, tutorials, and practical resources to help you understand AI and use it in your business.
               </p>
             </div>
-            <a href="/blog" className="h-link">
+            <a href="/blog" className="h-btn h-btn--sm h-btn--ghost">
               Explore Free Resources <span aria-hidden="true">→</span>
             </a>
           </div>
@@ -382,7 +379,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                 </details>
               ))}
               </div>
-              <a href="#contact" className="h-link h-faq-more">
+              <a href="#contact" className="h-btn h-btn--sm h-btn--ghost h-faq-more">
                 Still have questions? Let&rsquo;s talk business <span aria-hidden="true">→</span>
               </a>
             </div>

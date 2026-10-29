@@ -437,3 +437,5 @@
   .h-path-dot { flex: none; transition-delay: 0s; }
 }
 @media (prefers-reduced-motion: reduce) { .h-goal, .h-path-dot { transition: none; } .h-goal:hover { transform: none; } }
+.h-sol-cta { margin-top: auto; }
+@media (max-width: 600px) { .h-sol-cta { align-self: stretch; } .h-faq-more { white-space: normal; text-align: left; } }
