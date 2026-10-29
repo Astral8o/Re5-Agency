@@ -230,7 +230,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
           <div className="h-center-head">
             <span className="h-mono h-kicker">Our Solutions</span>
             <h2 id="h-sol-title" className="h-h2">Practical Solutions for Your Next Move.</h2>
-            <p className="h-edu-intro">Start with the services available today.</p>
           </div>
           <div className="h-sol-grid">
             <article className="h-sol">
