@@ -49,12 +49,6 @@ const GOALS = [
   ["megaphone", "Reach More Customers", "Explore ways to build awareness and connect with your market."],
   ["gear", "Improve How You Work", "Explore technology and AI to support everyday business operations."],
 ] as const;
-const WHY = [
-  ["ear", "We Listen First", "Understanding before recommending."],
-  ["puzzle", "Solutions That Fit", "Based on your actual business needs."],
-  ["hand", "One Point of Contact", "Clear communication throughout."],
-  ["compass", "Built for Your Goals", "Decisions guided by what you want to achieve."],
-] as const;
 const STEPS = [
   ["Discover", "Get to know your business and goals."],
   ["Define", "Identify needs and priorities."],
@@ -299,25 +293,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
               </li>
             ))}
           </ol>
-        </section>
-
-        {/* ---------------- Why RE5 ---------------- */}
-        <section className="h-section h-approach" aria-labelledby="h-why-title">
-          <div className="h-approach-inner">
-            <div className="h-head">
-              <span className="h-mono h-kicker">Why RE5</span>
-              <h2 id="h-why-title" className="h-h2">More Than Just a Digital Solution.</h2>
-            </div>
-            <div className="h-approach-grid">
-              {WHY.map(([icon, t, d]) => (
-                <div key={t} className="h-approach-item">
-                  <span className="h-approach-icon"><Icon name={icon} /></span>
-                  <h3>{t}</h3>
-                  <p>{d}</p>
-                </div>
-              ))}
-            </div>
-          </div>
         </section>
 
         {/* ---------------- Blog ---------------- */}
