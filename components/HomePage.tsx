@@ -23,26 +23,6 @@ const LAPTOP: Record<string, { name: string; url: string; label: string }> = {
 
 const num = (i: number) => String(i + 1).padStart(2, "0");
 
-// Simple line icons (24px grid) for the goal and approach cards.
-const ICON: Record<string, string> = {
-  globe: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm-9 9h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z",
-  bag: "M6 8h12l-1 12H7L6 8Zm3 0V6a3 3 0 0 1 6 0v2",
-  megaphone: "M4 10v4h3l7 4V6L7 10H4Zm14-1a4 4 0 0 1 0 6M7 14l1 5h2l-1-5",
-  gear: "M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm7.4 3a7.4 7.4 0 0 0-.1-1.3l2-1.6-2-3.4-2.4 1a7.5 7.5 0 0 0-2.2-1.3L14.4 3h-4.8l-.3 2.4a7.5 7.5 0 0 0-2.2 1.3l-2.4-1-2 3.4 2 1.6a7.4 7.4 0 0 0 0 2.6l-2 1.6 2 3.4 2.4-1a7.5 7.5 0 0 0 2.2 1.3l.3 2.4h4.8l.3-2.4a7.5 7.5 0 0 0 2.2-1.3l2.4 1 2-3.4-2-1.6c.1-.4.1-.9.1-1.3Z",
-  chat: "M4 5h12v8H8l-4 3V5Zm16 4v9l-3-2h-7v-3",
-  bulb: "M9 18h6m-5 3h4M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3Z",
-  wrench: "M14.5 5.5a4 4 0 0 0 5 5L12 18l-3 3-3-3 3-3 7.5-7.5a4 4 0 0 1-2-2Z",
-  cap: "M2 9l10-5 10 5-10 5L2 9Zm4 2v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5",
-  ear: "M7 9a5 5 0 0 1 10 0c0 3-3 4-3 7a3 3 0 0 1-6 0m2-7a2 2 0 0 1 4 0",
-  puzzle: "M10 3h4v3a2 2 0 1 0 4 0V6h3v5h-3a2 2 0 1 0 0 4h3v6h-5v-3a2 2 0 1 0-4 0v3H3v-6h3a2 2 0 1 0 0-4H3V6h7V3Z",
-  hand: "M3 12l4-4 4 2 3-2 7 5-4 4-3-2-2 2-3-2-2 1-4-4Zm8-2 4 3",
-  compass: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm3.5 5.5-2 5-5 2 2-5 5-2Z",
-};
-const Icon = ({ name }: { name: string }) => (
-  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d={ICON[name]} />
-  </svg>
-);
 const GOALS = [
   ["globe", "Build Your Online Presence", "Make it easier for customers to discover and learn about your business."],
   ["bag", "Sell Your Products Online", "Give customers convenient ways to browse, enquire and order."],
@@ -156,20 +136,22 @@ export default function HomePage({ posts }: { posts: Post[] }) {
     <div className="h" id="top">
       {/* ---------------- Nav ---------------- */}
       <header className="h-nav">
-        <a href="#top" className="h-logo" aria-label="RE5 Agency home">
-          <Logo />
-        </a>
-        <nav className="h-links" aria-label="Main">
-          <a href="#services">Solutions</a>
-          <a href="/about">About</a>
-          <a href="#blog">Education Centre</a>
-          <a href="#contact" className="h-btn h-btn--sm">
-            Let&rsquo;s Talk Business
+        <div className="h-wrap h-nav-in">
+          <a href="#top" className="h-logo" aria-label="RE5 Agency home">
+            <Logo />
           </a>
-        </nav>
-        <button type="button" className="h-menu-btn" aria-expanded={menu} aria-controls="h-menu" onClick={() => setMenu((m) => !m)}>
-          {menu ? "Close" : "Menu"}
-        </button>
+          <nav className="h-links" aria-label="Main">
+            <a href="#services">Solutions</a>
+            <a href="/about">About</a>
+            <a href="#blog">Education Centre</a>
+            <a href="#contact" className="h-btn h-btn--sm">
+              Let&rsquo;s Talk Business
+            </a>
+          </nav>
+          <button type="button" className="h-menu-btn" aria-expanded={menu} aria-controls="h-menu" onClick={() => setMenu((m) => !m)}>
+            {menu ? "Close" : "Menu"}
+          </button>
+        </div>
       </header>
       {menu && (
         <nav id="h-menu" className="h-menu" aria-label="Mobile">
@@ -185,7 +167,8 @@ export default function HomePage({ posts }: { posts: Post[] }) {
       <main>
         {/* ---------------- Hero ---------------- */}
         <section className="h-hero h-pattern" aria-labelledby="h-hero-title">
-          <div className="h-panel h-hero-panel">
+          <div className="h-wrap">
+          <div className="h-panel">
             <div className="h-hero-main">
               <h1 id="h-hero-title" className="h-hero-title">
                 Helping Caribbean Businesses <span className="h-mark">Thrive in the Digital Economy.</span>
@@ -203,14 +186,18 @@ export default function HomePage({ posts }: { posts: Post[] }) {
               </div>
             </div>
           </div>
+          </div>
         </section>
 
         {/* ---------------- Goals ---------------- */}
-        <section className="h-section h-goals" aria-labelledby="h-goals-title">
-          <div className="h-center-head">
-            <span className="h-mono h-kicker">What We Help You Achieve</span>
-            <h2 id="h-goals-title" className="h-h2">Where Would You Like to Take Your Business?</h2>
-            <p className="h-edu-intro">Explore the possibilities for your business.</p>
+        <section className="h-sec" aria-labelledby="h-goals-title">
+          <div className="h-wrap">
+          <div className="h-sec-head h-sec-head--solo">
+            <div className="h-sec-title">
+              <span className="h-mono h-kicker">What We Help You Achieve</span>
+              <h2 id="h-goals-title" className="h-h2">Where Would You Like to Take Your Business?</h2>
+              <p className="h-lead">Explore the possibilities for your business.</p>
+            </div>
           </div>
           <div className="h-goal-shots">
             {GOAL_SHOTS.map(([src, alt, cap]) => (
@@ -225,43 +212,45 @@ export default function HomePage({ posts }: { posts: Post[] }) {
           </div>
           <div className="h-goal-grid">
             {GOALS.map(([, t, d], i) => (
-              <div key={t} className="h-goal">
-                <span className="h-offer-n">{num(i)}</span>
+              <div key={t} className="h-card h-goal">
+                <span className="h-num">{num(i)}</span>
                 <h3>{t}</h3>
                 <p>{d}</p>
               </div>
             ))}
           </div>
+          </div>
         </section>
 
         {/* ---------------- Solutions ---------------- */}
-        <section id="services" className="h-section h-section--rule" aria-labelledby="h-sol-title">
-          <div className="h-center-head">
-            <span className="h-mono h-kicker">Our Solutions</span>
-            <h2 id="h-sol-title" className="h-h2">Practical Solutions for Your Next Move.</h2>
+        <section id="services" className="h-sec h-sec--tint" aria-labelledby="h-sol-title">
+          <div className="h-wrap">
+          <div className="h-sec-head h-sec-head--solo">
+            <div className="h-sec-title">
+              <span className="h-mono h-kicker">Our Solutions</span>
+              <h2 id="h-sol-title" className="h-h2">Practical Solutions for Your Next Move.</h2>
+            </div>
           </div>
           <div className="h-sol-grid">
-            <article className="h-sol">
-              <div className="h-sol-top">
-                <span className="h-mono">01 / {DIGITAL.name}</span>
-                <span className="h-avail">Available</span>
-              </div>
-              <div className="h-sol-media h-sol-media--phone">
+            <article className="h-card h-sol">
+              <div className="h-sol-media">
                 <DemoPhone />
               </div>
-              <h3>{DIGITAL.tagline}</h3>
-              <p>Give customers a convenient way to explore your menu, choose what they want, and send orders through WhatsApp.</p>
-              <button type="button" className="h-btn h-sol-cta" onClick={() => openPackages(DIGITAL.id)} aria-label={`See what's included in ${DIGITAL.name}`}>
-                See what&rsquo;s included <span aria-hidden="true">→</span>
-              </button>
-            </article>
-            <article className="h-sol h-sol--peach">
-              <div className="h-sol-top">
-                <span className="h-mono">02 / {SERVICE}</span>
-                <span className="h-avail">Available</span>
+              <div className="h-sol-body">
+                <div className="h-sol-top">
+                  <span className="h-mono">01 / {DIGITAL.name}</span>
+                  <span className="h-avail">Available</span>
+                </div>
+                <h3>{DIGITAL.tagline}</h3>
+                <p>Give customers a convenient way to explore your menu, choose what they want, and send orders through WhatsApp.</p>
+                <button type="button" className="h-btn h-sol-cta" onClick={() => openPackages(DIGITAL.id)} aria-label={`See what's included in ${DIGITAL.name}`}>
+                  See what&rsquo;s included <span aria-hidden="true">→</span>
+                </button>
               </div>
-              <div className="h-sol-media">
-                <div className="h-sol-tabs" role="group" aria-label="Example websites">
+            </article>
+            <article className="h-card h-sol">
+              <div className="h-sol-media h-sol-media--grey">
+                <div className="h-seg" role="group" aria-label="Example websites">
                   {SITES.map((p) => (
                     <button key={p.id} type="button" aria-pressed={siteDemo === p.id} className={siteDemo === p.id ? "on" : ""} onClick={() => setSiteDemo(p.id)}>
                       {p.name}
@@ -270,31 +259,44 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                 </div>
                 <DemoLaptop key={siteDemo} {...LAPTOP[siteDemo]} />
               </div>
-              <h3>Build Your Presence. Open New Opportunities.</h3>
-              <p>From business websites and searchable product catalogues to online stores, create a better way for customers to find you and do business with you.</p>
-              {/* One button that follows the switcher above, so the video and the package always match. */}
-              <button type="button" className="h-btn h-sol-cta" onClick={() => openPackages(siteDemo)} aria-label={`See what's included in the ${SITES.find((p) => p.id === siteDemo)!.name}`}>
-                See what&rsquo;s included <span aria-hidden="true">→</span>
-              </button>
+              <div className="h-sol-body">
+                <div className="h-sol-top">
+                  <span className="h-mono">02 / {SERVICE}</span>
+                  <span className="h-avail">Available</span>
+                </div>
+                <h3>Build Your Presence. Open New Opportunities.</h3>
+                <p>From business websites and searchable product catalogues to online stores, create a better way for customers to find you and do business with you.</p>
+                {/* One button that follows the switcher above, so the video and the package always match. */}
+                <button type="button" className="h-btn h-sol-cta" onClick={() => openPackages(siteDemo)} aria-label={`See what's included in the ${SITES.find((p) => p.id === siteDemo)!.name}`}>
+                  See what&rsquo;s included <span aria-hidden="true">→</span>
+                </button>
+              </div>
             </article>
           </div>
           <div className="h-more">
-            <h3>
-              <span aria-hidden="true">⊕</span> More Solutions on the Way
-            </h3>
-            <p>As RE5 grows, we&rsquo;ll introduce additional ways to support Caribbean businesses.</p>
+            <span className="h-more-icon" aria-hidden="true">+</span>
+            <div>
+              <h3>More Solutions on the Way</h3>
+              <p>As RE5 grows, we&rsquo;ll introduce additional ways to support Caribbean businesses.</p>
+            </div>
+          </div>
           </div>
         </section>
 
         {/* ---------------- How we work ---------------- */}
-        <section className="h-section h-section--rule" aria-labelledby="h-how-title">
-          <div className="h-head h-how-head">
-            <span className="h-mono h-kicker">How We Work</span>
-            <h2 id="h-how-title" className="h-h2">From Conversation to Solution.</h2>
-            <p className="h-edu-intro">Every business has different needs. We take the time to understand yours and develop solutions that fit your goals.</p>
-            <p className="h-how-note">
-              <Mark className="h-how-mark" /> Five dots, five steps.
-            </p>
+        <section className="h-sec" aria-labelledby="h-how-title">
+          <div className="h-wrap">
+          <div className="h-sec-head">
+            <div className="h-sec-title">
+              <span className="h-mono h-kicker">How We Work</span>
+              <h2 id="h-how-title" className="h-h2">From Conversation to Solution.</h2>
+            </div>
+            <div className="h-sec-aside">
+              <p className="h-lead">Every business has different needs. We take the time to understand yours and develop solutions that fit your goals.</p>
+              <p className="h-how-note">
+                <Mark className="h-how-mark" /> Five dots, five steps.
+              </p>
+            </div>
           </div>
           {/* The five steps echo the five dots of the RE5 mark; each dot fills as it scrolls into view. */}
           <ol className="h-path">
@@ -308,25 +310,25 @@ export default function HomePage({ posts }: { posts: Post[] }) {
               </li>
             ))}
           </ol>
+          </div>
         </section>
 
         {/* ---------------- Blog ---------------- */}
-        <section id="blog" className="h-section h-edu" aria-labelledby="h-blog-title">
-          <div className="h-head h-head--row">
-            <div>
-              <span className="h-mono h-kicker">RE5 Education</span>
-              <h2 id="h-blog-title" className="h-h2">Learn What AI Can Do for Your Business.</h2>
-              <p className="h-edu-intro">
-                Discover free guides, tutorials, and practical resources to help you understand AI and use it in your business.
-              </p>
-            </div>
-            <a href="/blog" className="h-btn h-btn--sm h-btn--ghost">
+        <section id="blog" className="h-sec h-sec--lav" aria-labelledby="h-blog-title">
+          <div className="h-wrap h-edu">
+          <div className="h-edu-copy">
+            <span className="h-mono h-kicker">RE5 Education</span>
+            <h2 id="h-blog-title" className="h-h2">Learn What AI Can Do for Your Business.</h2>
+            <p className="h-lead">
+              Discover free guides, tutorials, and practical resources to help you understand AI and use it in your business.
+            </p>
+            <a href="/blog" className="h-btn h-btn--ghost">
               Explore Free Resources <span aria-hidden="true">→</span>
             </a>
           </div>
           <div className="h-posts">
             {posts.map((p) => (
-              <a key={p.slug} href={`/blog/${p.slug}`} className="h-panel h-post">
+              <a key={p.slug} href={`/blog/${p.slug}`} className="h-card h-post">
                 <div className="h-post-cover">
                   <Mark className="h-post-mark" />
                 </div>
@@ -342,12 +344,13 @@ export default function HomePage({ posts }: { posts: Post[] }) {
               </a>
             ))}
           </div>
+          </div>
         </section>
 
         {/* ---------------- FAQ ---------------- */}
-        <section id="faq" className="h-section" aria-labelledby="h-faq-title">
-          <div className="h-faq">
-            <div className="h-head">
+        <section id="faq" className="h-sec" aria-labelledby="h-faq-title">
+          <div className="h-wrap h-faq">
+            <div className="h-faq-head">
               <span className="h-mono h-kicker">Questions, Answered</span>
               <h2 id="h-faq-title" className="h-h2">
                 Good Questions Deserve Clear Answers.
@@ -378,7 +381,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
 
         {/* ---------------- Contact ---------------- */}
         <section id="contact" className="h-contact h-pattern" aria-labelledby="h-contact-title">
-          <div className="h-contact-inner">
+          <div className="h-wrap h-contact-inner">
             <div className="h-panel h-panel--coral h-contact-copy">
               <span className="h-mono">Let&rsquo;s Talk Business</span>
               <h2 id="h-contact-title" className="h-contact-title">
@@ -461,6 +464,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
 
       {/* ---------------- Footer ---------------- */}
       <footer className="h-foot">
+        <div className="h-wrap">
         <div className="h-foot-grid">
           <div className="h-foot-brand">
             <a href="#top" className="h-logo" aria-label="RE5 Agency home">
@@ -493,6 +497,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
             &copy; {new Date().getFullYear()} RE5 Agency. All rights reserved. <a href="/privacy">Privacy Policy</a>
           </span>
           <a href="#top">Back to top ↑</a>
+        </div>
         </div>
       </footer>
 
