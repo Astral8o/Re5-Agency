@@ -29,10 +29,6 @@ const GOALS = [
   ["megaphone", "Reach More Customers", "Explore ways to build awareness and connect with your market."],
   ["gear", "Improve How You Work", "Explore technology and AI to support everyday business operations."],
 ] as const;
-const GOAL_SHOTS = [
-  ["goal-ordering", "A restaurant menu on a phone with orders sent through WhatsApp", "Online ordering"],
-  ["goal-website", "A wholesale supplier's website shown on a desktop and a phone", "Business websites"],
-] as const;
 const STEPS = [
   ["Discover", "Get to know your business and goals."],
   ["Define", "Identify needs and priorities."],
@@ -168,7 +164,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
         {/* ---------------- Hero ---------------- */}
         <section className="h-hero h-pattern" aria-labelledby="h-hero-title">
           <div className="h-wrap">
-          <div className="h-panel">
+          <div className="h-panel h-hero-panel">
             <div className="h-hero-main">
               <h1 id="h-hero-title" className="h-hero-title">
                 Helping Caribbean Businesses <span className="h-mark">Thrive in the Digital Economy.</span>
@@ -185,6 +181,12 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                 </a>
               </div>
             </div>
+            <figure className="h-hero-media">
+              <picture>
+                <source srcSet="/home/goal-ordering.webp" type="image/webp" />
+                <img src="/home/goal-ordering.jpg" alt="A restaurant menu on a phone with orders sent through WhatsApp" width={1200} height={800} fetchPriority="high" />
+              </picture>
+            </figure>
           </div>
           </div>
         </section>
@@ -198,17 +200,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
               <h2 id="h-goals-title" className="h-h2">Where Would You Like to Take Your Business?</h2>
               <p className="h-lead">Explore the possibilities for your business.</p>
             </div>
-          </div>
-          <div className="h-goal-shots">
-            {GOAL_SHOTS.map(([src, alt, cap]) => (
-              <figure key={src} className="h-goal-shot">
-                <picture>
-                  <source srcSet={`/home/${src}.webp`} type="image/webp" />
-                  <img src={`/home/${src}.jpg`} alt={alt} width={1200} height={800} loading="lazy" />
-                </picture>
-                <figcaption className="h-mono">{cap}</figcaption>
-              </figure>
-            ))}
           </div>
           <div className="h-goal-grid">
             {GOALS.map(([, t, d], i) => (
