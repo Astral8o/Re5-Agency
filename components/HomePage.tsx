@@ -4,16 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { Logo, Mark } from "./brand";
 import DemoLaptop from "./DemoLaptop";
 import DemoPhone from "./DemoPhone";
-import PackagesModal from "./PackagesModal";
-import { PACKAGE_SETS, type Package, type PackageSet } from "./packages";
 import type { Post } from "../app/blog/posts";
 
 // RE5 offers one service for now; every enquiry is about it.
 const SERVICE = "Websites & Online Sales";
 
-// "Explore RE5 Digital" opens the pop-up with its own package wording, so the two always match.
-const WEB = PACKAGE_SETS.find((x) => x.service === SERVICE)!;
-const [DIGITAL] = WEB.packages;
 // Example online store shown in the laptop preview (fictional business, recorded from an RE5 demo build).
 const STORE = { name: "store-loop", url: "islandheat.shop", label: "Example online store for a pepper sauce brand: adding products to the cart and checking out" };
 
@@ -73,27 +68,8 @@ export default function HomePage({ posts }: { posts: Post[] }) {
   const [sendError, setSendError] = useState(false);
   const [sent, setSent] = useState(false);
 
-  // Packages pop-up and the package chosen from it
-  const [openSet, setOpenSet] = useState<PackageSet | null>(null);
-  const [focusPkg, setFocusPkg] = useState<string | undefined>();
+  // The RE5 Approach diagram: which step is highlighted
   const [step, setStep] = useState(0);
-  const openPackages = (id?: string) => {
-    setFocusPkg(id);
-    setOpenSet(WEB);
-  };
-  const [chosen, setChosen] = useState<{ service: string; name: string; consult: boolean } | null>(null);
-  const nameRef = useRef<HTMLInputElement | null>(null);
-
-  const choosePackage = (set: PackageSet, pkg: Package) => {
-    setChosen({ service: set.service, name: pkg.name, consult: pkg.cta === "Request a Consultation" });
-    setSent(false);
-    setOpenSet(null);
-    requestAnimationFrame(() => {
-      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      setTimeout(() => nameRef.current?.focus({ preventScroll: true }), 450);
-    });
-  };
-
 
   useEffect(() => {
     const onScroll = () => {
@@ -122,7 +98,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
           email: f.get("email"),
           phone: f.get("phone"),
           interests: [SERVICE],
-          package: chosen ? `${chosen.name} (${chosen.service})${chosen.consult ? ", consultation request" : ""}` : "",
           message: f.get("message"),
           website: f.get("website"),
           elapsed: Date.now() - openedAt.current,
@@ -211,8 +186,10 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                 <p className="h-lead">Imagine customers being able to browse your products, choose what they need, place an order and pay online, all in one place.</p>
                 <p className="h-lead">Whether you sell to individual customers or other businesses, RE5 Agency helps you explore the right online selling solution for your business.</p>
               </div>
-              <div className="h-split-media h-split-media--grey">
+              {/* Two examples of what RE5 builds: an online store, with WhatsApp ordering on a phone in front of it. */}
+              <div className="h-split-media h-split-media--grey h-devices">
                 <DemoLaptop {...STORE} />
+                <DemoPhone />
               </div>
             </div>
 
@@ -309,26 +286,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
           </div>
         </section>
 
-        {/* ---------------- RE5 Digital ---------------- */}
-        <section id="re5-digital" className="h-sec h-sec--lav" aria-labelledby="h-digital-title">
-          <div className="h-wrap">
-            <div className="h-split">
-              <div className="h-split-copy">
-                <span className="h-mono h-kicker">RE5 Digital</span>
-                <h2 id="h-digital-title" className="h-h2">Share Your Products. Take Orders Through WhatsApp.</h2>
-                <p className="h-lead">Give customers a link or QR code where they can browse your products, choose what they want and send an order directly through WhatsApp.</p>
-                <p className="h-lead">A convenient option for businesses that don&rsquo;t need a full online store.</p>
-                <button type="button" className="h-btn h-btn--lg" onClick={() => openPackages(DIGITAL.id)}>
-                  Explore RE5 Digital <span aria-hidden="true">→</span>
-                </button>
-              </div>
-              <div className="h-split-media h-split-media--phone">
-                <DemoPhone />
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* ---------------- RE5 Education ---------------- */}
         <section id="blog" className="h-sec" aria-labelledby="h-blog-title">
           <div className="h-wrap">
@@ -378,21 +335,10 @@ export default function HomePage({ posts }: { posts: Post[] }) {
             <div className="h-panel h-form-card">
               {!sent ? (
                 <form onSubmit={submit} className="h-form">
-                  {chosen && (
-                    <div className="h-chosen" role="status">
-                      <span>
-                        <span className="h-mono">{chosen.consult ? "Consultation request" : "Selected package"}</span>
-                        <strong>{chosen.name}</strong>
-                      </span>
-                      <button type="button" className="h-chosen-x" onClick={() => setChosen(null)} aria-label="Remove selected package">
-                        ✕
-                      </button>
-                    </div>
-                  )}
                   <div className="h-form-grid">
                     <label>
                       Name
-                      <input name="name" required autoComplete="name" ref={nameRef} />
+                      <input name="name" required autoComplete="name" />
                     </label>
                     <label>
                       Company
@@ -408,7 +354,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                     </label>
                   </div>
                   <label>
-                    {chosen?.consult ? "Tell us about your business and what you'd like to connect" : "Tell us about your business and what you'd like to achieve"}
+                    Tell us about your business and what you&rsquo;d like to achieve
                     <textarea name="message" rows={4} />
                   </label>
                   <input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="h-hp" />
@@ -434,7 +380,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                     className="h-btn h-btn--ghost"
                     onClick={() => {
                       setSent(false);
-                      setChosen(null);
                       openedAt.current = Date.now();
                     }}
                   >
@@ -461,7 +406,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
             <span className="h-mono">Explore</span>
             <a href="#services">Solutions</a>
             <a href="/blog">Education Centre</a>
-            <a href="#re5-digital">RE5 Digital</a>
           </div>
           <div className="h-foot-col">
             <span className="h-mono">Company</span>
@@ -486,9 +430,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
         </div>
       </footer>
 
-      <PackagesModal set={openSet} focus={focusPkg} onClose={() => setOpenSet(null)} onChoose={choosePackage} />
-
-      {showSticky && !menu && !openSet && (
+      {showSticky && !menu && (
         <div className="h-sticky">
           <a href="#contact" className="h-btn h-btn--lg">
             Let&rsquo;s Talk Business →

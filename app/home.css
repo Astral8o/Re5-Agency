@@ -104,9 +104,14 @@ a.h-card:hover, .h-card--link:hover { transform: translate(-2px, -2px); box-shad
 .h-split-copy .h-btn { margin-top: 10px; }
 .h-split-media { display: flex; align-items: center; justify-content: center; padding: clamp(24px, 3.4vw, 48px); border: var(--line); border-radius: var(--r); box-shadow: var(--shadow); background: var(--lav-soft); }
 .h-split-media--grey { background: var(--tint); }
-.h-split-media--phone { background: var(--paper); }
-.h-split-media--phone .h-phone-body { width: auto; height: clamp(360px, 34vw, 460px); }
 .h-split-media .h-laptop { max-width: 560px; }
+/* Laptop with a phone in front of its lower-right corner. */
+.h-devices { position: relative; display: block; padding-bottom: clamp(96px, 9vw, 136px); }
+.h-devices .h-laptop { width: 80%; max-width: none; }
+.h-devices .h-phone { position: absolute; right: clamp(16px, 2.4vw, 32px); bottom: clamp(16px, 2vw, 28px); }
+.h-devices .h-phone-body { width: auto; height: clamp(200px, 21vw, 300px); padding: 6px; border-radius: 28px; box-shadow: 6px 6px 0 var(--lav); }
+.h-devices .h-phone-body video { border-radius: 23px; }
+.h-devices .h-phone figcaption { display: none; }
 @media (max-width: 900px) { .h-split { grid-template-columns: 1fr; } }
 
 /* ---------- digital commerce: benefits ---------- */
@@ -202,12 +207,6 @@ a.h-card:hover, .h-card--link:hover { transform: translate(-2px, -2px); box-shad
 .h-sent-tick { width: 52px; height: 52px; border: var(--line); border-radius: 50%; background: var(--lav); display: inline-flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; }
 .h-sent h3 { font-size: 32px; letter-spacing: -0.035em; font-weight: 500; }
 .h-sent p { margin: 0; color: var(--muted); }
-.h-chosen { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px 12px 18px; border: var(--line); border-radius: 18px; background: var(--lav-soft); }
-.h-chosen > span { display: flex; flex-direction: column; gap: 2px; }
-.h-chosen .h-mono { color: var(--muted); }
-.h-chosen strong { font-size: 17px; font-weight: 600; }
-.h-chosen-x { flex: none; width: 36px; height: 36px; border-radius: 50%; border: var(--line); background: var(--paper); cursor: pointer; font-size: 14px; }
-.h-chosen-x:hover { background: var(--coral); }
 @media (max-width: 860px) { .h-contact-inner { grid-template-columns: 1fr; } .h-contact-mark { display: none; } }
 
 /* ---------- footer ---------- */
