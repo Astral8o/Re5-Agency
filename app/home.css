@@ -209,6 +209,10 @@ a.h-card:hover, .h-card--link:hover { transform: translate(-2px, -2px); box-shad
 .h-form input, .h-form textarea { font: inherit; font-family: var(--sans); font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--ink); background: var(--paper); border: var(--line); border-radius: 14px; padding: 12px 14px; min-height: 48px; outline: none; }
 .h-form textarea { resize: vertical; }
 .h-form input:focus, .h-form textarea:focus { box-shadow: 0 0 0 3px var(--lav); }
+.h-interest { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 10px 10px 16px; border: var(--line); border-radius: var(--r-sm); background: var(--lav-soft); font-size: 15px; }
+.h-interest strong { font-weight: 600; }
+.h-interest-x { flex: none; width: 36px; height: 36px; border-radius: 50%; border: var(--line); background: var(--paper); cursor: pointer; font-size: 14px; color: var(--ink); }
+.h-interest-x:hover { background: var(--coral); }
 .h-hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; opacity: 0; }
 .h-form-error { margin: 0; font-size: 14px; font-weight: 600; color: #b3261e; }
 .h-form-note { margin: 0; font-size: 13px; line-height: 1.5; color: var(--muted); }

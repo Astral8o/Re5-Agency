@@ -71,6 +71,8 @@ export default function HomePage({ posts }: { posts: Post[] }) {
 
   // The RE5 Approach diagram: which step is highlighted
   const [step, setStep] = useState(0);
+  // Offer picked from "What Can We Help You Create?", sent with the enquiry.
+  const [interest, setInterest] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -99,6 +101,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
           email: f.get("email"),
           phone: f.get("phone"),
           interests: [SERVICE],
+          package: interest ?? "",
           message: f.get("message"),
           website: f.get("website"),
           elapsed: Date.now() - openedAt.current,
@@ -229,7 +232,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                   <p className="h-offer-how">
                     <strong>How it works:</strong> {o.how}
                   </p>
-                  <a href="#contact" className={`h-btn${i === 1 ? " h-btn--ghost" : ""}`}>
+                  <a href="#contact" className={`h-btn${i === 1 ? " h-btn--ghost" : ""}`} onClick={() => { setInterest(o.name); setSent(false); }}>
                     {o.cta} <span aria-hidden="true">→</span>
                   </a>
                 </article>
@@ -344,6 +347,16 @@ export default function HomePage({ posts }: { posts: Post[] }) {
             <div className="h-panel h-form-card">
               {!sent ? (
                 <form onSubmit={submit} className="h-form">
+                  {interest && (
+                    <div className="h-interest" role="status">
+                      <span>
+                        Interested in: <strong>{interest}</strong>
+                      </span>
+                      <button type="button" className="h-interest-x" onClick={() => setInterest(null)} aria-label={`Remove ${interest}`}>
+                        ✕
+                      </button>
+                    </div>
+                  )}
                   <div className="h-form-grid">
                     <label>
                       Name
@@ -389,6 +402,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                     className="h-btn h-btn--ghost"
                     onClick={() => {
                       setSent(false);
+                      setInterest(null);
                       openedAt.current = Date.now();
                     }}
                   >

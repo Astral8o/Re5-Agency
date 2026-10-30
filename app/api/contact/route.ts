@@ -107,7 +107,7 @@ export async function POST(request: Request) {
           ${row("Company", fields.company)}
           ${row("Email", fields.email)}
           ${row("Phone / WhatsApp", fields.phone)}
-          ${fields.pkg ? row("Package", fields.pkg) : ""}
+          ${fields.pkg ? row("Offer", fields.pkg) : ""}
           ${row("Interested in", fields.interests.join(", "))}
           ${row("Their plans", fields.message)}
         </table>
