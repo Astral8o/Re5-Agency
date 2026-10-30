@@ -120,16 +120,26 @@ a.h-card:hover, .h-card--link:hover { transform: translate(-2px, -2px); box-shad
 .h-benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); }
 .h-benefit { display: flex; flex-direction: column; gap: 14px; padding: clamp(24px, 2.4vw, 32px); }
 .h-benefit h4 { margin: 6px 0 0; font-size: clamp(20px, 1.7vw, 23px); line-height: 1.2; letter-spacing: -0.02em; font-weight: 600; }
-.h-benefit p, .h-create-card p { margin: 0; font-size: 16px; line-height: 1.65; color: var(--muted); }
+.h-benefit p { margin: 0; font-size: 16px; line-height: 1.65; color: var(--muted); }
 @media (max-width: 900px) { .h-benefits { grid-template-columns: 1fr; } }
 
-/* ---------- what we create ---------- */
-.h-create { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); }
-.h-create-card { display: flex; gap: 20px; align-items: flex-start; padding: clamp(24px, 2.6vw, 36px); }
-.h-icon { flex: none; width: 52px; height: 52px; border-radius: 16px; border: var(--line); background: var(--lav); display: inline-flex; align-items: center; justify-content: center; }
-.h-create-card h3 { margin-bottom: 8px; font-size: clamp(20px, 1.8vw, 24px); line-height: 1.2; letter-spacing: -0.02em; font-weight: 600; }
-.h-note { margin: 28px 0 0; font-size: 15px; line-height: 1.6; color: var(--muted); }
-@media (max-width: 760px) { .h-create { grid-template-columns: 1fr; } .h-create-card { flex-direction: column; gap: 16px; } }
+/* ---------- what we create: two offers ---------- */
+.h-offers { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); align-items: stretch; }
+.h-offer { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: clamp(28px, 3vw, 44px); }
+.h-offer--lav { background: var(--lav-soft); }
+.h-offer .h-offer-name { padding-bottom: 16px; width: 100%; border-bottom: var(--hair); font-size: clamp(26px, 2.4vw, 32px); line-height: 1.15; letter-spacing: -0.03em; font-weight: 600; }
+.h-offer-head { margin: 4px 0 0; font-size: clamp(19px, 1.6vw, 22px); line-height: 1.3; letter-spacing: -0.015em; font-weight: 600; }
+.h-offer-text { margin: 0; font-size: 16.5px; line-height: 1.6; color: var(--muted); }
+.h-offer-list { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.h-offer-list li { position: relative; padding-left: 30px; font-size: 16px; line-height: 1.45; }
+.h-offer-list li::before { content: ""; position: absolute; left: 0; top: 2px; width: 18px; height: 18px; border-radius: 50%; border: var(--line); background: var(--lav); }
+.h-offer--lav .h-offer-list li::before { background: var(--paper); }
+.h-offer-list li::after { content: ""; position: absolute; left: 6px; top: 6px; width: 5px; height: 8px; border: solid var(--ink); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.h-offer-how { margin: 8px 0 0; padding: 14px 16px; width: 100%; border: 1px dashed rgba(17, 17, 17, .4); border-radius: var(--r-sm); background: var(--paper); font-size: 15px; line-height: 1.55; color: var(--muted); }
+.h-offer-how strong { color: var(--ink); }
+.h-offer .h-btn { margin-top: auto; }
+@media (max-width: 860px) { .h-offers { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .h-offer .h-btn { align-self: stretch; white-space: normal; text-align: center; } }
 
 /* ---------- the RE5 approach: five-dot diagram ---------- */
 .h-approach { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 80px); align-items: start; }

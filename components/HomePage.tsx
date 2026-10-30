@@ -20,23 +20,24 @@ const BENEFITS = [
   ["Reach More Customers", "Make your products easier to discover beyond your immediate location. Explore opportunities to sell across Trinidad and Tobago and other Caribbean markets."],
 ] as const;
 
-// Simple line icons (24px grid) for the "What Can We Help You Create?" cards.
-const ICON: Record<string, string> = {
-  cart: "M3 4h2.5l2.2 10.2a1.5 1.5 0 0 0 1.5 1.2h7.9a1.5 1.5 0 0 0 1.5-1.1L20.5 8H6.4M10 20.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm7 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z",
-  grid: "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z",
-  repeat: "M17 2l3 3-3 3M4 11V9a4 4 0 0 1 4-4h12M7 22l-3-3 3-3M20 13v2a4 4 0 0 1-4 4H4",
-  plug: "M9 7V3M15 7V3M6 7h12v4a6 6 0 0 1-12 0V7Zm6 10v4",
-};
-const Icon = ({ name }: { name: string }) => (
-  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d={ICON[name]} />
-  </svg>
-);
-const CREATE = [
-  ["cart", "Online Stores", "Give customers a place to browse, add products to their cart and complete purchases online."],
-  ["grid", "Product Catalogues", "Showcase your products, prices and specifications, with options for customers to send inquiries or request quotations."],
-  ["repeat", "Wholesale & Repeat Ordering", "Give regular customers an easier way to place bulk orders, access their order history and purchase again."],
-  ["plug", "Connected Ordering Solutions", "Already using inventory or accounting software? We can explore whether your online ordering solution can work with your existing systems."],
+// "What Can We Help You Create?": the two ways to sell online with RE5.
+const OFFERS = [
+  {
+    name: "Your Own Website",
+    head: "Built Around Your Business.",
+    text: "Have something specific in mind? Let\u2019s create a website that works for you.",
+    items: ["Your own domain and branding", "Online store or product catalogue", "Ordering, quotations and payment options", "Hosting, maintenance and support"],
+    how: "Pay for website development and ongoing maintenance.",
+    cta: "Let\u2019s Talk About Your Website",
+  },
+  {
+    name: "RE5 Managed Store",
+    head: "Start Selling Online. We\u2019ll Handle the Tech.",
+    text: "Choose a store design, add your products and start selling. We\u2019ll take care of the setup and maintenance.",
+    items: ["Ready-made store designs", "Your own branded store on RE5", "Product and order dashboard", "Payment and delivery integrations", "Hosting, maintenance and support"],
+    how: "No upfront development or monthly platform fee. RE5 earns a commission when you make a sale. Payment processing and delivery fees are separate.",
+    cta: "Interested? Let\u2019s Talk",
+  },
 ] as const;
 
 const APPROACH = [
@@ -214,18 +215,26 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                 <h2 id="h-create-title" className="h-h2">What Can We Help You Create?</h2>
               </div>
             </div>
-            <div className="h-create">
-              {CREATE.map(([icon, t, d]) => (
-                <div key={t} className="h-card h-create-card">
-                  <span className="h-icon"><Icon name={icon} /></span>
-                  <div>
-                    <h3>{t}</h3>
-                    <p>{d}</p>
-                  </div>
-                </div>
+            <div className="h-offers">
+              {OFFERS.map((o, i) => (
+                <article key={o.name} className={`h-card h-offer${i === 1 ? " h-offer--lav" : ""}`}>
+                  <h3 className="h-offer-name">{o.name}</h3>
+                  <p className="h-offer-head">{o.head}</p>
+                  <p className="h-offer-text">{o.text}</p>
+                  <ul className="h-offer-list">
+                    {o.items.map((it) => (
+                      <li key={it}>{it}</li>
+                    ))}
+                  </ul>
+                  <p className="h-offer-how">
+                    <strong>How it works:</strong> {o.how}
+                  </p>
+                  <a href="#contact" className={`h-btn${i === 1 ? " h-btn--ghost" : ""}`}>
+                    {o.cta} <span aria-hidden="true">→</span>
+                  </a>
+                </article>
               ))}
             </div>
-            <p className="h-note">The features we recommend will depend on your business needs and the systems available.</p>
           </div>
         </section>
 
