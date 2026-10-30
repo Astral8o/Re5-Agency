@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import "./blog.css";
 import { Logo } from "../../components/brand";
 
-export function Mark({ color = "#111111" }: { color?: string }) {
+export function Mark({ color = "#2a0f2e" }: { color?: string }) {
   return (
     <svg viewBox="0 0 100 100" fill={color} aria-hidden="true">
       <circle cx="50" cy="20" r="15" />
