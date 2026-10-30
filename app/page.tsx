@@ -1,5 +1,4 @@
 import HomePage from "@/components/HomePage";
-import { FAQ } from "@/components/faq";
 import { POSTS } from "./blog/posts";
 import "./home.css";
 
@@ -15,17 +14,10 @@ const BUSINESS_JSON_LD = {
   address: { "@type": "PostalAddress", addressCountry: "TT" },
 };
 
-const FAQ_JSON_LD = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
-};
-
 export default function Home() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(BUSINESS_JSON_LD) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_JSON_LD) }} />
       <HomePage posts={POSTS.slice(0, 3)} />
     </>
   );

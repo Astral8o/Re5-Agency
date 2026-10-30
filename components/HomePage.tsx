@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { Logo, Mark } from "./brand";
 import DemoLaptop from "./DemoLaptop";
 import DemoPhone from "./DemoPhone";
-import { FAQ_GROUPS } from "./faq";
 import PackagesModal from "./PackagesModal";
 import { PACKAGE_SETS, type Package, type PackageSet } from "./packages";
 import type { Post } from "../app/blog/posts";
@@ -12,30 +11,57 @@ import type { Post } from "../app/blog/posts";
 // RE5 offers one service for now; every enquiry is about it.
 const SERVICE = "Websites & Online Sales";
 
-// "What We Offer" uses the pop-up's own packages and wording, so the two always match.
+// "Explore RE5 Digital" opens the pop-up with its own package wording, so the two always match.
 const WEB = PACKAGE_SETS.find((x) => x.service === SERVICE)!;
-const [DIGITAL, ...SITES] = WEB.packages;
-// Example sites shown in the laptop previews (fictional businesses, recorded from RE5 demo builds).
-const LAPTOP: Record<string, { name: string; url: string; label: string }> = {
-  "business-website": { name: "hair-loop", url: "lumierehair.com", label: "Example business website for a hair supplier: browsing the collection, applying for a wholesale account and finding the showroom" },
-  "ecommerce-website": { name: "store-loop", url: "islandheat.shop", label: "Example online store for a pepper sauce brand: adding products to the cart and checking out" },
-};
+const [DIGITAL] = WEB.packages;
+// Example online store shown in the laptop preview (fictional business, recorded from an RE5 demo build).
+const STORE = { name: "store-loop", url: "islandheat.shop", label: "Example online store for a pepper sauce brand: adding products to the cart and checking out" };
 
 const num = (i: number) => String(i + 1).padStart(2, "0");
 
-const GOALS = [
-  ["globe", "Build Your Online Presence", "Make it easier for customers to discover and learn about your business."],
-  ["bag", "Sell Your Products Online", "Give customers convenient ways to browse, enquire and order."],
-  ["megaphone", "Reach More Customers", "Explore ways to build awareness and connect with your market."],
-  ["gear", "Improve How You Work", "Explore technology and AI to support everyday business operations."],
+const BENEFITS = [
+  ["Make Shopping Easier", "Let customers browse your products, check prices, choose options and pay online. Make it convenient for regular customers to return and order again."],
+  ["Make Orders Easier to Manage", "Receive orders with the details you need, reduce manual order-taking and keep track of purchases, so your team can spend more time serving customers."],
+  ["Reach More Customers", "Make your products easier to discover beyond your immediate location. Explore opportunities to sell across Trinidad and Tobago and other Caribbean markets."],
 ] as const;
-const STEPS = [
-  ["Discover", "Get to know your business and goals."],
-  ["Define", "Identify needs and priorities."],
-  ["Recommend", "Agree on the right solution."],
-  ["Develop", "Build and review the solution."],
-  ["Launch & Handover", "Test, launch and guide you."],
+
+// Simple line icons (24px grid) for the "What Can We Help You Create?" cards.
+const ICON: Record<string, string> = {
+  cart: "M3 4h2.5l2.2 10.2a1.5 1.5 0 0 0 1.5 1.2h7.9a1.5 1.5 0 0 0 1.5-1.1L20.5 8H6.4M10 20.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm7 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z",
+  grid: "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z",
+  repeat: "M17 2l3 3-3 3M4 11V9a4 4 0 0 1 4-4h12M7 22l-3-3 3-3M20 13v2a4 4 0 0 1-4 4H4",
+  plug: "M9 7V3M15 7V3M6 7h12v4a6 6 0 0 1-12 0V7Zm6 10v4",
+};
+const Icon = ({ name }: { name: string }) => (
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d={ICON[name]} />
+  </svg>
+);
+const CREATE = [
+  ["cart", "Online Stores", "Give customers a place to browse, add products to their cart and complete purchases online."],
+  ["grid", "Product Catalogues", "Showcase your products, prices and specifications, with options for customers to send inquiries or request quotations."],
+  ["repeat", "Wholesale & Repeat Ordering", "Give regular customers an easier way to place bulk orders, access their order history and purchase again."],
+  ["plug", "Connected Ordering Solutions", "Already using inventory or accounting software? We can explore whether your online ordering solution can work with your existing systems."],
 ] as const;
+
+const APPROACH = [
+  ["Discovery", "Getting to Know Your Business", "We start by learning about your products, customers, current sales process and what you\u2019d like to achieve."],
+  ["Strategy", "Finding the Right Solution", "We\u2019ll explore your options, recommend an approach and explain the features, costs and work involved."],
+  ["Development", "Bringing It to Life", "We\u2019ll coordinate the development of your online store, catalogue or ordering solution, keeping you involved along the way."],
+  ["Integration & Testing", "Making Sure It Works", "We\u2019ll test the purchasing experience, check important features and connect any agreed business systems."],
+  ["Launch & Adoption", "Getting Everyone On Board", "We\u2019ll help you prepare for launch, show your team how to use the system and plan how to introduce it to customers so they can start ordering online."],
+] as const;
+
+// The approach diagram: five steps placed like the five dots of the RE5 mark, clockwise from the top.
+// The arrow into step 5 stops a little earlier so it clears that step's label.
+const CX = 50, CY = 52, R = 32;
+const at = (deg: number, r = R) => [CX + r * Math.cos((deg * Math.PI) / 180), CY + r * Math.sin((deg * Math.PI) / 180)] as const;
+const NODE_DEG = [-90, -18, 54, 126, 198];
+const arc = (from: number, to: number, endGap = 14) => {
+  const [x1, y1] = at(from + 14);
+  const [x2, y2] = at(to - endGap);
+  return `M${x1.toFixed(2)} ${y1.toFixed(2)} A${R} ${R} 0 0 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`;
+};
 
 export default function HomePage({ posts }: { posts: Post[] }) {
   const [menu, setMenu] = useState(false);
@@ -50,8 +76,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
   // Packages pop-up and the package chosen from it
   const [openSet, setOpenSet] = useState<PackageSet | null>(null);
   const [focusPkg, setFocusPkg] = useState<string | undefined>();
-  const [faqTab, setFaqTab] = useState(FAQ_GROUPS[0].id);
-  const [siteDemo, setSiteDemo] = useState<string>(SITES[0].id);
+  const [step, setStep] = useState(0);
   const openPackages = (id?: string) => {
     setFocusPkg(id);
     setOpenSet(WEB);
@@ -69,21 +94,6 @@ export default function HomePage({ posts }: { posts: Post[] }) {
     });
   };
 
-
-  // How We Work: fill each dot of the path as it scrolls into view.
-  useEffect(() => {
-    const items = document.querySelectorAll(".h-path li");
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      items.forEach((el) => el.classList.add("is-on"));
-      return;
-    }
-    const io = new IntersectionObserver(
-      (es) => es.forEach((e) => e.isIntersecting && (e.target.classList.add("is-on"), io.unobserve(e.target))),
-      { rootMargin: "0px 0px -20% 0px" }
-    );
-    items.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -191,181 +201,165 @@ export default function HomePage({ posts }: { posts: Post[] }) {
           </div>
         </section>
 
-        {/* ---------------- Goals ---------------- */}
-        <section className="h-sec" aria-labelledby="h-goals-title">
+        {/* ---------------- Digital commerce ---------------- */}
+        <section id="services" className="h-sec" aria-labelledby="h-dc-title">
           <div className="h-wrap">
-          <div className="h-sec-head h-sec-head--solo">
-            <div className="h-sec-title">
-              <span className="h-mono h-kicker">What We Help You Achieve</span>
-              <h2 id="h-goals-title" className="h-h2">Where Would You Like to Take Your Business?</h2>
-              <p className="h-lead">Explore the possibilities for your business.</p>
-            </div>
-          </div>
-          <div className="h-goal-grid">
-            {GOALS.map(([, t, d], i) => (
-              <div key={t} className="h-card h-goal">
-                <span className="h-num">{num(i)}</span>
-                <h3>{t}</h3>
-                <p>{d}</p>
+            <div className="h-split">
+              <div className="h-split-copy">
+                <span className="h-mono h-kicker">Digital Commerce</span>
+                <h2 id="h-dc-title" className="h-h2">Give Your Customers More Ways to Shop With You.</h2>
+                <p className="h-lead">Imagine customers being able to browse your products, choose what they need, place an order and pay online, all in one place.</p>
+                <p className="h-lead">Whether you sell to individual customers or other businesses, RE5 Agency helps you explore the right online selling solution for your business.</p>
               </div>
-            ))}
-          </div>
-          </div>
-        </section>
+              <div className="h-split-media h-split-media--grey">
+                <DemoLaptop {...STORE} />
+              </div>
+            </div>
 
-        {/* ---------------- Solutions ---------------- */}
-        <section id="services" className="h-sec h-sec--tint" aria-labelledby="h-sol-title">
-          <div className="h-wrap">
-          <div className="h-sec-head h-sec-head--solo">
-            <div className="h-sec-title">
-              <span className="h-mono h-kicker">Our Solutions</span>
-              <h2 id="h-sol-title" className="h-h2">Practical Solutions for Your Next Move.</h2>
-            </div>
-          </div>
-          <div className="h-sol-grid">
-            <article className="h-card h-sol">
-              <div className="h-sol-media">
-                <DemoPhone />
-              </div>
-              <div className="h-sol-body">
-                <div className="h-sol-top">
-                  <span className="h-mono">01 / {DIGITAL.name}</span>
-                  <span className="h-avail">Available</span>
-                </div>
-                <h3>{DIGITAL.tagline}</h3>
-                <p>Give customers a convenient way to explore your menu, choose what they want, and send orders through WhatsApp.</p>
-                <button type="button" className="h-btn h-sol-cta" onClick={() => openPackages(DIGITAL.id)} aria-label={`See what's included in ${DIGITAL.name}`}>
-                  See what&rsquo;s included <span aria-hidden="true">→</span>
-                </button>
-              </div>
-            </article>
-            <article className="h-card h-sol">
-              <div className="h-sol-media h-sol-media--grey">
-                <div className="h-seg" role="group" aria-label="Example websites">
-                  {SITES.map((p) => (
-                    <button key={p.id} type="button" aria-pressed={siteDemo === p.id} className={siteDemo === p.id ? "on" : ""} onClick={() => setSiteDemo(p.id)}>
-                      {p.name}
-                    </button>
-                  ))}
-                </div>
-                <DemoLaptop key={siteDemo} {...LAPTOP[siteDemo]} />
-              </div>
-              <div className="h-sol-body">
-                <div className="h-sol-top">
-                  <span className="h-mono">02 / {SERVICE}</span>
-                  <span className="h-avail">Available</span>
-                </div>
-                <h3>Build Your Presence. Open New Opportunities.</h3>
-                <p>From business websites and searchable product catalogues to online stores, create a better way for customers to find you and do business with you.</p>
-                {/* One button that follows the switcher above, so the video and the package always match. */}
-                <button type="button" className="h-btn h-sol-cta" onClick={() => openPackages(siteDemo)} aria-label={`See what's included in the ${SITES.find((p) => p.id === siteDemo)!.name}`}>
-                  See what&rsquo;s included <span aria-hidden="true">→</span>
-                </button>
-              </div>
-            </article>
-          </div>
-          <div className="h-more">
-            <span className="h-more-icon" aria-hidden="true">+</span>
-            <div>
-              <h3>More Solutions on the Way</h3>
-              <p>As RE5 grows, we&rsquo;ll introduce additional ways to support Caribbean businesses.</p>
-            </div>
-          </div>
-          </div>
-        </section>
-
-        {/* ---------------- How we work ---------------- */}
-        <section className="h-sec" aria-labelledby="h-how-title">
-          <div className="h-wrap">
-          <div className="h-sec-head">
-            <div className="h-sec-title">
-              <span className="h-mono h-kicker">How We Work</span>
-              <h2 id="h-how-title" className="h-h2">From Conversation to Solution.</h2>
-            </div>
-            <div className="h-sec-aside">
-              <p className="h-lead">Every business has different needs. We take the time to understand yours and develop solutions that fit your goals.</p>
-              <p className="h-how-note">
-                <Mark className="h-how-mark" /> Five dots, five steps.
-              </p>
-            </div>
-          </div>
-          {/* The five steps echo the five dots of the RE5 mark; each dot fills as it scrolls into view. */}
-          <ol className="h-path">
-            {STEPS.map(([t, d], i) => (
-              <li key={t} style={{ ["--i" as string]: i }}>
-                <span className="h-path-dot">{num(i)}</span>
-                <div>
-                  <h3>{t}</h3>
+            <h3 className="h-h3 h-sub">What Could This Mean for Your Business?</h3>
+            <div className="h-benefits">
+              {BENEFITS.map(([t, d], i) => (
+                <div key={t} className="h-card h-benefit">
+                  <span className="h-num">{num(i)}</span>
+                  <h4>{t}</h4>
                   <p>{d}</p>
                 </div>
-              </li>
-            ))}
-          </ol>
-          </div>
-        </section>
-
-        {/* ---------------- Blog ---------------- */}
-        <section id="blog" className="h-sec h-sec--lav" aria-labelledby="h-blog-title">
-          <div className="h-wrap h-edu">
-          <div className="h-edu-copy">
-            <span className="h-mono h-kicker">RE5 Education</span>
-            <h2 id="h-blog-title" className="h-h2">Learn What AI Can Do for Your Business.</h2>
-            <p className="h-lead">
-              Discover free guides, tutorials, and practical resources to help you understand AI and use it in your business.
-            </p>
-            <a href="/blog" className="h-btn h-btn--ghost">
-              Explore Free Resources <span aria-hidden="true">→</span>
-            </a>
-          </div>
-          <div className="h-posts">
-            {posts.map((p) => (
-              <a key={p.slug} href={`/blog/${p.slug}`} className="h-card h-post">
-                <div className="h-post-cover">
-                  <Mark className="h-post-mark" />
-                </div>
-                <div className="h-post-body">
-                  <span className="h-mono">
-                    {p.category} · {p.readingTime}
-                  </span>
-                  <h3>{p.title}</h3>
-                  <span className="h-post-read">
-                    Read article <span aria-hidden="true">→</span>
-                  </span>
-                </div>
-              </a>
-            ))}
-          </div>
-          </div>
-        </section>
-
-        {/* ---------------- FAQ ---------------- */}
-        <section id="faq" className="h-sec" aria-labelledby="h-faq-title">
-          <div className="h-wrap h-faq">
-            <div className="h-faq-head">
-              <span className="h-mono h-kicker">Questions, Answered</span>
-              <h2 id="h-faq-title" className="h-h2">
-                Good Questions Deserve Clear Answers.
-              </h2>
+              ))}
             </div>
-            <div className="h-faq-list">
-              <div className="h-faq-tabs" role="tablist" aria-label="FAQ topics">
-                {FAQ_GROUPS.map((g) => (
-                  <button key={g.id} type="button" role="tab" id={`faq-tab-${g.id}`} aria-selected={faqTab === g.id} aria-controls="faq-panel" className={faqTab === g.id ? "on" : ""} onClick={() => setFaqTab(g.id)}>
-                    {g.label}
-                  </button>
+          </div>
+        </section>
+
+        {/* ---------------- What we create ---------------- */}
+        <section className="h-sec h-sec--tint" aria-labelledby="h-create-title">
+          <div className="h-wrap">
+            <div className="h-sec-head h-sec-head--solo">
+              <div className="h-sec-title">
+                <h2 id="h-create-title" className="h-h2">What Can We Help You Create?</h2>
+              </div>
+            </div>
+            <div className="h-create">
+              {CREATE.map(([icon, t, d]) => (
+                <div key={t} className="h-card h-create-card">
+                  <span className="h-icon"><Icon name={icon} /></span>
+                  <div>
+                    <h3>{t}</h3>
+                    <p>{d}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="h-note">The features we recommend will depend on your business needs and the systems available.</p>
+          </div>
+        </section>
+
+        {/* ---------------- The RE5 approach ---------------- */}
+        <section className="h-sec" aria-labelledby="h-approach-title">
+          <div className="h-wrap">
+            <div className="h-sec-head h-sec-head--solo">
+              <div className="h-sec-title">
+                <span className="h-mono h-kicker">The RE5 Approach</span>
+                <h2 id="h-approach-title" className="h-h2">From Our First Conversation to Launch &amp; Beyond.</h2>
+              </div>
+            </div>
+            <div className="h-approach">
+              {/* Diagram: the five steps sit where the five dots of the RE5 mark sit, joined clockwise, with step 5 looping back to step 1. */}
+              <div className="h-cycle" aria-hidden="true">
+                <svg viewBox="0 0 100 100">
+                  <defs>
+                    <marker id="h-arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                      <path d="M0 0L10 5L0 10z" fill="#111" />
+                    </marker>
+                    <marker id="h-arrow-c" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                      <path d="M0 0L10 5L0 10z" fill="#ff6a3d" />
+                    </marker>
+                  </defs>
+                  {NODE_DEG.slice(0, 4).map((d, i) => (
+                    <path key={d} d={arc(d, NODE_DEG[i + 1], i === 3 ? 24 : 14)} className="h-cycle-arc" markerEnd="url(#h-arrow)" />
+                  ))}
+                  <path d={arc(198, 270)} className="h-cycle-arc h-cycle-arc--loop" markerEnd="url(#h-arrow-c)" />
+                </svg>
+                {NODE_DEG.map((d, i) => {
+                  const [x, y] = at(d);
+                  return (
+                    <button key={d} type="button" tabIndex={-1} className={`h-node${step === i ? " on" : ""}`} style={{ left: `${x}%`, top: `${y}%` }} onClick={() => setStep(i)} onMouseEnter={() => setStep(i)}>
+                      <span className="h-node-dot">{num(i)}</span>
+                      <span className="h-node-label">{APPROACH[i][0]}</span>
+                    </button>
+                  );
+                })}
+                {(() => {
+                  const [x, y] = at(234, 45);
+                  return <span className="h-cycle-beyond" style={{ left: `${x}%`, top: `${y}%` }}>&amp; Beyond</span>;
+                })()}
+              </div>
+              <ol className="h-steps">
+                {APPROACH.map(([t, sub, d], i) => (
+                  <li key={t} className={step === i ? "on" : ""} onMouseEnter={() => setStep(i)}>
+                    <span className="h-num">{num(i)}</span>
+                    <div>
+                      <h3>
+                        {t} <span className="h-step-sub">{sub}</span>
+                      </h3>
+                      <p>{d}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        {/* ---------------- RE5 Digital ---------------- */}
+        <section id="re5-digital" className="h-sec h-sec--lav" aria-labelledby="h-digital-title">
+          <div className="h-wrap">
+            <div className="h-split">
+              <div className="h-split-copy">
+                <span className="h-mono h-kicker">RE5 Digital</span>
+                <h2 id="h-digital-title" className="h-h2">Share Your Products. Take Orders Through WhatsApp.</h2>
+                <p className="h-lead">Give customers a link or QR code where they can browse your products, choose what they want and send an order directly through WhatsApp.</p>
+                <p className="h-lead">A convenient option for businesses that don&rsquo;t need a full online store.</p>
+                <button type="button" className="h-btn h-btn--lg" onClick={() => openPackages(DIGITAL.id)}>
+                  Explore RE5 Digital <span aria-hidden="true">→</span>
+                </button>
+              </div>
+              <div className="h-split-media h-split-media--phone">
+                <DemoPhone />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ---------------- RE5 Education ---------------- */}
+        <section id="blog" className="h-sec" aria-labelledby="h-blog-title">
+          <div className="h-wrap">
+            <div className="h-split">
+              <div className="h-split-copy">
+                <span className="h-mono h-kicker">RE5 Education</span>
+                <h2 id="h-blog-title" className="h-h2">Curious About AI? Let&rsquo;s Explore.</h2>
+                <p className="h-lead">Discover free guides, tutorials and practical resources to help you understand AI and find ways to use it in your business.</p>
+                <p className="h-lead">Whether you&rsquo;re just getting started or want to learn something new, our Education Centre is here to help.</p>
+                <a href="/blog" className="h-btn h-btn--lg h-btn--ghost">
+                  Visit the Education Centre <span aria-hidden="true">→</span>
+                </a>
+              </div>
+              <div className="h-posts">
+                {posts.slice(0, 1).map((p) => (
+                  <a key={p.slug} href={`/blog/${p.slug}`} className="h-card h-post">
+                    <div className="h-post-cover">
+                      <Mark className="h-post-mark" />
+                    </div>
+                    <div className="h-post-body">
+                      <span className="h-mono">
+                        {p.category} · {p.readingTime}
+                      </span>
+                      <h3>{p.title}</h3>
+                      <span className="h-post-read">
+                        Read article <span aria-hidden="true">→</span>
+                      </span>
+                    </div>
+                  </a>
                 ))}
               </div>
-              <div id="faq-panel" role="tabpanel" aria-labelledby={`faq-tab-${faqTab}`} className="h-faq-panel">
-              {FAQ_GROUPS.find((g) => g.id === faqTab)!.items.map((f) => (
-                <details key={faqTab + f.q} className="h-faq-item">
-                  <summary>{f.q}</summary>
-                  <p>{f.a}</p>
-                </details>
-              ))}
-              </div>
-              <a href="#contact" className="h-btn h-btn--sm h-btn--ghost h-faq-more">
-                Still have questions? Let&rsquo;s talk business <span aria-hidden="true">→</span>
-              </a>
             </div>
           </div>
         </section>
@@ -374,11 +368,11 @@ export default function HomePage({ posts }: { posts: Post[] }) {
         <section id="contact" className="h-contact h-pattern" aria-labelledby="h-contact-title">
           <div className="h-wrap h-contact-inner">
             <div className="h-panel h-panel--coral h-contact-copy">
-              <span className="h-mono">Let&rsquo;s Talk Business</span>
               <h2 id="h-contact-title" className="h-contact-title">
-                Your Next Move Starts Here.
+                Let&rsquo;s Talk About Your Business.
               </h2>
-              <p>Tell us about your business, what you&rsquo;re working towards, and where you need support.</p>
+              <p>Thinking about selling online? Already have a website but want to improve how customers order?</p>
+              <p>Tell us what you&rsquo;re hoping to achieve. We&rsquo;ll help you explore your options and figure out the next steps.</p>
               <Mark className="h-contact-mark" />
             </div>
             <div className="h-panel h-form-card">
@@ -419,7 +413,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                   </label>
                   <input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="h-hp" />
                   <button type="submit" className="h-btn h-btn--lg h-btn--full" disabled={sending}>
-                    {sending ? "Sending…" : "Start a Conversation →"}
+                    {sending ? "Sending…" : "Get in Touch →"}
                   </button>
                   {sendError && (
                     <p className="h-form-error" role="alert">
@@ -467,7 +461,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
             <span className="h-mono">Explore</span>
             <a href="#services">Solutions</a>
             <a href="/blog">Education Centre</a>
-            <a href="#faq">FAQ</a>
+            <a href="#re5-digital">RE5 Digital</a>
           </div>
           <div className="h-foot-col">
             <span className="h-mono">Company</span>
