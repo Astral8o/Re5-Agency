@@ -26,16 +26,34 @@ const OFFERS = [
     name: "Your Own Website",
     head: "Built Around Your Business.",
     text: "Have something specific in mind? Let\u2019s create a website that works for you.",
-    items: ["Your own domain and branding", "Online store or product catalogue", "Ordering, quotations and payment options", "Hosting, maintenance and support"],
-    how: "Pay for website development and ongoing maintenance.",
+    items: [
+      "Custom website design",
+      "Your own domain and branding",
+      "Mobile-friendly design",
+      "Product catalogue or online store",
+      "Ordering and quotation options",
+      "Payment integration, where supported",
+      "Basic SEO setup",
+      "Hosting, maintenance and technical support",
+    ],
+    how: "One-time website development fee, plus ongoing hosting and maintenance.",
     cta: "Let\u2019s Talk About Your Website",
   },
   {
     name: "RE5 Managed Store",
     head: "Start Selling Online. We\u2019ll Handle the Tech.",
     text: "Choose a store design, add your products and start selling. We\u2019ll take care of the setup and maintenance.",
-    items: ["Ready-made store designs", "Your own branded store on RE5", "Product and order dashboard", "Payment and delivery integrations", "Hosting, maintenance and support"],
-    how: "No upfront development or monthly platform fee. RE5 earns a commission when you make a sale. Payment processing and delivery fees are separate.",
+    items: [
+      "Choice of ready-made store templates",
+      "Branded storefront on the RE5 platform",
+      "Mobile-friendly design",
+      "Product and order management dashboard",
+      "Online checkout and payment integration",
+      "Delivery integration, where supported",
+      "Customer order history",
+      "Hosting, maintenance and technical support",
+    ],
+    how: "No upfront development fee or monthly platform subscription. RE5 earns a commission on completed orders. Payment processing and delivery fees are separate.",
     cta: "Interested? Let\u2019s Talk",
   },
 ] as const;
@@ -224,6 +242,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                   <h3 className="h-offer-name">{o.name}</h3>
                   <p className="h-offer-head">{o.head}</p>
                   <p className="h-offer-text">{o.text}</p>
+                  <h4 className="h-mono h-offer-label">What&rsquo;s Included</h4>
                   <ul className="h-offer-list">
                     {o.items.map((it) => (
                       <li key={it}>{it}</li>

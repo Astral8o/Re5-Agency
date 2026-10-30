@@ -130,7 +130,8 @@ a.h-card:hover, .h-card--link:hover { transform: translate(-2px, -2px); box-shad
 .h-offer .h-offer-name { padding-bottom: 16px; width: 100%; border-bottom: var(--hair); font-size: clamp(26px, 2.4vw, 32px); line-height: 1.15; letter-spacing: -0.03em; font-weight: 600; }
 .h-offer-head { margin: 4px 0 0; font-size: clamp(19px, 1.6vw, 22px); line-height: 1.3; letter-spacing: -0.015em; font-weight: 600; }
 .h-offer-text { margin: 0; font-size: 16.5px; line-height: 1.6; color: var(--muted); }
-.h-offer-list { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.h-offer-label { margin: 8px 0 -4px; font-weight: 600; color: var(--ink); }
+.h-offer-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .h-offer-list li { position: relative; padding-left: 30px; font-size: 16px; line-height: 1.45; }
 .h-offer-list li::before { content: ""; position: absolute; left: 0; top: 2px; width: 18px; height: 18px; border-radius: 50%; border: var(--line); background: var(--lav); }
 .h-offer--lav .h-offer-list li::before { background: var(--paper); }
