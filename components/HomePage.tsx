@@ -258,10 +258,10 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                 <svg viewBox="0 0 100 100">
                   <defs>
                     <marker id="h-arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                      <path d="M0 0L10 5L0 10z" fill="#0c1445" />
+                      <path d="M0 0L10 5L0 10z" fill="#2a0f2e" />
                     </marker>
                     <marker id="h-arrow-c" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                      <path d="M0 0L10 5L0 10z" fill="#ff6b45" />
+                      <path d="M0 0L10 5L0 10z" fill="#ff5b1f" />
                     </marker>
                   </defs>
                   {NODE_DEG.slice(0, 4).map((d, i) => (
