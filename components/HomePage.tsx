@@ -20,7 +20,7 @@ const BENEFITS = [
   ["Reach More Customers", "Make your products easier to discover beyond your immediate location. Explore opportunities to sell across Trinidad and Tobago and other Caribbean markets."],
 ] as const;
 
-// "What Can We Help You Create?": the two ways to sell online with RE5.
+// "What Can We Help You Create?": the ways to sell online with RE5 (one for now; the RE5 Managed Store is paused).
 const OFFERS = [
   {
     name: "Your Own Website",
@@ -38,23 +38,6 @@ const OFFERS = [
     ],
     how: "One-time website development fee, plus ongoing hosting and maintenance.",
     cta: "Let\u2019s Talk About Your Website",
-  },
-  {
-    name: "RE5 Managed Store",
-    head: "Start Selling Online. We\u2019ll Handle the Tech.",
-    text: "Choose a store design, add your products and start selling. We\u2019ll take care of the setup and maintenance.",
-    items: [
-      "Choice of ready-made store templates",
-      "Branded storefront on the RE5 platform",
-      "Mobile-friendly design",
-      "Product and order management dashboard",
-      "Online checkout and payment integration",
-      "Delivery integration, where supported",
-      "Customer order history",
-      "Hosting, maintenance and technical support",
-    ],
-    how: "No upfront development fee or monthly platform subscription. RE5 earns a commission on completed orders. Payment processing and delivery fees are separate.",
-    cta: "Interested? Let\u2019s Talk",
   },
 ] as const;
 
@@ -236,7 +219,7 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                 <h2 id="h-create-title" className="h-h2">What Can We Help You Create?</h2>
               </div>
             </div>
-            <div className="h-offers">
+            <div className={`h-offers${OFFERS.length === 1 ? " h-offers--one" : ""}`}>
               {OFFERS.map((o, i) => (
                 <article key={o.name} className={`h-card h-offer${i === 1 ? " h-offer--lav" : ""}`}>
                   <h3 className="h-offer-name">{o.name}</h3>

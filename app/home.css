@@ -139,7 +139,19 @@ a.h-card:hover, .h-card--link:hover { transform: translate(-2px, -2px); box-shad
 .h-offer-how { margin: 8px 0 0; padding: 14px 16px; width: 100%; border: 1px dashed rgba(17, 17, 17, .4); border-radius: var(--r-sm); background: var(--paper); font-size: 15px; line-height: 1.55; color: var(--muted); }
 .h-offer-how strong { color: var(--ink); }
 .h-offer .h-btn { margin-top: auto; }
-@media (max-width: 860px) { .h-offers { grid-template-columns: 1fr; } }
+/* A single offer spans the width: copy on the left, the included list on the right. */
+.h-offers--one { grid-template-columns: 1fr; }
+.h-offers--one .h-offer { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(32px, 5vw, 72px); row-gap: 16px; align-content: start; }
+.h-offers--one .h-offer > * { grid-column: 1; }
+.h-offers--one .h-offer-name { grid-column: 1 / -1; }
+.h-offers--one .h-offer-label { grid-column: 2; grid-row: 2; align-self: end; }
+.h-offers--one .h-offer-list { grid-column: 2; grid-row: 3 / span 3; }
+.h-offers--one .h-offer .h-btn { justify-self: start; margin-top: 8px; }
+@media (max-width: 860px) {
+  .h-offers { grid-template-columns: 1fr; }
+  .h-offers--one .h-offer { display: flex; }
+  .h-offers--one .h-offer-label { align-self: flex-start; }
+}
 @media (max-width: 520px) { .h-offer .h-btn { align-self: stretch; white-space: normal; text-align: center; } }
 
 /* ---------- the RE5 approach: five-dot diagram ---------- */
