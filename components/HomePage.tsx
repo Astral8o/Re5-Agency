@@ -49,11 +49,11 @@ const OFFERS = [
 ] as const;
 
 const APPROACH = [
-  ["Discovery", "Getting to Know Your Business", "We start by learning about your products, customers, current sales process and what you\u2019d like to achieve."],
+  ["Discovery", "Getting to Know Your Business", "We start by learning about your business, your customers, how you work today and what you\u2019d like to achieve."],
   ["Strategy", "Finding the Right Solution", "We\u2019ll explore your options, recommend an approach and explain the features, costs and work involved."],
-  ["Development", "Bringing It to Life", "We\u2019ll coordinate the development of your online store, catalogue or ordering solution, keeping you involved along the way."],
-  ["Integration & Testing", "Making Sure It Works", "We\u2019ll test the purchasing experience, check important features and connect any agreed business systems."],
-  ["Launch & Adoption", "Getting Everyone On Board", "We\u2019ll help you prepare for launch, show your team how to use the system and plan how to introduce it to customers so they can start ordering online."],
+  ["Development", "Bringing It to Life", "We\u2019ll coordinate the development of your website, online store or automation, keeping you involved along the way."],
+  ["Integration & Testing", "Making Sure It Works", "We\u2019ll test how everything works, from the customer experience to automated tasks, and connect any agreed business systems."],
+  ["Launch & Adoption", "Getting Everyone On Board", "We\u2019ll help you prepare for launch, show your team how to use the new tools and plan how to introduce them to your customers."],
 ] as const;
 
 // The approach diagram: five steps placed like the five dots of the RE5 mark, clockwise from the top.
