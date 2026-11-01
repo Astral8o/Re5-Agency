@@ -20,7 +20,7 @@ const BENEFITS = [
   ["Reach More Customers", "Make your products easier to discover beyond your immediate location. Explore opportunities to sell across Trinidad and Tobago and other Caribbean markets."],
 ] as const;
 
-// "What Can We Help You Create?": the ways to sell online with RE5 (one for now; the RE5 Managed Store is paused).
+// "What Can We Help You Create?": RE5's services (the RE5 Managed Store is paused).
 const OFFERS = [
   {
     name: "Your Own Website",
@@ -38,6 +38,13 @@ const OFFERS = [
     ],
     how: "One-time website development fee, plus ongoing hosting and maintenance.",
     cta: "Let\u2019s Talk About Your Website",
+  },
+  {
+    name: "AI & Business Automation",
+    text: "Help businesses reduce repetitive tasks, manage information, respond to customers, and connect their everyday systems.",
+    label: "What We Can Help With",
+    items: ["Reduce repetitive tasks", "Manage information", "Respond to customers", "Connect your everyday systems"],
+    cta: "Let\u2019s Talk About Automation",
   },
 ] as const;
 
@@ -219,21 +226,23 @@ export default function HomePage({ posts }: { posts: Post[] }) {
                 <h2 id="h-create-title" className="h-h2">What Can We Help You Create?</h2>
               </div>
             </div>
-            <div className={`h-offers${OFFERS.length === 1 ? " h-offers--one" : ""}`}>
+            <div className={`h-offers${(OFFERS.length as number) === 1 ? " h-offers--one" : ""}`}>
               {OFFERS.map((o, i) => (
                 <article key={o.name} className={`h-card h-offer${i === 1 ? " h-offer--lav" : ""}`}>
                   <h3 className="h-offer-name">{o.name}</h3>
-                  <p className="h-offer-head">{o.head}</p>
+                  {"head" in o && <p className="h-offer-head">{o.head}</p>}
                   <p className="h-offer-text">{o.text}</p>
-                  <h4 className="h-mono h-offer-label">What&rsquo;s Included</h4>
+                  <h4 className="h-mono h-offer-label">{"label" in o ? o.label : "What\u2019s Included"}</h4>
                   <ul className="h-offer-list">
                     {o.items.map((it) => (
                       <li key={it}>{it}</li>
                     ))}
                   </ul>
-                  <p className="h-offer-how">
-                    <strong>How it works:</strong> {o.how}
-                  </p>
+                  {"how" in o && (
+                    <p className="h-offer-how">
+                      <strong>How it works:</strong> {o.how}
+                    </p>
+                  )}
                   <a href="#contact" className={`h-btn${i === 1 ? " h-btn--ghost" : ""}`} onClick={() => { setInterest(o.name); setSent(false); }}>
                     {o.cta} <span aria-hidden="true">→</span>
                   </a>

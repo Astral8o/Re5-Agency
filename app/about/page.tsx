@@ -55,6 +55,21 @@ export default function AboutPage() {
                   </div>
                 </div>
               </article>
+              <article className="ab-card">
+                <span className="ab-n">02</span>
+                <div>
+                  <h2>AI &amp; Business Automation</h2>
+                  <p>
+                    Helping businesses reduce repetitive tasks, manage information, respond to customers, and connect
+                    their everyday systems.
+                  </p>
+                  <div className="ab-actions">
+                    <a href="/#contact" className="ab-btn">
+                      Let&rsquo;s Talk Automation <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
+                </div>
+              </article>
             </div>
           </div>
         </section>
