@@ -180,8 +180,8 @@ export default function HomePage({ posts }: { posts: Post[] }) {
             </div>
             <figure className="h-hero-media">
               <picture>
-                <source srcSet="/home/goal-ordering.webp" type="image/webp" />
-                <img src="/home/goal-ordering.jpg" alt="A restaurant menu on a phone with orders sent through WhatsApp" width={1200} height={800} fetchPriority="high" />
+                <source srcSet="/home/hero-supplier.webp" type="image/webp" />
+                <img src="/home/hero-supplier.jpg" alt="A wholesale supplier's website shown on a desktop screen and a phone" width={1200} height={800} fetchPriority="high" />
               </picture>
             </figure>
           </div>
