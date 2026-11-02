@@ -1,0 +1,61 @@
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --ink:#2a0f2e; --muted:#5d4a60; --coral:#ff5b1f; --violet:#6a2fb8; --lav:#c8a2f2; --lav-soft:#f2e9fc; --tint:#f6f2ee; --hair:rgba(42,15,46,.14); }
+body { font-family: "Instrument Sans", Inter, Helvetica, Arial, sans-serif; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.pg { width: 210mm; height: 297mm; padding: 13mm 15mm 11mm; position: relative; overflow: hidden; page-break-after: always; display: flex; flex-direction: column; background: #fff; }
+.pg:last-child { page-break-after: auto; }
+.cover { background: radial-gradient(120% 60% at 100% 0%, #f2e9fc 0%, rgba(242,233,252,0) 60%), radial-gradient(80% 40% at 0% 100%, #ffe6da 0%, rgba(255,230,218,0) 70%), #fff; }
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9mm; }
+.logo { display: inline-flex; align-items: center; gap: 6px; font-family: "Plus Jakarta Sans", Inter, sans-serif; font-weight: 600; font-size: 15px; letter-spacing: -0.02em; color: #111; }
+.logo b { color: #ff6a3d; font-weight: 600; }
+.mark { width: 14px; height: 14px; fill: #ff6a3d; }
+.pill { font-family: "JetBrains Mono", monospace; font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid var(--ink); border-radius: 99px; padding: 4px 10px; }
+.kick { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--violet); margin-bottom: 4mm; }
+h1 { font-family: "Plus Jakarta Sans", sans-serif; font-weight: 800; font-size: 34px; line-height: 1.08; letter-spacing: -0.025em; margin-bottom: 5mm; max-width: 170mm; }
+h2 { font-family: "Plus Jakarta Sans", sans-serif; font-weight: 800; font-size: 25px; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 2.5mm; }
+.h2b { font-size: 19px; margin-top: 10mm; margin-bottom: 3mm; }
+h3 { font-family: "Plus Jakarta Sans", sans-serif; font-weight: 700; font-size: 13.5px; line-height: 1.25; margin-bottom: 1.5mm; }
+.lead { font-size: 12.5px; line-height: 1.55; color: var(--muted); max-width: 165mm; margin-bottom: 6mm; }
+.sub { font-size: 11.5px; color: var(--muted); margin-bottom: 6mm; }
+p { font-size: 11px; line-height: 1.5; color: var(--muted); }
+.hero { border: 1.5px solid var(--ink); border-radius: 16px; overflow: hidden; box-shadow: 5px 5px 0 var(--ink); background: #fff; margin-bottom: 7mm; }
+.hero img { display: block; width: 100%; height: 92mm; object-fit: cover; object-position: top center; }
+.hero figcaption { font-size: 9px; color: var(--muted); padding: 5px 10px; border-top: 1px solid var(--hair); font-family: "JetBrains Mono", monospace; }
+.bens { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+.ben { border: 1.5px solid var(--ink); border-radius: 14px; padding: 4mm; background: #fff; }
+.num { display: inline-block; font-family: "JetBrains Mono", monospace; font-size: 9.5px; color: var(--coral); letter-spacing: .06em; margin-bottom: 2mm; }
+footer { margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: var(--muted); border-top: 1px solid var(--hair); padding-top: 3mm; }
+footer a { color: var(--muted); text-decoration: none; }
+.steps { display: flex; flex-direction: column; gap: 5mm; }
+.step { display: grid; grid-template-columns: 112mm 1fr; gap: 6mm; align-items: center; }
+.step figure { border: 1.5px solid var(--ink); border-radius: 12px; overflow: hidden; background: var(--tint); box-shadow: 4px 4px 0 var(--ink); }
+.step.wide img { display: block; width: 100%; height: 60mm; object-fit: cover; object-position: top left; }
+.step.phone figure, .step.panel figure { justify-self: center; width: 46mm; border-radius: 18px; }
+.step.phone img, .step.panel img { display: block; width: 100%; height: 60mm; object-fit: cover; object-position: top; }
+.step.panel figure { width: 52mm; border-radius: 12px; }
+.also { margin-top: 6mm; background: var(--lav-soft); border-radius: 12px; padding: 4mm 5mm; color: var(--ink); font-size: 11px; }
+.opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin-top: 3mm; }
+.opt { border: 1.5px solid var(--ink); border-radius: 14px; padding: 5mm; min-height: 46mm; }
+.opt h4 { font-family: "Plus Jakarta Sans", sans-serif; font-size: 14px; font-weight: 800; }
+.opt em { display: block; font-style: normal; font-size: 10.5px; color: var(--violet); margin: 1mm 0 2mm; font-weight: 600; }
+.fine { font-size: 9.5px; margin-top: 3mm; }
+.appr { list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: 3mm; }
+.appr li { background: var(--tint); border-radius: 12px; padding: 4.5mm 3.5mm; min-height: 34mm; }
+.appr span { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--coral); color: #fff; font-size: 10px; font-weight: 700; margin-bottom: 2mm; }
+.appr b { display: block; font-family: "Plus Jakarta Sans", sans-serif; font-size: 12px; }
+.appr small { font-size: 9.5px; color: var(--muted); line-height: 1.35; display: block; margin-top: 1mm; }
+.two { display: grid; grid-template-columns: 1fr 74mm; gap: 6mm; margin-top: 10mm; }
+.qs ul { padding-left: 4mm; }
+.qs li { font-size: 11.5px; line-height: 1.5; color: var(--muted); margin-bottom: 2mm; }
+.cta { background: var(--ink); color: #fff; border-radius: 16px; padding: 5mm; box-shadow: 5px 5px 0 var(--coral); }
+.cta h3 { font-size: 17px; color: #fff; }
+.cta p { color: #e6d9e8; margin-bottom: 4mm; }
+.btn { display: block; text-align: center; border-radius: 99px; padding: 8px 10px; font-weight: 700; font-size: 11.5px; text-decoration: none; }
+.btn.wa { background: #22b35e; color: #fff; }
+.btn.book { background: #fff; color: var(--ink); margin-top: 3mm; }
+.tel { display: block; text-align: center; font-size: 10.5px; color: #e6d9e8; margin-top: 1.5mm; }
+.qr { display: flex; align-items: center; gap: 3mm; margin-top: 4mm; background: #fff; border-radius: 10px; padding: 2.5mm; }
+.qr img { width: 17mm; height: 17mm; }
+.qr small { color: var(--ink); font-size: 10px; font-weight: 600; }
+.disc { font-size: 8.5px; margin-top: auto; margin-bottom: 3mm; }
+.disc + footer { margin-top: 0; }
