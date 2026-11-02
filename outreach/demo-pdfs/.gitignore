@@ -2,3 +2,4 @@ out/
 prev/
 src/*.html
 !src/nail-mock.html
+!src/fashion-mock.html
