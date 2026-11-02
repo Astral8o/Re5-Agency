@@ -1,0 +1,4 @@
+out/
+prev/
+src/*.html
+!src/nail-mock.html

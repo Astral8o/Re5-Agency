@@ -87,6 +87,7 @@ SEGMENTS = {
         head="Turn followers into shoppers with collections they can browse, choose and buy.",
         intro="Your social pages already bring people in. RE5 builds online shops that let them browse every collection, pick sizes, colours or finishes and place an order, so interest from a post can become a sale without a long thread of messages.",
         hero="img/store-loop-poster.png",
+        hero_pos_1p="center bottom",
         hero_cap="Island Heat, a fictional demo online store built by RE5 Agency.",
         benefits=[("Collections in one place", "New arrivals, featured looks and full ranges organised so shoppers do not need to scroll through posts."),
                   ("Options made clear", "Sizes, colours, finishes and prices shown on each product before anyone has to ask."),
@@ -168,3 +169,42 @@ for seg in SEGMENTS:
     assert "—" not in out and "cheap" not in out.lower(), seg
     (D / f"{seg}.html").write_text(out)
 print("built", list(SEGMENTS))
+
+
+def onepager(seg):
+    s = SEGMENTS[seg]
+    steps = "".join(
+        f'<div class="ostep {kind}"><figure><img src="{img}" alt=""></figure><span class="num">Step {i+1}</span><h3>{e(h)}</h3><p>{e(t)}</p></div>'
+        for i, (img, kind, h, t) in enumerate(s["steps"]))
+    bens = "".join(f"<li><b>{e(a)}.</b> {e(b)}</li>" for a, b in s["benefits"])
+    opts = " · ".join(n for n, _, _ in OPTIONS)
+    return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>{e(s['title'])} (one page)</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>{CSS}</style></head><body>
+<section class="pg cover one">
+  <header>{LOGO}<span class="pill">Demo guide</span></header>
+  <p class="kick">{e(s['kicker'])}</p>
+  <h1>{e(s['head'])}</h1>
+  <p class="lead">{e(s['intro'])}</p>
+  <figure class="hero"><img src="{s['hero']}" alt="" style="object-position:{s.get('hero_pos_1p','top center')}"><figcaption>{e(s['hero_cap'])}</figcaption></figure>
+  <div class="osteps">{steps}</div>
+  <div class="otwo">
+    <div><h3>Why it helps</h3><ul class="obens">{bens}</ul><p class="oopts"><b>Options:</b> {e(opts)}. Every option is quoted based on your needs.</p></div>
+    <div class="cta">
+      <h3>Let's talk business!</h3>
+      <a class="btn wa" href="{WA}">Message us on WhatsApp</a>
+      <span class="tel">+1 868 717-7720</span>
+      <a class="btn book" href="{BOOK}">Book a discovery conversation</a>
+      <div class="qr"><img src="img/qr-wa.svg" alt=""><small>Scan to chat on WhatsApp</small></div>
+    </div>
+  </div>
+  <p class="disc">Screens show fictional demo businesses created by RE5 Agency. Features shown are examples, not a fixed package.</p>
+  <footer>{LOGO}<a href="{SITE}">www.re5agency.com</a></footer>
+</section></body></html>"""
+
+
+for seg in SEGMENTS:
+    out = onepager(seg)
+    assert "—" not in out and "cheap" not in out.lower(), seg
+    (D / f"{seg}-1p.html").write_text(out)
+print("built one-pagers")

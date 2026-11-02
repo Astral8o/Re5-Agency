@@ -1,6 +1,6 @@
 # RE5 demo PDFs (outreach attachments)
 
-Four 3-page demo guides, one per prospect segment. Attach the matching one to each outreach email.
+Four 3-page demo guides, one per prospect segment, plus a one-page version of each (`RE5-OnePager-*.pdf`). Attach the matching one to each outreach email.
 
 | File | Use for |
 |---|---|
@@ -17,6 +17,7 @@ Run inside `src/` (needs Python with Pillow and segno, plus Node with Playwright
 
     node shot.js      # re-shoot the nail concept screen
     python3 build.py  # write the four HTML pages
-    mkdir -p out prev && node render.js   # render PDFs to out/
+    mkdir -p out prev && node render.js   # render 3-page PDFs to out/
+    node render1p.js  # render the one-pagers into this folder
 
 Copy is in `build.py` (`SEGMENTS`). House rules: no em dashes and no "cheap"; `build.py` checks for both.

@@ -59,3 +59,28 @@ footer a { color: var(--muted); text-decoration: none; }
 .qr small { color: var(--ink); font-size: 10px; font-weight: 600; }
 .disc { font-size: 8.5px; margin-top: auto; margin-bottom: 3mm; }
 .disc + footer { margin-top: 0; }
+
+/* One-page version */
+.one header { margin-bottom: 6mm; }
+.one h1 { font-size: 27px; margin-bottom: 3mm; }
+.one .lead { font-size: 11px; margin-bottom: 4mm; }
+.one .hero { margin-bottom: 5mm; box-shadow: 4px 4px 0 var(--ink); }
+.one .hero img { height: 78mm; }
+.osteps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+.ostep figure { border: 1.5px solid var(--ink); border-radius: 10px; overflow: hidden; background: var(--tint); margin-bottom: 2mm; }
+.ostep img { display: block; width: 100%; height: 34mm; object-fit: cover; object-position: top left; }
+.ostep.phone img, .ostep.panel img { object-position: top center; }
+.ostep h3 { font-size: 12px; margin-bottom: 1mm; }
+.ostep p { font-size: 9.5px; line-height: 1.4; }
+.ostep .num { margin-bottom: 1mm; }
+.otwo { display: grid; grid-template-columns: 1fr 66mm; gap: 6mm; margin-top: 5mm; }
+.obens { padding-left: 4mm; margin-top: 1mm; }
+.obens li { font-size: 10px; line-height: 1.45; color: var(--muted); margin-bottom: 1.5mm; }
+.obens b { color: var(--ink); }
+.oopts { font-size: 9.5px; margin-top: 2mm; }
+.oopts b { color: var(--ink); }
+.one .cta { padding: 4mm; }
+.one .cta h3 { font-size: 15px; margin-bottom: 3mm; }
+.one .qr { margin-top: 3mm; }
+.one .qr img { width: 14mm; height: 14mm; }
+.one .disc { margin-top: auto; }
