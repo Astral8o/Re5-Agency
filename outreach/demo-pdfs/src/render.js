@@ -1,5 +1,5 @@
 const { chromium } = require('playwright');
-const segs = ['beauty-hair','nail-supply','wholesale-supply','boutique-retail'];
+const segs = ['beauty-hair','nail-supply','wholesale-supply','boutique-retail','fashion-boutique'];
 (async () => {
   const b = await chromium.launch();
   for (const s of segs) {

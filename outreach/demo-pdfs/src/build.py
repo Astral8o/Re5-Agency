@@ -101,6 +101,25 @@ SEGMENTS = {
                    "Would you prefer full online checkout, or reserve and collect in store?",
                    "Which delivery and payment options do you already offer?"],
     ),
+    "fashion-boutique": dict(
+        title="RE5 Demo | Fashion Boutique",
+        kicker="A website concept for fashion boutiques",
+        head="Turn Instagram interest into easier shopping, from new arrivals to reserve and collect.",
+        intro="Your followers already love the looks you post. RE5 builds boutique websites where they can browse every collection, check sizes and colours, and reserve pieces to try on in store or order for delivery, without scrolling back through posts or waiting on a DM.",
+        hero="img/fashion-grid.jpg",
+        hero_cap="Rosé & Rue, a fictional boutique concept illustrated by RE5 Agency.",
+        benefits=[("New arrivals in one place", "Each drop, edit or collection gets its own page that followers can browse any time."),
+                  ("Sizes and colours up front", "Shoppers see what is in stock in their size before they message or visit."),
+                  ("Reserve, collect or deliver", "Customers can hold pieces to try on at the boutique, or order for delivery, whichever suits how you work.")],
+        steps=[("img/fashion-grid.jpg", "wide", "Shop the latest edit", "Filter new arrivals by size and colour. Labels like New or Last few help popular pieces move."),
+               ("img/fashion-modal.jpg", "wide", "Pick size and colour", "Each piece shows its colours, available sizes and stock at the boutique, with Add to bag or Reserve for pickup."),
+               ("img/fashion-bag.jpg", "wide", "Reserve and collect, or deliver", "Shoppers choose to collect and try on in store or have it delivered, then confirm, or send the bag to you on WhatsApp.")],
+        also="Also possible: promotion and sale pages, event and pop-up announcements, gift cards, lookbooks linked from your Instagram, and size guides.",
+        questions=["How do shoppers buy from you today: in store, Instagram DM or WhatsApp?",
+                   "How often do new pieces arrive, and how many sizes per style?",
+                   "Would you prefer full online checkout, or reserve and collect in store?",
+                   "Which delivery and payment options do you already offer?"],
+    ),
 }
 
 CSS = (D / "style.css").read_text()
